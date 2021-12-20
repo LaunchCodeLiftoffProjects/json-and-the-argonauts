@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head th:replace="fragments :: head"></head>
+<body>
+<nav th:replace="fragments :: nav-header"></nav>
+
+<h1 th:text="${title}" class="m-5 p-3 text-center border border-3 border-primary rounded-pill">This is fun.</h1>
+
+<div class="container">
+  <div class="m-3 p-3 rounded bg-primary text-light">
+    <p>Welcome to the ultimate gift tracker, <span class="fw-bold" th:text="${name}"></span>!</p>
+  </div>
+</div>
+
+<div></div>
+
+<script th:replace="fragments :: js"></script>
+</body>
+</html>
