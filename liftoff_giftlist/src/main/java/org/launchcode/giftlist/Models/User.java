@@ -1,16 +1,20 @@
 package org.launchcode.giftlist.Models;
 
+import java.util.List;
 import java.util.Objects;
 
 public class User {
 
 
-    private int UserID;
+    private int userID;
 
     private String firstName;
     private String lastName;
     private String email;
     private String password;
+    private List wishLists;
+    private List groups;
+
 
     public User(String firstName, String lastName, String email, String password){
         this.firstName = firstName;
@@ -24,7 +28,7 @@ public class User {
 
 
     public int getUserID() {
-        return UserID;
+        return userID;
     }
 
     public String getEmail() {
@@ -55,15 +59,20 @@ public class User {
         this.lastName = lastName;
     }
 
-    @Override
-    public String toString() {
-        return "User{" +
-                "UserID=" + UserID +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                '}';
+    public List getWishLists() {
+        return wishLists;
+    }
+
+    public void setWishLists(List wishLists) {
+        this.wishLists = wishLists;
+    }
+
+    public List getGroups() {
+        return groups;
+    }
+
+    public void setGroups(List groups) {
+        this.groups = groups;
     }
 
     @Override
@@ -71,21 +80,36 @@ public class User {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return getUserID() == user.getUserID() && Objects.equals(getFirstName(), user.getFirstName()) && Objects.equals(getLastName(), user.getLastName()) && Objects.equals(getEmail(), user.getEmail()) && Objects.equals(getPassword(), user.getPassword());
+        return getUserID() == user.getUserID();
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getUserID(), getFirstName(), getLastName(), getEmail(), getPassword());
+        return Objects.hash(getUserID());
     }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "UserID=" + userID +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                '}';
+    }
+
+
+
     //Waiting to add all additional features for the password once we have the correct Hashing in place
 
+    public void findWishLists(){
+        //find all wishlists created by THIS USER
+    }
 
-
-
-
-
-
+    public void findSupaSpecificWishList(){
+        //find a list by the WishList ID
+    }
 
 
 

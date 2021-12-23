@@ -52,12 +52,12 @@ public class Item {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Item item = (Item) o;
-        return getItemID() == item.getItemID() && getName().equals(item.getName()) && getUser().equals(item.getUser()) && getPrice().equals(item.getPrice());
+        return getItemID() == item.getItemID();
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getItemID(), getName(), getUser(), getPrice());
+        return Objects.hash(getItemID());
     }
 
     @Override
@@ -70,12 +70,7 @@ public class Item {
                 '}';
     }
 
-
     //waiting to add additional methods
-
-
-
-
 
 
 
