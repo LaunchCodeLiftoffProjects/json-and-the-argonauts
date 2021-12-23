@@ -1,4 +1,4 @@
-package Models;
+package org.launchcode.giftlist.Models;
 
 import java.util.Objects;
 
