@@ -7,12 +7,14 @@ public class User {
 
     private int UserID;
 
-    private String name;
+    private String firstName;
+    private String lastName;
     private String email;
     private String password;
 
-    public User(String name, String email, String password){
-        this.name = name;
+    public User(String firstName, String lastName, String email, String password){
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.email = email;
         this.password = password;
     }
@@ -23,14 +25,6 @@ public class User {
 
     public int getUserID() {
         return UserID;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public String getEmail() {
@@ -45,27 +39,44 @@ public class User {
         return password;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        User user = (User) o;
-        return getUserID() == user.getUserID() && getName().equals(user.getName()) && getEmail().equals(user.getEmail()) && getPassword().equals(user.getPassword());
+    public String getFirstName() {
+        return firstName;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(getUserID(), getName(), getEmail(), getPassword());
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     @Override
     public String toString() {
         return "User{" +
                 "UserID=" + UserID +
-                ", name='" + name + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return getUserID() == user.getUserID() && Objects.equals(getFirstName(), user.getFirstName()) && Objects.equals(getLastName(), user.getLastName()) && Objects.equals(getEmail(), user.getEmail()) && Objects.equals(getPassword(), user.getPassword());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getUserID(), getFirstName(), getLastName(), getEmail(), getPassword());
     }
     //Waiting to add all additional features for the password once we have the correct Hashing in place
 
