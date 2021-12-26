@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class HomeController {
 
+  //*** DON'T FORGET TO AUTOWIRE REPO'S INTO CONTROLLERS
+
   @GetMapping
   public String index(Model model) {
     model.addAttribute("title", "Welcome to the Ultimate Gift & Wish List Tracker");
