@@ -1,10 +1,16 @@
 package org.launchcode.giftlist.Models;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import java.util.List;
 import java.util.Objects;
 
+@Entity
 public class WishList {
 
+    @Id
+    @GeneratedValue
     private int listID;
 
     private String name;

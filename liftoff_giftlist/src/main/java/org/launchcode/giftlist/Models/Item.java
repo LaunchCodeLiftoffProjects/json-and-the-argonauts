@@ -1,9 +1,15 @@
 package org.launchcode.giftlist.Models;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import java.util.Objects;
 
+@Entity
 public class Item {
 
+    @Id
+    @GeneratedValue
     private int itemID;
 
     private String name;
