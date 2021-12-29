@@ -1,5 +1,7 @@
 package org.launchcode.giftlist.Models;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -15,20 +17,27 @@ public class User {
 
     private String firstName;
     private String lastName;
+    private String username;
     private String email;
-    private String password;
+    private String pwHash;
     private List wishLists;
     private List groups;
 
+    private static final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
-    public User(String firstName, String lastName, String email, String password){
+
+    public User(String firstName, String lastName, String username, String email, String password){
         this.firstName = firstName;
         this.lastName = lastName;
+        this.username = username;
         this.email = email;
-        this.password = password;
+        this.pwHash = encoder.encode(password);
     }
 
     public User(){
+    }
+
+    public User(String username, String password) {
     }
 
 
@@ -42,10 +51,6 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
     }
 
     public String getFirstName() {
@@ -62,6 +67,14 @@ public class User {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public List getWishLists() {
@@ -96,15 +109,19 @@ public class User {
     @Override
     public String toString() {
         return "User{" +
-                "UserID=" + userID +
-                ", firstName='" + firstName + '\'' +
+                "firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
+                ", username='" + username + '\'' +
                 ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
+                ", wishLists=" + wishLists +
+                ", groups=" + groups +
                 '}';
     }
 
 
+    public boolean isMatchingPassword(String password) {
+        return encoder.matches(password, pwHash);
+    }
 
     //Waiting to add all additional features for the password once we have the correct Hashing in place
 
