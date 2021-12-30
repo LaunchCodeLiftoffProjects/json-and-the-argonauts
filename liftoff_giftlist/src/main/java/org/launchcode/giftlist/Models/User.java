@@ -2,9 +2,8 @@ package org.launchcode.giftlist.Models;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -20,8 +19,15 @@ public class User {
     private String username;
     private String email;
     private String pwHash;
-    private List wishLists;
-    private List groups;
+
+    @OneToMany(mappedBy = "listOwner")
+    private List<WishList> wishLists = new ArrayList<>();
+
+    @OneToMany(mappedBy = "partyOwner")
+    private List<Party> ownedParties = new ArrayList<>();
+
+    @ManyToMany
+    private List<Party> joinedParties = new ArrayList<>();
 
     private static final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
@@ -85,12 +91,20 @@ public class User {
         this.wishLists = wishLists;
     }
 
-    public List getGroups() {
-        return groups;
+    public List<Party> getOwnedParties() {
+        return ownedParties;
     }
 
-    public void setGroups(List groups) {
-        this.groups = groups;
+    public void setOwnedParties(List<Party> ownedParties) {
+        this.ownedParties = ownedParties;
+    }
+
+    public List<Party> getJoinedParties() {
+        return joinedParties;
+    }
+
+    public void setJoinedParties(List<Party> joinedParties) {
+        this.joinedParties = joinedParties;
     }
 
     @Override
@@ -114,7 +128,8 @@ public class User {
                 ", username='" + username + '\'' +
                 ", email='" + email + '\'' +
                 ", wishLists=" + wishLists +
-                ", groups=" + groups +
+                ", owned parties=" + ownedParties +
+                ", joined parties=" + joinedParties +
                 '}';
     }
 

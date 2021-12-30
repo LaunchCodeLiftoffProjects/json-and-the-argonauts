@@ -1,8 +1,7 @@
 package org.launchcode.giftlist.Models;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -14,8 +13,20 @@ public class WishList {
     private int listID;
 
     private String name;
-    private List items;
-    private List groups;
+
+    @ManyToMany(mappedBy = "wishLists")
+    private List<Item> items = new ArrayList<>();
+
+    @ManyToMany(mappedBy = "memberWishLists")
+    private List<Party> parties = new ArrayList<>();
+
+    @ManyToOne
+    private User listOwner;
+
+
+
+
+
 
 
     public WishList(String name, List items){
@@ -28,6 +39,10 @@ public class WishList {
 
     public int getListID() {
         return listID;
+    }
+
+    public User getListOwner() {
+        return listOwner;
     }
 
     public String getName() {
@@ -46,12 +61,12 @@ public class WishList {
         this.items = items;
     }
 
-    public List getGroups() {
-        return groups;
+    public List<Party> getParties() {
+        return parties;
     }
 
-    public void setGroups(List groups) {
-        this.groups = groups;
+    public void setParties(List<Party> parties) {
+        this.parties = parties;
     }
 
     @Override
@@ -59,12 +74,12 @@ public class WishList {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         WishList wishList = (WishList) o;
-        return getListID() == wishList.getListID() && Objects.equals(getName(), wishList.getName()) && Objects.equals(getItems(), wishList.getItems()) && Objects.equals(getGroups(), wishList.getGroups());
+        return getListID() == wishList.getListID() && Objects.equals(getName(), wishList.getName()) && Objects.equals(getItems(), wishList.getItems()) && Objects.equals(getParties(), wishList.getParties());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getListID(), getName(), getItems(), getGroups());
+        return Objects.hash(getListID(), getName(), getItems(), getParties());
     }
 
     @Override
@@ -73,7 +88,7 @@ public class WishList {
                 "listID=" + listID +
                 ", name='" + name + '\'' +
                 ", items=" + items +
-                ", groups=" + groups +
+                ", parties=" + parties +
                 '}';
     }
 

@@ -3,6 +3,9 @@ package org.launchcode.giftlist.Models;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -15,6 +18,17 @@ public class Item {
     private String name;
     private String User;
     private Double price;
+
+    @ManyToMany
+    private List<WishList> wishLists = new ArrayList<>();
+
+    public List<WishList> getWishLists() {
+        return wishLists;
+    }
+
+    public void setWishLists(List<WishList> wishLists) {
+        this.wishLists = wishLists;
+    }
 
     public Item(String name, Double price){
         this.name = name;
