@@ -16,7 +16,7 @@ public class Item {
     private int itemID;
 
     private String name;
-    private String User;
+    private String user;
     private Double price;
 
     @ManyToMany
@@ -52,11 +52,11 @@ public class Item {
     }
 
     public String getUser() {
-        return User;
+        return user;
     }
 
     public void setUser(String user) {
-        User = user;
+        user = user;
     }
 
     public Double getPrice() {
@@ -85,7 +85,7 @@ public class Item {
         return "Item{" +
                 "itemID=" + itemID +
                 ", name='" + name + '\'' +
-                ", User='" + User + '\'' +
+                ", User='" + user + '\'' +
                 ", price=" + price +
                 '}';
     }
