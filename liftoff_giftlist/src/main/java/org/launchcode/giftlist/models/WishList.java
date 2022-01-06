@@ -1,4 +1,4 @@
-package org.launchcode.giftlist.Models;
+package org.launchcode.giftlist.models;
 
 import javax.persistence.*;
 import java.util.ArrayList;

@@ -1,6 +1,6 @@
-package org.launchcode.giftlist.Repositories;
+package org.launchcode.giftlist.repositories;
 
-import org.launchcode.giftlist.Models.User;
+import org.launchcode.giftlist.models.User;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
