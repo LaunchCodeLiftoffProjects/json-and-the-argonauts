@@ -47,7 +47,6 @@ public class AuthenticationController {
     @GetMapping("/register")
     public String displayRegistrationForm(Model model) {
         model.addAttribute(new RegisterFormDTO());
-        model.addAttribute("title", "Register");
         return "register";
     }
 
@@ -73,7 +72,6 @@ public class AuthenticationController {
         String verifyPassword = registerFormDTO.getVerifyPassword();
         if (!password.equals(verifyPassword)) {
             errors.rejectValue("password", "passwords.mismatch", "Passwords do not match");
-            model.addAttribute("title", "Register");
             return "register";
         }
 
@@ -84,15 +82,16 @@ public class AuthenticationController {
         userRepository.save(newUser);
         setUserInSession(request.getSession(), newUser);
 
-        return "redirect:";
+        return "user";
     }
 
-    @GetMapping("/login")
-    public String displayLoginForm(Model model) {
-        model.addAttribute(new LoginFormDTO());
-        model.addAttribute("title", "Log In");
-        return "login";
-    }
+//    ** NO LONGER NEEDED **
+//    @GetMapping("/login")
+//    public String displayLoginForm(Model model) {
+//        model.addAttribute(new LoginFormDTO());
+//        model.addAttribute("title", "Log In");
+//        return "login";
+//    }
 
 
     @PostMapping("/login")
@@ -110,7 +109,7 @@ public class AuthenticationController {
         if (theUser == null) {
             errors.rejectValue("username", "user.invalid", "The given username does not exist");
             model.addAttribute("title", "Log In");
-            return "login";
+            return "index";
         }
 
         String password = loginFormDTO.getPassword();
@@ -118,23 +117,19 @@ public class AuthenticationController {
         if (!theUser.isMatchingPassword(password)) {
             errors.rejectValue("password", "password.invalid", "Invalid password");
             model.addAttribute("title", "Log In");
-            return "login";
+            return "index";
         }
 
         setUserInSession(request.getSession(), theUser);
-
-        return "redirect:";
+        model.addAttribute("username", loginFormDTO.getUsername());
+        return "user";
     }
 
     @GetMapping("/logout")
     public String logout(HttpServletRequest request){
         request.getSession().invalidate();
-        return "redirect:/login";
+        return "redirect:";
     }
-
-    //NEED TO ADD REQUEST FILTER. TOP LEVEL PACKAGE NEEDS TO BE ABLE TO ROUTE REQUESTS THROUGH.
-    // EXTEND HandlerInterceptorAdapter
-
 
 
 

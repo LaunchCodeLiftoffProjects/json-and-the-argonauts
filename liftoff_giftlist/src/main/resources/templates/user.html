@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head th:replace="fragments :: head"></head>
+<body>
+<nav th:replace="fragments :: nav-header"></nav>
+
+<h2 class="text-center mt-5 mb-5">
+  Welcome, <span th:text="${username}">dear user!</span>
+</h2>
+<div class="container p-3 my-3 bg-light rounded">
+  <div class="row justify-content-around">
+    <div class="col-md-3 m-2 border rounded bg-white">
+      <h4 class="py-3 text-center">My Groups</h4>
+      <hr />
+      <ol>
+        <li>Texas Homecoming</li>
+        <li>Cousins' Christmas</li>
+      </ol>
+    </div>
+    <div class="col-md-5 m-2 border rounded bg-white">
+      <h4 class="py-3 text-center">My Lists</h4>
+      <hr />
+      <ol>
+        <li>Family</li>
+        <li>Work</li>
+        <li>Car Accessories</li>
+      </ol>
+    </div>
+    <div class="col-md-3 m-2 border rounded bg-white">
+      <h4 class="py-3 text-center">User Details</h4>
+      <hr />
+      <ul>
+        <li>Name:</li>
+        <li>Username:</li>
+        <li>Email:</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<script th:replace="fragments :: js"></script>
+</body>
+</html>

@@ -2,27 +2,12 @@ package org.launchcode.giftlist.models.dto;
 
 public class RegisterFormDTO extends LoginFormDTO {
 
-    private String verifyPassword;
-    private String email;
     private String firstName;
     private String lastName;
+    private String email;
+    private String verifyPassword;
 
-    public String getVerifyPassword() {
-        return verifyPassword;
-    }
-
-    public void setVerifyPassword(String verifyPassword) {
-        this.verifyPassword = verifyPassword;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
+//    Getter Setter Salad
     public String getFirstName() {
         return firstName;
     }
@@ -38,4 +23,12 @@ public class RegisterFormDTO extends LoginFormDTO {
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
+
+    public String getEmail() { return email; }
+
+    public void setEmail(String email) { this.email = email; }
+
+    public String getVerifyPassword() { return verifyPassword; }
+
+    public void setVerifyPassword(String verifyPassword) { this.verifyPassword = verifyPassword; }
 }
