@@ -1,11 +1,10 @@
 package org.launchcode.giftlist;
 
-import org.launchcode.giftlist.Models.User;
-import org.launchcode.giftlist.Repositories.UserRepository;
+import org.launchcode.giftlist.models.User;
+import org.launchcode.giftlist.repositories.UserRepository;
 import org.launchcode.giftlist.controllers.AuthenticationController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.HandlerInterceptor;
-import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -22,11 +21,11 @@ public class AuthenticationFilter implements HandlerInterceptor {
     @Autowired
     AuthenticationController authenticationController;
 
-    private static final List<String> whitelist = Arrays.asList("/login", "/register", "/css");
+    private static final List<String> whitelist = Arrays.asList("/index", "/snack", "/login", "/register", "/script.js", "/styles.css");
 
     private static boolean isWhitelisted(String path) {
         for (String pathRoot : whitelist) {
-            if (path.equals(pathRoot)) {
+            if (path.startsWith(pathRoot)) {
                 return true;
             }
         }
@@ -37,17 +36,17 @@ public class AuthenticationFilter implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
             throws IOException {
 
-        HttpSession session = request.getSession();
-        User user = authenticationController.getUserFromSession(session);
-
         if (isWhitelisted(request.getRequestURI())) {
             return true;
         }
 
+        HttpSession session = request.getSession();
+        User user = authenticationController.getUserFromSession(session);
+
         if (user != null) {
             return true;
         }
-        response.sendRedirect("/login");
+        response.sendRedirect("index");
         return false;
     }
 

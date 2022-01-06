@@ -1,4 +1,4 @@
-package org.launchcode.giftlist.Models.dto;
+package org.launchcode.giftlist.models.dto;
 
 public class RegisterFormDTO extends LoginFormDTO {
 

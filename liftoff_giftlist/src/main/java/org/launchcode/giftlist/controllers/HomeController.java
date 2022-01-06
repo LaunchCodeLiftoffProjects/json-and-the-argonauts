@@ -11,27 +11,28 @@ public class HomeController {
 
   //*** DON'T FORGET TO AUTOWIRE REPO'S INTO CONTROLLERS
 
-  @GetMapping
+  @GetMapping("index")
   public String index(Model model) {
     model.addAttribute("title", "Welcome to the Ultimate Gift & Wish List Tracker");
     model.addAttribute("name", "fellow Argonaut");
     return "index";
   }
 
-  @GetMapping("User")
-  public String User(Model model, @RequestParam String Username, @RequestParam String Password){
-    model.addAttribute("Username", Username);
-    model.addAttribute("Password", Password);
-    return "User";
-  }
-
-  @GetMapping("User/Registration")
-  public String Registration(Model model, @RequestParam String Username, @RequestParam String Password, @RequestParam String Email){
-    model.addAttribute("Username", Username);
-    model.addAttribute("Password", Password);
-    model.addAttribute("Email", Email);
-    return "User";
-  }
+//  ** Old code that we can delete (right?) **
+//  @GetMapping("user")
+//  public String User(Model model, @RequestParam String Username, @RequestParam String Password){
+//    model.addAttribute("Username", Username);
+//    model.addAttribute("Password", Password);
+//    return "user";
+//  }
+//
+//  @GetMapping("user/registration")
+//  public String Registration(Model model, @RequestParam String Username, @RequestParam String Password, @RequestParam String Email){
+//    model.addAttribute("Username", Username);
+//    model.addAttribute("Password", Password);
+//    model.addAttribute("Email", Email);
+//    return "user";
+//  }
 
 
 

@@ -1,9 +1,9 @@
 package org.launchcode.giftlist.controllers;
 
-import org.launchcode.giftlist.Models.User;
-import org.launchcode.giftlist.Models.dto.LoginFormDTO;
-import org.launchcode.giftlist.Models.dto.RegisterFormDTO;
-import org.launchcode.giftlist.Repositories.UserRepository;
+import org.launchcode.giftlist.models.User;
+import org.launchcode.giftlist.models.dto.LoginFormDTO;
+import org.launchcode.giftlist.models.dto.RegisterFormDTO;
+import org.launchcode.giftlist.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
