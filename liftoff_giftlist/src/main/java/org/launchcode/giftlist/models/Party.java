@@ -5,11 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-public class Party {
-
-    @Id
-    @GeneratedValue
-    private int partyID;
+public class Party extends AbstractSuper{
 
     @ManyToOne
     private User partyOwner;
@@ -21,10 +17,13 @@ public class Party {
     private List<WishList> memberWishLists = new ArrayList<>();
 
 
-
-    public int getPartyID() {
-        return partyID;
+    public Party(User partyOwner){
+        this.partyOwner = partyOwner;
     }
+
+    public Party(){
+    }
+
 
     public User getOwner() {
         return partyOwner;

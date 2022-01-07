@@ -6,11 +6,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
-public class WishList {
-
-    @Id
-    @GeneratedValue
-    private int listID;
+public class WishList extends AbstractSuper{
 
     private String name;
 
@@ -21,12 +17,8 @@ public class WishList {
     private List<Party> parties = new ArrayList<>();
 
     @ManyToOne
+    @JoinColumn(name = "list_owner_id")
     private User listOwner;
-
-
-
-
-
 
 
     public WishList(String name, List items){
@@ -35,11 +27,6 @@ public class WishList {
     }
 
     public WishList(){}
-
-
-    public int getListID() {
-        return listID;
-    }
 
     public User getListOwner() {
         return listOwner;
@@ -67,29 +54,6 @@ public class WishList {
 
     public void setParties(List<Party> parties) {
         this.parties = parties;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        WishList wishList = (WishList) o;
-        return getListID() == wishList.getListID() && Objects.equals(getName(), wishList.getName()) && Objects.equals(getItems(), wishList.getItems()) && Objects.equals(getParties(), wishList.getParties());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(getListID(), getName(), getItems(), getParties());
-    }
-
-    @Override
-    public String toString() {
-        return "WishList{" +
-                "listID=" + listID +
-                ", name='" + name + '\'' +
-                ", items=" + items +
-                ", parties=" + parties +
-                '}';
     }
 
     /*public void connectWishList(){
