@@ -3,19 +3,20 @@ package org.launchcode.giftlist.models;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 @Entity
-public class User {
-
-    @Id
-    @GeneratedValue
-    private int userID;
+public class User extends AbstractSuper {
 
     private String firstName;
     private String lastName;
+
+    @NotBlank
+    @NotNull
     private String username;
     private String email;
     private String pwHash;
@@ -46,10 +47,6 @@ public class User {
     public User(String username, String password) {
     }
 
-
-    public int getUserID() {
-        return userID;
-    }
 
     public String getEmail() {
         return email;
@@ -107,18 +104,6 @@ public class User {
         this.joinedParties = joinedParties;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        User user = (User) o;
-        return getUserID() == user.getUserID();
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(getUserID());
-    }
 
     @Override
     public String toString() {
@@ -149,5 +134,7 @@ public class User {
     }
 
 
-
+    public Object getUserID() {
+        return getId();
+    }
 }

@@ -1,23 +1,17 @@
 package org.launchcode.giftlist.models;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 @Entity
-public class Item {
+public class Item extends AbstractSuper {
 
-    @Id
-    @GeneratedValue
-    private int itemID;
 
     private String name;
-    private String user;
     private Double price;
+    private String user;
 
     @ManyToMany
     private List<WishList> wishLists = new ArrayList<>();
@@ -38,10 +32,6 @@ public class Item {
     public Item(){
     }
 
-
-    public int getItemID() {
-        return itemID;
-    }
 
     public String getName() {
         return name;
@@ -68,27 +58,15 @@ public class Item {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Item item = (Item) o;
-        return getItemID() == item.getItemID();
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(getItemID());
-    }
-
-    @Override
     public String toString() {
         return "Item{" +
-                "itemID=" + itemID +
-                ", name='" + name + '\'' +
-                ", User='" + user + '\'' +
+                "name='" + name + '\'' +
+                ", user='" + user + '\'' +
                 ", price=" + price +
+                ", wishLists=" + wishLists +
                 '}';
     }
+
 
     //waiting to add additional methods
 

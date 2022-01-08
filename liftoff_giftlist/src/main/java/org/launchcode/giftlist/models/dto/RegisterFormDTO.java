@@ -1,9 +1,18 @@
 package org.launchcode.giftlist.models.dto;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
 public class RegisterFormDTO extends LoginFormDTO {
 
+    @NotBlank
+    @NotNull
     private String firstName;
+    @NotNull
+    @NotBlank
     private String lastName;
+    @NotNull
+    @NotBlank
     private String email;
     private String verifyPassword;
 
