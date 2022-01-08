@@ -3,6 +3,8 @@ package org.launchcode.giftlist.models;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -12,6 +14,9 @@ public class User extends AbstractSuper {
 
     private String firstName;
     private String lastName;
+
+    @NotBlank
+    @NotNull
     private String username;
     private String email;
     private String pwHash;
