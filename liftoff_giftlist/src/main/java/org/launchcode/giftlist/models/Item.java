@@ -25,6 +25,7 @@ public class Item extends AbstractSuper {
     }
 
     public Item(String name, Double price){
+        super();
         this.name = name;
         this.price = price;
     }

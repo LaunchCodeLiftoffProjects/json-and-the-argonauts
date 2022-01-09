@@ -18,6 +18,7 @@ public class Party extends AbstractSuper{
 
 
     public Party(User partyOwner){
+        super();
         this.partyOwner = partyOwner;
     }
 

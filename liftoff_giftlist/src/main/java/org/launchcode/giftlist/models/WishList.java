@@ -22,6 +22,7 @@ public class WishList extends AbstractSuper{
 
 
     public WishList(String name, List items){
+        super();
         this.items = items;
         this.name = name;
     }
