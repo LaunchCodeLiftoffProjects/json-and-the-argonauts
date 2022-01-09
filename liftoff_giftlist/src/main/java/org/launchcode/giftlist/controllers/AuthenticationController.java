@@ -94,14 +94,14 @@ public class AuthenticationController {
 //    }
 
 
-    @PostMapping("/login")
+    @PostMapping("/index")
     public String processLoginForm(@ModelAttribute @Valid LoginFormDTO loginFormDTO,
                                    Errors errors, HttpServletRequest request,
                                    Model model) {
 
         if (errors.hasErrors()) {
             model.addAttribute("title", "Log In");
-            return "login";
+            return "index";
         }
 
         User theUser = userRepository.findByUsername(loginFormDTO.getUsername());
