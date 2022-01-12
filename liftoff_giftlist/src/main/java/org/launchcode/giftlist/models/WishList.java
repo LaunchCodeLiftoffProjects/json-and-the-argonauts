@@ -14,7 +14,7 @@ public class WishList extends AbstractSuper{
 
     private String description;
 
-    @ManyToMany(mappedBy = "wishLists")
+    @OneToMany(mappedBy = "wishList")
     private List<Item> items = new ArrayList<>();
 
     @ManyToMany(mappedBy = "memberWishLists")
