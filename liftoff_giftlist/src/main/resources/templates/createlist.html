@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head th:replace="fragments :: head"></head>
+<body>
+<nav th:replace="fragments :: nav-header"></nav>
+
+<div>
+  <form class="mb-3" method="post">
+    <label th:for="name" class="form-label">Wish List Name</label>
+    <input
+            type="text"
+            class="form-control"
+            th:field="${wishList.name}"
+    />
+    <p class="error" th:errors="${wishList.name}"></p>
+    <label th:for="description" class="form-label">Wish List Description</label>
+    <input
+            type="text"
+            class="form-control"
+            th:field="${wishList.description}"
+    />
+    <input
+            type="submit"
+            class="btn btn-warning btn-lg"
+            value="Create Wish List"
+    />
+  </form>
+</div>
+
+<script th:replace="fragments :: js"></script>
+</body>
+</html>
