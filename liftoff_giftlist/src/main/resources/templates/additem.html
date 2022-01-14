@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head th:replace="fragments :: head"></head>
+<body>
+<nav th:replace="fragments :: nav-header"></nav>
+
+<div>
+    <form class="mb-3" method="post">
+        <label th:for="listChoice" class="form-label">Add item to: </label>
+        <select name="wishList">
+            <option th:each="wishlist : ${wishlists}"
+                    th:value="${wishlist.getId()}"
+                    th:text="${wishlist.getName()}">
+            </option>
+        </select>
+        <br>
+    <label th:for="itemName" class="form-label">Item Name</label>
+        <input type="text"
+               id="itemName"
+               class="form-control"
+               th:field="${item.name}"
+        />
+        <label th:for="itemDescription" class="form-label">Description</label>
+        <input type="text"
+               id="itemDescription"
+               class="form-control"
+               th:field="${item.description}"
+        />
+        <input type="submit"
+               class="btn btn-warning btn-lg"
+               value="Add Item"
+        />
+    </form>
+</div>
+
+<script th:replace="fragments :: js"></script>
+</body>
+</html>
