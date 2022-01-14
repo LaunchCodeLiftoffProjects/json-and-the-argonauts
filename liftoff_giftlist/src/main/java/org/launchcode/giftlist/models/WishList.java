@@ -1,16 +1,20 @@
 package org.launchcode.giftlist.models;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
+
 
 @Entity
 public class WishList extends AbstractSuper{
 
+    @NotBlank
     private String name;
 
-    @ManyToMany(mappedBy = "wishLists")
+    private String description;
+
+    @OneToMany(mappedBy = "wishList")
     private List<Item> items = new ArrayList<>();
 
     @ManyToMany(mappedBy = "memberWishLists")
@@ -21,10 +25,12 @@ public class WishList extends AbstractSuper{
     private User listOwner;
 
 
-    public WishList(String name, List items){
-        super();
-        this.items = items;
+
+    public WishList(String name, String description, User listOwner){
+
         this.name = name;
+        this.description = description;
+        this.listOwner = listOwner;
     }
 
     public WishList(){}
@@ -39,6 +45,18 @@ public class WishList extends AbstractSuper{
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setListOwner(User listOwner) {
+        this.listOwner = listOwner;
     }
 
     public List getItems() {

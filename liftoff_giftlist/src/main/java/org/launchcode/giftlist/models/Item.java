@@ -1,6 +1,7 @@
 package org.launchcode.giftlist.models;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -8,26 +9,28 @@ import java.util.Objects;
 @Entity
 public class Item extends AbstractSuper {
 
-
+    @NotBlank
     private String name;
-    private Double price;
-    private String user;
 
-    @ManyToMany
-    private List<WishList> wishLists = new ArrayList<>();
+    private String description;
 
-    public List<WishList> getWishLists() {
-        return wishLists;
+
+    @ManyToOne
+    @JoinColumn(name = "list_id")
+    private WishList wishList;
+
+    public WishList getWishlist() {
+        return wishList;
     }
 
-    public void setWishLists(List<WishList> wishLists) {
-        this.wishLists = wishLists;
+    public void setWishList(WishList wishList) {
+        this.wishList = wishList;
     }
 
-    public Item(String name, Double price){
-        super();
+
+    public Item(String name, String description){
         this.name = name;
-        this.price = price;
+        this.description = description;
     }
 
     public Item(){
@@ -42,29 +45,19 @@ public class Item extends AbstractSuper {
         this.name = name;
     }
 
-    public String getUser() {
-        return user;
+    public String getDescription() {
+        return description;
     }
 
-    public void setUser(String user) {
-        user = user;
-    }
-
-    public Double getPrice() {
-        return price;
-    }
-
-    public void setPrice(Double price) {
-        this.price = price;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     @Override
     public String toString() {
         return "Item{" +
                 "name='" + name + '\'' +
-                ", user='" + user + '\'' +
-                ", price=" + price +
-                ", wishLists=" + wishLists +
+                ", wishLists=" + wishList +
                 '}';
     }
 
