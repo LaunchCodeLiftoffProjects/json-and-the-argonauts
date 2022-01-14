@@ -85,23 +85,22 @@ public class AuthenticationController {
         return "user";
     }
 
-//    ** NO LONGER NEEDED **
-//    @GetMapping("/login")
-//    public String displayLoginForm(Model model) {
-//        model.addAttribute(new LoginFormDTO());
-//        model.addAttribute("title", "Log In");
-//        return "login";
-//    }
+
+    @GetMapping("/login")
+    public String displayLoginForm(Model model) {
+        model.addAttribute(new LoginFormDTO());
+        return "login";
+    }
 
 
-    @PostMapping("/index")
+    @PostMapping("/login")
     public String processLoginForm(@ModelAttribute @Valid LoginFormDTO loginFormDTO,
                                    Errors errors, HttpServletRequest request,
                                    Model model) {
 
         if (errors.hasErrors()) {
             model.addAttribute("title", "Log In");
-            return "index";
+            return "login";
         }
 
         User theUser = userRepository.findByUsername(loginFormDTO.getUsername());
@@ -109,7 +108,7 @@ public class AuthenticationController {
         if (theUser == null) {
             errors.rejectValue("username", "user.invalid", "The given username does not exist");
             model.addAttribute("title", "Log In");
-            return "index";
+            return "login";
         }
 
         String password = loginFormDTO.getPassword();
@@ -117,11 +116,17 @@ public class AuthenticationController {
         if (!theUser.isMatchingPassword(password)) {
             errors.rejectValue("password", "password.invalid", "Invalid password");
             model.addAttribute("title", "Log In");
-            return "index";
+            return "login";
         }
 
         setUserInSession(request.getSession(), theUser);
+        String firstName = theUser.getFirstName();
+        String lastName = theUser.getLastName();
+        String email = theUser.getEmail();
         model.addAttribute("username", loginFormDTO.getUsername());
+        model.addAttribute("firstName", firstName);
+        model.addAttribute("lastName", lastName);
+        model.addAttribute("email", email);
         return "user";
     }
 

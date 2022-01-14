@@ -27,6 +27,7 @@ public class Item extends AbstractSuper {
         this.wishList = wishList;
     }
 
+
     public Item(String name, String description){
         this.name = name;
         this.description = description;

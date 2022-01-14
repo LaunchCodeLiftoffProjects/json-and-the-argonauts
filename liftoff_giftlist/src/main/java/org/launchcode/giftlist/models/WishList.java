@@ -25,7 +25,9 @@ public class WishList extends AbstractSuper{
     private User listOwner;
 
 
+
     public WishList(String name, String description, User listOwner){
+
         this.name = name;
         this.description = description;
         this.listOwner = listOwner;

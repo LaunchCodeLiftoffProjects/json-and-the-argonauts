@@ -11,14 +11,17 @@
   <div class="row justify-content-around">
     <div class="col-md-3 m-2 border rounded bg-white">
       <h4 class="py-3 text-center">My Groups</h4>
+      <a href="/party_list">Full list of groups</a>
       <hr />
       <ol>
+        <!--<a href="/register" class="btn btn-warning btn-lg">Groups</a>-->
         <li>Texas Homecoming</li>
         <li>Cousins' Christmas</li>
       </ol>
     </div>
     <div class="col-md-5 m-2 border rounded bg-white">
       <h4 class="py-3 text-center">My Lists</h4>
+      <a href="/wishlists">See all your wishlists!</a>
       <hr />
       <ol>
         <li>Family</li>
@@ -28,11 +31,12 @@
     </div>
     <div class="col-md-3 m-2 border rounded bg-white">
       <h4 class="py-3 text-center">User Details</h4>
+      <a href="/user_details">Need to update your info?</a>
       <hr />
       <ul>
-        <li>Name:</li>
-        <li>Username:</li>
-        <li>Email:</li>
+        <li>Name: <span th:text="${firstName}"></span> <span th:text="${lastName}"></span> </li>
+        <li>Username: <span th:text="${username}"></span></li>
+        <li>Email: <span th:text="${email}"></span></li>
       </ul>
     </div>
   </div>

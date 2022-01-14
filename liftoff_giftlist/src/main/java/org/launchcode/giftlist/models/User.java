@@ -12,12 +12,17 @@ import java.util.Objects;
 @Entity
 public class User extends AbstractSuper {
 
+    @NotNull
+    @NotBlank
     private String firstName;
+    @NotNull
+    @NotBlank
     private String lastName;
-
     @NotBlank
     @NotNull
     private String username;
+    @NotNull
+    @NotBlank
     private String email;
     private String pwHash;
 
@@ -34,6 +39,7 @@ public class User extends AbstractSuper {
 
 
     public User(String firstName, String lastName, String username, String email, String password){
+        super();
         this.firstName = firstName;
         this.lastName = lastName;
         this.username = username;
@@ -134,7 +140,7 @@ public class User extends AbstractSuper {
     }
 
 
-    public Object getUserID() {
+    public Integer getUserID() {
         return getId();
     }
 }
