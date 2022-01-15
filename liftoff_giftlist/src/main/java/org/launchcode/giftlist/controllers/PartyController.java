@@ -29,31 +29,29 @@ public class PartyController {
     @GetMapping("/createparty")
     public String displayCreatePartyForm(Model model){
         model.addAttribute(new Party());
-        return "/createparty";
+        return "createparty";
     }
 
     @PostMapping("/createparty")
-    public String processCretePartyForm(@ModelAttribute @Valid Party party, Errors errors,
+    public String processCreatePartyForm(@ModelAttribute @Valid Party party, Errors errors,
                                         Model model, HttpSession session){
-
         if (errors.hasErrors()) {
-            return "/createparty";
+            return "createparty";
         }
         Integer currentUserId = (Integer) session.getAttribute("user");
         party.setPartyOwner(userRepository.findById(currentUserId).get());
         partyRepository.save(party);
-        model.addAttribute("party", party);
         return "party_list";
     }
 
-    @GetMapping("/party_list")
+    /*@GetMapping("/party_list")
     public String showGroups(Model model, HttpSession session){
         Integer currentUserId = (Integer) session.getAttribute("user");
         User user = userRepository.findById(currentUserId).get();
-        Party parties = (Party) partyRepository.findAllById(Collections.singleton(currentUserId));
+        Party party = (Party) partyRepository.findAllById(Collections.singleton(currentUserId));
 
         return "party_list";
-    }
+    }*/
 
 
 

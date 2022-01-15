@@ -1,11 +1,17 @@
 package org.launchcode.giftlist.models;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 public class Party extends AbstractSuper{
+
+    @NotBlank
+    private String name;
+
+    private String description;
 
     @ManyToOne
     private User partyOwner;
@@ -17,8 +23,10 @@ public class Party extends AbstractSuper{
     private List<WishList> memberWishLists = new ArrayList<>();
 
 
-    public Party(User partyOwner){
-        super();
+    public Party(String name, String description, User partyOwner){
+
+        this.name = name;
+        this.description = description;
         this.partyOwner = partyOwner;
     }
 
@@ -42,4 +50,19 @@ public class Party extends AbstractSuper{
         this.members = members;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 }
