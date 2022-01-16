@@ -10,7 +10,7 @@ public class Party extends AbstractSuper{
     @ManyToOne
     private User partyOwner;
 
-    @ManyToMany(mappedBy = "joinedParties")
+    @ManyToMany
     private List<User> members = new ArrayList<>();
 
     @ManyToMany

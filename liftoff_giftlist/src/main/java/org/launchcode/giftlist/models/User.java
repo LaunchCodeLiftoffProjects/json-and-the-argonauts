@@ -32,7 +32,7 @@ public class User extends AbstractSuper {
     @OneToMany(mappedBy = "partyOwner")
     private List<Party> ownedParties = new ArrayList<>();
 
-    @ManyToMany
+    @ManyToMany(mappedBy = "members")
     private List<Party> joinedParties = new ArrayList<>();
 
     private static final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();

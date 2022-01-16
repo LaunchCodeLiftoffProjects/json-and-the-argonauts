@@ -1,20 +1,20 @@
 package org.launchcode.giftlist.controllers;
 
 import org.launchcode.giftlist.models.User;
-import org.launchcode.giftlist.models.dto.LoginFormDTO;
+import org.launchcode.giftlist.models.dto.UpdateUserDetailsDTO;
 import org.launchcode.giftlist.repositories.ItemRepository;
 import org.launchcode.giftlist.repositories.PartyRepository;
 import org.launchcode.giftlist.repositories.UserRepository;
 import org.launchcode.giftlist.repositories.WishListRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.Banner;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import java.util.Optional;
+import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 
 @Controller
 public class UserController {
@@ -42,10 +42,27 @@ public class UserController {
   }
 
   @GetMapping("user_details")
-  public String displayUserInfo(@ModelAttribute User user, Model model){
-    model.addAttribute("user", userRepository.findById(user.getId()));
+  public String displayUpdateUserDetailsForm (Model model, HttpSession session) {
+    Integer currentUserId = (Integer) session.getAttribute("user");
+    User user = userRepository.findById(currentUserId).get();
+    model.addAttribute("user", user);
     return "user_details";
   }
+
+  @PostMapping("user_details")
+  public String processUpdateUserDetailsForm (@ModelAttribute @Valid UpdateUserDetailsDTO updateUserDetailsDTO,
+                                           HttpSession session) {
+    Integer currentUserId = (Integer) session.getAttribute("user");
+    User user = userRepository.findById(currentUserId).get();
+    user.setFirstName(updateUserDetailsDTO.getFirstName());
+    user.setLastName(updateUserDetailsDTO.getLastName());
+    user.setUsername(updateUserDetailsDTO.getUsername());
+    user.setEmail(updateUserDetailsDTO.getEmail());
+    userRepository.save(user);
+    return "user";
+
+  }
+
 
 
   /*@GetMapping("/login")
