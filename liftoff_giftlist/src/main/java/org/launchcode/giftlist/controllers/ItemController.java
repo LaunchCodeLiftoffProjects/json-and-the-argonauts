@@ -1,8 +1,10 @@
 package org.launchcode.giftlist.controllers;
 
 import org.launchcode.giftlist.models.Item;
+import org.launchcode.giftlist.models.User;
 import org.launchcode.giftlist.models.WishList;
 import org.launchcode.giftlist.repositories.ItemRepository;
+import org.launchcode.giftlist.repositories.UserRepository;
 import org.launchcode.giftlist.repositories.WishListRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -24,10 +26,15 @@ public class ItemController {
     @Autowired
     WishListRepository wishListRepository;
 
+    @Autowired
+    UserRepository userRepository;
+
     @GetMapping("/additem")
-    public String displayAddItemForm(Model model) {
+    public String displayAddItemForm(Model model, HttpSession session) {
         model.addAttribute(new Item());
-        List<WishList> wishlists = (List<WishList>) wishListRepository.findAll();
+        Integer currentUserId = (Integer) session.getAttribute("user");
+        User user = userRepository.findById(currentUserId).get();
+        List<WishList> wishlists =  wishListRepository.findByOwner(user);
         model.addAttribute("wishlists", wishlists);
         return "additem";
     }
