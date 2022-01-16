@@ -81,7 +81,13 @@ public class AuthenticationController {
                 registerFormDTO.getPassword());
         userRepository.save(newUser);
         setUserInSession(request.getSession(), newUser);
-
+        String firstName = newUser.getFirstName();
+        String lastName = newUser.getLastName();
+        String email = newUser.getEmail();
+        model.addAttribute("username", registerFormDTO.getUsername());
+        model.addAttribute("firstName", firstName);
+        model.addAttribute("lastName", lastName);
+        model.addAttribute("email", email);
         return "user";
     }
 

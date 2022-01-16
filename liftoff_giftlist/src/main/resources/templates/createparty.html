@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head th:replace="fragments :: head"></head>
+<body>
+<nav th:replace="fragments :: nav-header"></nav>
+
+<div>
+    <form class="mb-3" method="post">
+        <label th:for="name" class="form-label">Group Name</label>
+        <input
+                type="text"
+                id="name"
+                class="form-control"
+                th:field="${party.name}"
+        />
+        <p class="error" th:errors="${party.name}"></p>
+        <label th:for="description" class="form-label">Group Description</label>
+        <input
+                type="text"
+                id="description"
+                class="form-control"
+                th:field="${party.description}"
+        />
+        <input
+                type="submit"
+                class="btn btn-warning btn-lg"
+                value="Create Group"
+        />
+    </form>
+</div>
+
+<script th:replace="fragments :: js"></script>
+</body>
+</html>
