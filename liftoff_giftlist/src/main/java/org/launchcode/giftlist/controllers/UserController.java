@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import javax.servlet.http.HttpSession;
 import java.util.Optional;
 
 @Controller
@@ -45,6 +46,13 @@ public class UserController {
   public String displayUserInfo(@ModelAttribute User user, Model model){
     model.addAttribute("user", userRepository.findById(user.getId()));
     return "user_details";
+  }
+
+  @GetMapping("user")
+  public String renderUserHomePage(Model model, HttpSession session){
+    Integer currentUserId = (Integer) session.getAttribute("user");
+    model.addAttribute("user", userRepository.findById(currentUserId).get());
+    return "user";
   }
 
 

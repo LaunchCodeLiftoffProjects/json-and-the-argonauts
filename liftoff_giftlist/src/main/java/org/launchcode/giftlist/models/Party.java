@@ -16,7 +16,7 @@ public class Party extends AbstractSuper{
     @ManyToOne
     private User partyOwner;
 
-    @ManyToMany(mappedBy = "joinedParties")
+    @ManyToMany
     private List<User> members = new ArrayList<>();
 
     @ManyToMany
@@ -24,7 +24,6 @@ public class Party extends AbstractSuper{
 
 
     public Party(String name, String description, User partyOwner){
-
         this.name = name;
         this.description = description;
         this.partyOwner = partyOwner;
@@ -65,4 +64,10 @@ public class Party extends AbstractSuper{
     public void setDescription(String description) {
         this.description = description;
     }
+
+    public void addMember(User user){
+        this.members.add(user);
+    }
+
+
 }

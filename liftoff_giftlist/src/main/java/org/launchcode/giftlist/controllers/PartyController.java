@@ -7,6 +7,7 @@ import org.launchcode.giftlist.repositories.PartyRepository;
 import org.launchcode.giftlist.repositories.UserRepository;
 import org.launchcode.giftlist.repositories.WishListRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,6 +18,7 @@ import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.Collections;
 
+@Controller
 public class PartyController {
 
     @Autowired
@@ -40,6 +42,7 @@ public class PartyController {
         }
         Integer currentUserId = (Integer) session.getAttribute("user");
         party.setPartyOwner(userRepository.findById(currentUserId).get());
+        party.addMember(userRepository.findById(currentUserId).get());
         partyRepository.save(party);
         return "party_list";
     }
@@ -49,7 +52,8 @@ public class PartyController {
         Integer currentUserId = (Integer) session.getAttribute("user");
         User user = userRepository.findById(currentUserId).get();
         Party party = (Party) partyRepository.findAllById(Collections.singleton(currentUserId));
-
+        model.addAttribute("party", party);
+        model.addAttribute("user", user);
         return "party_list";
     }*/
 
