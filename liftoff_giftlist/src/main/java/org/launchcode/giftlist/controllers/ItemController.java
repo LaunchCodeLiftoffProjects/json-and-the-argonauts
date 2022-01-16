@@ -34,7 +34,7 @@ public class ItemController {
         model.addAttribute(new Item());
         Integer currentUserId = (Integer) session.getAttribute("user");
         User user = userRepository.findById(currentUserId).get();
-        List<WishList> wishlists =  wishListRepository.findByOwner(user);
+        List<WishList> wishlists =  wishListRepository.findAllBylistOwner(user);
         model.addAttribute("wishlists", wishlists);
         return "additem";
     }

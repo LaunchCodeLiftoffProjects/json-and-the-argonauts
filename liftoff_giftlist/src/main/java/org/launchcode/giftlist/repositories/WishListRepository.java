@@ -10,6 +10,5 @@ import java.util.List;
 
 @Repository
 public interface WishListRepository extends CrudRepository<WishList, Integer> {
-    @Query(value = "SELECT * FROM wish_list WHERE list_owner_id = :user", nativeQuery = true)
-    List<WishList> findByOwner(User user);
+    List<WishList> findAllBylistOwner(User user);
 }
