@@ -62,14 +62,14 @@ public class AuthenticationController {
         User existingUser = userRepository.findByUsername(registerFormDTO.getUsername());
 
         if (existingUser != null) {
-            errors.rejectValue("username", "username.alreadyexists", "A user with that username already exists");
+            errors.rejectValue("username", "username.alreadyexists", "username already exists");
             return "register";
         }
 
         String password = registerFormDTO.getPassword();
         String verifyPassword = registerFormDTO.getVerifyPassword();
         if (!password.equals(verifyPassword)) {
-            errors.rejectValue("password", "passwords.mismatch", "Passwords do not match");
+            errors.rejectValue("password", "passwords.mismatch", "passwords do not match");
             return "register";
         }
 
@@ -111,7 +111,7 @@ public class AuthenticationController {
         User theUser = userRepository.findByUsername(loginFormDTO.getUsername());
 
         if (theUser == null) {
-            errors.rejectValue("username", "user.invalid", "The given username does not exist");
+            errors.rejectValue("username", "user.invalid", "Username does not exist");
             model.addAttribute("title", "Log In");
             return "login";
         }

@@ -10,7 +10,7 @@
     <h2 class="py-3 my-2 text-center">Create New Account</h2>
     <div class="col col-md-9 col-lg-6 my-2 pt-3 rounded shadow border">
       <form class="mb-3" method="post">
-        <div class="row justify-content-around align-items-center">
+        <div class="row justify-content-around">
           <!-- Column 1 -->
           <div class="col">
             <div>
@@ -23,7 +23,7 @@
                   id="firstName"
                   th:field="${registerFormDTO.firstName}"
               />
-              <p></p>
+              <div class="error" th:errors="${registerFormDTO.firstName}"></div>
             </div>
             <div>
               <label th:for="lastName" class="form-label">Last Name</label>
@@ -33,9 +33,9 @@
                   id="lastName"
                   th:field="${registerFormDTO.lastName}"
               />
-              <p></p>
+              <div class="error" th:errors="${registerFormDTO.lastName}"></div>
             </div>
-            <div class="mb-3">
+            <div>
               <label th:for="email" class="form-label">Email</label>
               <input
                   type="email"
@@ -43,7 +43,7 @@
                   id="email"
                   th:field="${registerFormDTO.email}"
               />
-              <p></p>
+              <div class="error" th:errors="${registerFormDTO.email}"></div>
             </div>
           </div>
 
@@ -57,8 +57,7 @@
                   id="username"
                   th:field="${registerFormDTO.username}"
               />
-              <p class="error" th:errors="${registerFormDTO.username}"></p>
-              <p></p>
+              <div class="error" th:errors="${registerFormDTO.username}"></div>
             </div>
             <div>
               <label th:for="password" class="form-label">Password</label>
@@ -68,9 +67,9 @@
                   id="password"
                   th:field="${registerFormDTO.password}"
               />
-              <p class="error" th:errors="${registerFormDTO.password}"></p>
+              <div class="error" th:errors="${registerFormDTO.password}"></div>
             </div>
-            <div class="mb-3">
+            <div>
               <label th:for="verify" class="form-label"
               >Verify Password</label
               >
@@ -80,7 +79,7 @@
                   id="verify"
                   th:field="${registerFormDTO.verifyPassword}"
               />
-              <p></p>
+              <div class="error" th:errors="${registerFormDTO.verifyPassword}"></div>
             </div>
           </div>
         </div>
