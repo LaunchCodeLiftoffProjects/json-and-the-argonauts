@@ -104,23 +104,20 @@ public class AuthenticationController {
                                    Model model) {
 
         if (errors.hasErrors()) {
-            model.addAttribute("title", "Log In");
             return "login";
         }
 
         User theUser = userRepository.findByUsername(loginFormDTO.getUsername());
 
         if (theUser == null) {
-            errors.rejectValue("username", "user.invalid", "Username does not exist");
-            model.addAttribute("title", "Log In");
+            errors.rejectValue("username", "user.invalid", "username does not exist");
             return "login";
         }
 
         String password = loginFormDTO.getPassword();
 
         if (!theUser.isMatchingPassword(password)) {
-            errors.rejectValue("password", "password.invalid", "Invalid password");
-            model.addAttribute("title", "Log In");
+            errors.rejectValue("password", "password.invalid", "invalid password");
             return "login";
         }
 

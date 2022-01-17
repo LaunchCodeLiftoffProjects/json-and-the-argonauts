@@ -1,43 +1,47 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org/">
 <head th:replace="fragments :: head"></head>
-<body class="container">
+<body>
 
-<header th:replace="fragments :: nav-header"></header>
+<nav th:replace="fragments :: nav-header"></nav>
 
 <div class="container p-3 my-3">
-    <div class="row justify-content-around align-items-center">
-        <div class="col-8 col-lg-4 my-2 rounded shadow border">
-            <h2 class="py-3 text-center">Log in</h2>
-                <form method="post">
-                    <div class="form-group">
-                        <label th:for="username">Username
-                            <input class="form-control" th:field="${loginFormDTO.username}">
-                        </label>
-                        <p class="error" th:errors="${loginFormDTO.username}"></p>
-                    </div>
-                    <div class="form-group">
-                        <label>Password
-                            <input class="form-control" th:field="${loginFormDTO.password}" type="password">
-                        </label>
-                            <p class="error" th:errors="${loginFormDTO.password}"></p>
-                    </div>
+    <div class="row justify-content-center align-items-center">
+        <h2 class="py-3 my-2 text-center">Log Into Your Account</h2>
+        <div class="col-6 col-lg-4 my-2 pt-3 rounded shadow border">
+            <form method="post">
+                <div>
+                    <label th:for="username" class="form-label">Username</label>
+                    <input
+                        class="form-control"
+                        id="username"
+                        th:field="${loginFormDTO.username}"
+                    />
+                    <p class="error" th:errors="${loginFormDTO.username}"></p>
+                </div>
+                <div>
+                    <label th:for="password" class="form-label">Password</label>
+                    <input
+                        class="form-control"
+                        id="password"
+                        th:field="${loginFormDTO.password}"
+                        type="password"
+                    />
+                    <p class="error" th:errors="${loginFormDTO.password}"></p>
+                </div>
 
-                    <div class="text-center">
-                        <p>
-
-
-                        </p>
-                    <input type="submit" class="btn btn-primary" value="Log in"/>
-                    </div>
-                </form>
-            <p>
-
-
-
-
+                <div class="text-center pt-3">
+                    <input
+                        type="submit"
+                        class="btn btn-warning btn-lg"
+                        value="Log In"
+                    />
+                </div>
+            </form>
+            <p></p>
+            <p class="text-center">
+                Don't have an account? <a href="/register">Register for one!</a>
             </p>
-<p class="text-center">Don't have an account? <a href="/register">Register for one!</a></p>
         </div>
     </div>
 </div>
