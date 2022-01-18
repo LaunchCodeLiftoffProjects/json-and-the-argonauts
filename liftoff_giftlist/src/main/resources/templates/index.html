@@ -3,20 +3,138 @@
 <head th:replace="fragments :: head"></head>
 <body>
 
+<!-- Welcome Page Navbar -->
+<nav class="navbar navbar-expand-md navbar-light">
+  <div class="container-xxl">
+    <a href="/index" class="navbar-brand">
+          <span
+              class="fw-bold fst-italic"
+              style="font-size: 1.7em; color: rgb(48, 168, 48)"
+          >Giftopedia</span
+          >
+    </a>
+    <!-- Toggle button for mobile-friendly nav drop-down -->
+    <button
+        class="navbar-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#main-nav"
+        aria-controls="main-nav"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div
+        class="collapse navbar-collapse justify-content-end align-center"
+        id="main-nav"
+    >
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a
+              href="https://www.google.com/search?q=gift+giving+ideas"
+              target="_blank"
+              class="nav-link fw-bold"
+          >Gift Ideas</a
+          >
+        </li>
+        <li class="nav-item">
+          <a
+              href="https://www.google.com/search?q=upcoming+holidays"
+              target="_blank"
+              class="nav-link fw-bold"
+          >Upcoming Holidays</a
+          >
+        </li>
+        <li class="nav-item d-md-none">
+          <a
+              href="https://github.com/LaunchCodeLiftoffProjects/json-and-the-argonauts"
+              target="_blank"
+              class="nav-link fw-bold"
+          >About</a
+          >
+        </li>
+        <li class="nav-item ms-2 d-none d-md-inline">
+          <a
+              href="https://github.com/LaunchCodeLiftoffProjects/json-and-the-argonauts"
+              target="_blank"
+              class="btn btn-secondary"
+          >About</a
+          >
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
 <!-- Main Content -->
-<div class="container display-5 text-center fw-bold py-3" style="color: green">
-  Welcome to the Ultimate Gift & Wish List Tracker
-</div>
 <section>
-  <div class="container-md bg-info rounded px-5 pt-3 pb-3 mt-3 mb-2 shadow border" id="main">
+  <div
+      class="container-lg bg-info rounded px-5 pt-3 pb-3 mt-1 mb-2 shadow border"
+      id="main"
+  >
     <div class="row justify-content-around align-items-center">
       <!-- Beginning of left side -->
       <div class="col-md-5 my-2">
+        <div class="h2 text-center">
+          Welcome to
+          <em class="h1" style="color: rgb(204, 41, 41)">Giftopedia</em>.
+          <br />
+          <p class="lead mt-3" style="font-size: 1.6rem">
+            Let us be your ultimate gift-giving and personal wish list
+            tracker.
+          </p>
+        </div>
+        <!-- #1: Sign Up Card -->
+        <div class="row justify-content-center">
+          <div class="col my-3">
+            <div class="card shadow">
+              <div class="card-body py-4 text-center">
+                <h4 class="card-title">Join for FREE</h4>
+                <hr />
+                <p class="card-text">
+                  Click here to create your new account.
+                </p>
+                <a href="/register" class="btn btn-warning"
+                >Sign Up</a
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="text-center fw-bold">OR</div>
+        <!-- #2: Log In Card -->
+        <div class="row justify-content-center">
+          <div class="col my-3">
+            <div class="card shadow">
+              <div class="card-body py-4 text-center">
+                <h4 class="card-title">Welcome back!</h4>
+                <hr />
+                <p class="card-text">Sign in to your existing account.</p>
+                <a href="/login" class="btn btn-warning">Log in</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- end of final row on right side -->
+      </div>
+      <!-- end of left side -->
+
+      <!-- Beginning of right side -->
+      <div class="col-md-5 my-2">
         <!-- Gift image -->
         <div class="row justify-content-center">
-          <img th:src="@{/images/gift-unsplash-joshua-lam.jpg}" alt="Wrapped gift being given to another person" class="img-fluid">
+          <img
+              th:src="@{/images/gift-unsplash-joshua-lam.jpg}"
+              src="assets/gift-unsplash joshua-lam.jpg"
+              alt="Wrapped gift being given to another person"
+              class="img-fluid"
+          />
         </div>
-        <div class="container mt-3 p-2 shadow bg-light" style="border-radius: 15px;">
+        <div
+            class="container mt-3 p-2 shadow bg-light"
+            style="border-radius: 15px"
+        >
           <p class="lead my-3 mb-4 ps-3">
             Keep track of the gifts you want <em>and</em> the gifts you give
             <span class="text-decoration-underline">all in one place</span>!
@@ -32,36 +150,6 @@
             </li>
           </ul>
         </div>
-      </div>
-
-      <!-- Beginning of right side -->
-      <div class="col-md-5 my-2">
-
-        <!-- Sign Up Card -->
-        <div class="row justify-content-center">
-          <div class="col my-3">
-            <div class="card shadow">
-              <div class="card-body py-4 text-center">
-                <h4 class="card-title">Join for FREE</h4><hr>
-                <p class="card-text">Create your new account.</p>
-                <a href="/register" class="btn btn-warning btn-lg">Join</a>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="text-center fw-bold">OR</div>
-        <!-- Log In Card -->
-        <div class="row justify-content-center">
-          <div class="col my-3">
-            <div class="card shadow">
-              <div class="card-body py-4 text-center">
-                <h4 class="card-title">Log In</h4><hr>
-                <br>
-                <a href="/login" class="btn btn-warning btn-lg">Log in</a>
-              </div>
-            </div>
-          </div>
-        </div>  <!-- end of final row on right side -->
       </div>
       <!-- end of right side -->
     </div>
