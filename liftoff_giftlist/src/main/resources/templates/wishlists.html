@@ -1,14 +1,20 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org/">
-<head>
-    <meta charset="UTF-8"/>
-    <title></title>
-</head>
+<head th:replace="fragments :: head"></head>
 <body>
-
-
-<p>Wow! So many WishLists!</p>
-
-
+<nav th:replace="fragments :: nav-header"></nav>
+<div>
+    <table class="table">
+        <tr>
+            <th>Name</th>
+            <th>Description</th>
+        </tr>
+        <tr th:each="wishlist : ${wishlists}">
+            <td th:text="${wishlist.getName()}"></td>
+            <td th:text="${wishlist.getDescription()}"></td>
+            <td><a th:href="@{/wishlists/{id}(id=${wishlist.getId()})}">Edit</a></td>
+        </tr>
+    </table>
+</div>
 </body>
 </html>

@@ -28,11 +28,15 @@ public class UserController {
   @Autowired
   WishListRepository wishListRepository;
 
-
   @GetMapping("wishlists")
-  public String displayWishLists(Model model){
+  public String displayWishLists(Model model) {
 
     return "wishlists";
+  }
+  @GetMapping("party_list")
+  public String displayGroupList(Model model){
+
+   return "party_list";
   }
 
   @GetMapping("user_details")
