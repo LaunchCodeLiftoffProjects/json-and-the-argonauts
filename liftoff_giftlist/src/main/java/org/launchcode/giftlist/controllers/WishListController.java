@@ -9,10 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -42,13 +39,30 @@ public class WishListController {
             return "createlist";
         }
         Integer currentUserId = (Integer) session.getAttribute("user");
-        wishList.setListOwner(userRepository.findById(currentUserId).get());
+        User user = userRepository.findById(currentUserId).get();
+        wishList.setListOwner(user);
         wishListRepository.save(wishList);
-        return "user";
+        List<WishList> wishlists = wishListRepository.findAllBylistOwner(user);
+        model.addAttribute("wishlists", wishlists);
+        return "wishlists";
     }
 
     @GetMapping("wishlists")
     public String displayWishLists(Model model, HttpSession session){
+        Integer currentUserId = (Integer) session.getAttribute("user");
+        User user = userRepository.findById(currentUserId).get();
+        List<WishList> wishlists =  wishListRepository.findAllBylistOwner(user);
+        model.addAttribute("wishlists", wishlists);
+        return "wishlists";
+    }
+
+    @PostMapping("wishlists")
+    public String deleteWishLists(@RequestParam("wishlistid") List<String> ids, Model model, HttpSession session) {
+        if (ids != null) {
+            for (String id : ids) {
+                wishListRepository.deleteById(Integer.parseInt(id));
+            }
+        }
         Integer currentUserId = (Integer) session.getAttribute("user");
         User user = userRepository.findById(currentUserId).get();
         List<WishList> wishlists =  wishListRepository.findAllBylistOwner(user);

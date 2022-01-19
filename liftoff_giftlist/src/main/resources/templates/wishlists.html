@@ -4,17 +4,26 @@
 <body>
 <nav th:replace="fragments :: nav-header"></nav>
 <div>
+    <form class="mb-3" method="post">
     <table class="table">
         <tr>
+            <th>Select</th>
             <th>Name</th>
             <th>Description</th>
+            <th>Operation</th>
         </tr>
         <tr th:each="wishlist : ${wishlists}">
+            <td><input type="checkbox" th:name="wishlistid" th:value="${wishlist.getId()}"</td>
             <td th:text="${wishlist.getName()}"></td>
             <td th:text="${wishlist.getDescription()}"></td>
             <td><a th:href="@{/wishlists/{id}(id=${wishlist.getId()})}">Edit</a></td>
         </tr>
     </table>
+        <input type="submit"
+               class="btn btn-danger"
+               value="Delete Selected Wish Lists" />
+    </form>
 </div>
+<a th:href="@{/createlist}">Create New Wish List</a>
 </body>
 </html>
