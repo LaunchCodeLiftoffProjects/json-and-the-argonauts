@@ -1,8 +1,10 @@
 package org.launchcode.giftlist.controllers;
 
+import org.launchcode.giftlist.models.Item;
 import org.launchcode.giftlist.models.User;
 import org.launchcode.giftlist.models.WishList;
 import org.launchcode.giftlist.models.dto.UpdateWishListDetailsDTO;
+import org.launchcode.giftlist.repositories.ItemRepository;
 import org.launchcode.giftlist.repositories.UserRepository;
 import org.launchcode.giftlist.repositories.WishListRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -25,6 +28,9 @@ public class WishListController {
 
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    ItemRepository itemRepository;
 
     @GetMapping("/createlist")
     public String displayCreateListForm(Model model) {
@@ -44,7 +50,7 @@ public class WishListController {
         wishListRepository.save(wishList);
         List<WishList> wishlists = wishListRepository.findAllBylistOwner(user);
         model.addAttribute("wishlists", wishlists);
-        return "wishlists";
+        return "redirect:wishlists";
     }
 
     @GetMapping("wishlists")
@@ -57,7 +63,7 @@ public class WishListController {
     }
 
     @PostMapping("wishlists")
-    public String deleteWishLists(@RequestParam("wishlistid") List<String> ids, Model model, HttpSession session) {
+    public String deleteWishLists(@RequestParam(value = "wishlistid", required = false) List<String> ids, Model model, HttpSession session) {
         if (ids != null) {
             for (String id : ids) {
                 wishListRepository.deleteById(Integer.parseInt(id));
@@ -67,7 +73,7 @@ public class WishListController {
         User user = userRepository.findById(currentUserId).get();
         List<WishList> wishlists =  wishListRepository.findAllBylistOwner(user);
         model.addAttribute("wishlists", wishlists);
-        return "wishlists";
+        return "redirect:wishlists";
     }
 
     @GetMapping("wishlists/{id}")
@@ -84,6 +90,29 @@ public class WishListController {
         wishList.setDescription(updateWishListDetailsDTO.getDescription());
         wishListRepository.save(wishList);
         return "redirect:";
+    }
+
+    @GetMapping("wishlists/{id}/items")
+    public String displayListItems(Model model, @PathVariable String id) {
+        WishList wishList = wishListRepository.findById(Integer.parseInt(id)).get();
+        List<Item> items = itemRepository.findAllBywishList(wishList);
+        model.addAttribute("wishList", wishList);
+        model.addAttribute("items", items);
+        return "list_items";
+    }
+
+    @PostMapping("wishlists/{id}/items")
+    public RedirectView deleteListItems(@RequestParam(value = "itemid", required = false) List<String> itemIds, @PathVariable String id, Model model) {
+        if (itemIds != null) {
+            for (String itemId : itemIds) {
+                itemRepository.deleteById(Integer.parseInt(itemId));
+            }
+        }
+        WishList wishList = wishListRepository.findById(Integer.parseInt(id)).get();
+        List<Item> items = itemRepository.findAllBywishList(wishList);
+        model.addAttribute("wishList", wishList);
+        model.addAttribute("items", items);
+        return new RedirectView("/wishlists/" + id + "/items");
     }
 
 
