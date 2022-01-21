@@ -35,12 +35,6 @@ public class UserController {
    return "party_list";
   }
 
-  @GetMapping("wishlists")
-  public String displayWishLists(Model model){
-
-    return "wishlists";
-  }
-
   @GetMapping("user_details")
   public String displayUpdateUserDetailsForm (Model model, HttpSession session) {
     Integer currentUserId = (Integer) session.getAttribute("user");
