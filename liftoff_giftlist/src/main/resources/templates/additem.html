@@ -5,15 +5,8 @@
 <nav th:replace="fragments :: nav-header"></nav>
 
 <div>
+    <p th:text="${'Add item to list: ' + wishList.getName()}"></p>
     <form class="mb-3" method="post">
-        <label th:for="listChoice" class="form-label">Add item to: </label>
-        <select name="wishList">
-            <option th:each="wishlist : ${wishlists}"
-                    th:value="${wishlist.getId()}"
-                    th:text="${wishlist.getName()}">
-            </option>
-        </select>
-        <br>
     <label th:for="itemName" class="form-label">Item Name</label>
         <input type="text"
                id="itemName"
