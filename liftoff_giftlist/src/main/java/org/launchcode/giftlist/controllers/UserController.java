@@ -29,12 +29,6 @@ public class UserController {
   WishListRepository wishListRepository;
 
 
-  @GetMapping("party_list")
-  public String displayGroupList(Model model){
-
-   return "party_list";
-  }
-
   @GetMapping("wishlists")
   public String displayWishLists(Model model){
 

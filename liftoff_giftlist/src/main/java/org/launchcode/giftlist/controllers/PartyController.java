@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.servlet.http.HttpSession;
@@ -29,6 +30,26 @@ public class PartyController {
     WishListRepository wishListRepository;
     @Autowired
     UserRepository userRepository;
+
+    @GetMapping("/party_list")
+    public String showGroups(Model model, HttpSession session){
+        Integer currentUserId = (Integer) session.getAttribute("user");
+        User user = userRepository.findById(currentUserId).get();
+        List<Party> parties = partyRepository.findAllByPartyOwner(user);
+        model.addAttribute("parties", parties);
+        model.addAttribute("user", user);
+        return "party_list";
+    }
+
+    @PostMapping("/party_list")
+    public String showGroupsAgain(Model model, HttpSession session){
+        Integer currentUserId = (Integer) session.getAttribute("user");
+        User user = userRepository.findById(currentUserId).get();
+        List<Party> parties = partyRepository.findAllByPartyOwner(user);
+        model.addAttribute("parties", parties);
+        model.addAttribute("user", user);
+        return "party_list";
+    }
 
     @GetMapping("/createparty")
     public String displayCreatePartyForm(Model model){
@@ -49,41 +70,54 @@ public class PartyController {
         return "party_list";
     }
 
-    //find how to dynamically change URL based on specific group the user has clicked ${specific group id}
-    @GetMapping("/party_list_add_member")
-    public String renderAddToGroupForm(Model model, HttpSession session, Party party){
+    @GetMapping("/party_list/${groupId}")
+    public String showSpecificPartyWithMembersAndAllWishlists(Model model, @PathVariable String groupId, HttpSession session){
+        Party party = partyRepository.findById(Integer.parseInt(groupId)).get();
+        model.addAttribute("party", party);
+        List<User> members = party.getMembers();
+        model.addAttribute("members", members);
+        return "party_list/${groupId}";
+    }
+
+    @GetMapping("/party_list/${groupId}/add_member")
+    public String renderAddToGroupForm(Model model, HttpSession session, @PathVariable String groupId, String username){
         Integer currentUserId = (Integer) session.getAttribute("user");
+        User partyOwner = userRepository.findById(currentUserId).get();
+        List<Party> parties = partyRepository.findAllByPartyOwner(partyOwner);
+        model.addAttribute("parties", parties);
+        Party party = partyRepository.findById(Integer.parseInt(groupId)).get();
+        model.addAttribute("party", party);
+        model.addAttribute("username", username);
+
+
+
+        /*Integer currentUserId = (Integer) session.getAttribute("user");
         userRepository.findById(currentUserId);
         partyRepository.findAllById(Collections.singleton(currentUserId));
         User user = userRepository.findById(currentUserId).get();
         List<User> members = party.getMembers();
         List<Party> parties =  partyRepository.findAllByPartyOwner(user);
         model.addAttribute("members", members);
-        model.addAttribute("party", partyRepository.findById(currentUserId));
-        return "party_list_add_member";
+        model.addAttribute("party", partyRepository.findById(currentUserId));*/
+        return "add_member";
     }
 
-    @PostMapping("/party_list_add_member")
-    public String processAddToGroupForm(Model model, @ModelAttribute Party party, String username){
+    @PostMapping("/party_list/${groupId}/add_member")
+    public String processAddToGroupForm(Model model, @ModelAttribute @Valid User user, HttpSession session, @PathVariable String groupId, Errors errors, String username){
+        if (errors.hasErrors()) {
+            Party party = partyRepository.findById(Integer.parseInt(groupId)).get();
+            model.addAttribute("party", party);
+            model.addAttribute("user", user);
+            model.addAttribute("members", party.getMembers());
+            return "add_member";
+        }
+        Party party = partyRepository.findById(Integer.parseInt(groupId)).get();
         User userToAdd = userRepository.findByUsername(username);
         party.addMember(userToAdd);
-        return "party_list";
-    }
-
-
-
-
-    /*@GetMapping("/party_list")
-    public String showGroups(Model model, HttpSession session){
-        Integer currentUserId = (Integer) session.getAttribute("user");
-        User user = userRepository.findById(currentUserId).get();
-        Party party = (Party) partyRepository.findAllById(Collections.singleton(currentUserId));
+        partyRepository.save(party);
+        model.addAttribute("members", party.getMembers());
         model.addAttribute("party", party);
-        model.addAttribute("user", user);
-        return "party_list";
-    }*/
-
-
-
+        return "add_member";
+    }
 
 }

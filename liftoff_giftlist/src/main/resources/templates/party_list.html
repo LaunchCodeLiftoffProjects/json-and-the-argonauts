@@ -1,13 +1,18 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org/">
-<head>
-    <meta charset="UTF-8"/>
-    <title></title>
-</head>
+<head th:replace="fragments :: head"></head>
 <body>
 
+<div>
+    <table th:each="party: ${parties}"> Groups
+        <tr th:text="${party.name}">
+            <td th:text="${party.description}"/>
+        </tr>
+    </table>
 
-<p>Feast your eyes on all these groups you're in</p>
+</div>
+
+
 
 <div class="text-center">
     <form action="/createparty", method="get">
