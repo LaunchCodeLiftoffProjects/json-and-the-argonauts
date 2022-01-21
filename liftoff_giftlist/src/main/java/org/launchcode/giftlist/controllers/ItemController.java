@@ -33,28 +33,30 @@ public class ItemController {
     @Autowired
     UserRepository userRepository;
 
-    @GetMapping("/additem")
-    public String displayAddItemForm(Model model, HttpSession session) {
+    @GetMapping("/wishlists/{id}/additem")
+    public String displayAddItemForm(Model model, HttpSession session, @PathVariable String id) {
         model.addAttribute(new Item());
-        Integer currentUserId = (Integer) session.getAttribute("user");
-        User user = userRepository.findById(currentUserId).get();
-        List<WishList> wishlists =  wishListRepository.findAllBylistOwner(user);
-        model.addAttribute("wishlists", wishlists);
+        WishList wishList = wishListRepository.findById(Integer.parseInt(id)).get();
+        model.addAttribute("wishList", wishList);
         return "additem";
     }
 
-    @PostMapping("/additem")
+    @PostMapping("/wishlists/{id}/additem")
     public String processAddItemForm(@ModelAttribute @Valid Item item, Errors errors,
-                                        Model model, HttpSession session) {
+                                        Model model, HttpSession session, @PathVariable String id) {
         if (errors.hasErrors()) {
+            model.addAttribute(new Item());
+            WishList wishList = wishListRepository.findById(Integer.parseInt(id)).get();
+            model.addAttribute("wishList", wishList);
             return "additem";
         }
+        item.setWishList(wishListRepository.findById(Integer.parseInt(id)).get());
         itemRepository.save(item);
         Integer currentUserId = (Integer) session.getAttribute("user");
         User user = userRepository.findById(currentUserId).get();
         List<WishList> wishlists =  wishListRepository.findAllBylistOwner(user);
         model.addAttribute("wishlists", wishlists);
-        return "redirect:wishlists";
+        return "wishlists";
     }
 
     @GetMapping("wishlists/{listid}/items/edit/{itemid}")
@@ -67,7 +69,8 @@ public class ItemController {
     }
 
     @PostMapping("wishlists/{listid}/items/edit/{itemid}")
-    public RedirectView processEditItemForm(@PathVariable String listid, @PathVariable String itemid, @Valid @ModelAttribute UpdateItemDetailsDTO updateItemDetailsDTO) {
+    public RedirectView processEditItemForm(@PathVariable String listid, @PathVariable String itemid,
+                                            @Valid @ModelAttribute UpdateItemDetailsDTO updateItemDetailsDTO) {
         Item item = itemRepository.findById(Integer.parseInt(itemid)).get();
         item.setName(updateItemDetailsDTO.getName());
         item.setDescription(updateItemDetailsDTO.getDescription());
