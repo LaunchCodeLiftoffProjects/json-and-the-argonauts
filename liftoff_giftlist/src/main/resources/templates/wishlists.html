@@ -18,7 +18,7 @@
             <td th:text="${wishlist.getDescription()}"></td>
             <td><a th:href="@{/wishlists/{id}(id=${wishlist.getId()})}">Edit</a></td>
             <td><a th:href="@{/wishlists/{id}/items(id=${wishlist.getId()})}">View Items</a></td>
-            <td><a th:href="@{/additem}">Add Item</a></td>
+            <td><a th:href="@{/wishlists/{id}/additem(id=${wishlist.getId()})}">Add Item</a></td>
         </tr>
     </table>
         <input type="submit"
