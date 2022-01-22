@@ -3,6 +3,8 @@ package org.launchcode.giftlist.controllers;
 import org.launchcode.giftlist.models.Party;
 import org.launchcode.giftlist.models.User;
 import org.launchcode.giftlist.models.WishList;
+import org.launchcode.giftlist.models.dto.UpdatePartyDetailsDTO;
+import org.launchcode.giftlist.models.dto.UpdateWishListDetailsDTO;
 import org.launchcode.giftlist.repositories.PartyRepository;
 import org.launchcode.giftlist.repositories.UserRepository;
 import org.launchcode.giftlist.repositories.WishListRepository;
@@ -78,6 +80,15 @@ public class PartyController {
         List<User> members = party.getMembers();
         model.addAttribute("members", members);
         return "party_details";
+    }
+
+    @PostMapping("/party_list/{groupId}")
+    public String processEditPartyForm(@PathVariable String groupId, @Valid @ModelAttribute UpdatePartyDetailsDTO updatePartyDetailsDTO) {
+        Party party = partyRepository.findById(Integer.parseInt(groupId)).get();
+        party.setName(updatePartyDetailsDTO.getName());
+        party.setDescription(updatePartyDetailsDTO.getDescription());
+        partyRepository.save(party);
+        return "redirect:";
     }
 
     @GetMapping("/party_list/{groupId}/add_member")
