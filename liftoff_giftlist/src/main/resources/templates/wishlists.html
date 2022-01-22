@@ -13,7 +13,7 @@
             <th colspan="3" style="text-align: center">Operation</th>
         </tr>
         <tr th:each="wishlist : ${wishlists}">
-            <td><input type="checkbox" th:name="wishlistid" th:value="${wishlist.getId()}"</td>
+            <td><input type="checkbox" th:name="wishlistid" th:value="${wishlist.getId()}"></td>
             <td th:text="${wishlist.getName()}"></td>
             <td th:text="${wishlist.getDescription()}"></td>
             <td><a th:href="@{/wishlists/{id}(id=${wishlist.getId()})}">Edit</a></td>

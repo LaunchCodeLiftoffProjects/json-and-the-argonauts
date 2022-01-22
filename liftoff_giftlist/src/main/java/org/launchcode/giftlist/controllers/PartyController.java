@@ -10,10 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -32,7 +29,7 @@ public class PartyController {
     UserRepository userRepository;
 
     @GetMapping("/party_list")
-    public String showGroups(Model model, HttpSession session){
+    public String showAllGroups(Model model, HttpSession session){
         Integer currentUserId = (Integer) session.getAttribute("user");
         User user = userRepository.findById(currentUserId).get();
         List<Party> parties = partyRepository.findAllByPartyOwner(user);
@@ -42,13 +39,17 @@ public class PartyController {
     }
 
     @PostMapping("/party_list")
-    public String showGroupsAgain(Model model, HttpSession session){
+    public String deleteGroup(@RequestParam(value = "groupId", required = false) List<String> groupIds, Model model, HttpSession session) {
+        if (groupIds != null) {
+            for (String groupId : groupIds) {
+                partyRepository.deleteById(Integer.parseInt(groupId));
+            }
+        }
         Integer currentUserId = (Integer) session.getAttribute("user");
         User user = userRepository.findById(currentUserId).get();
-        List<Party> parties = partyRepository.findAllByPartyOwner(user);
+        List<Party> parties =  partyRepository.findAllByPartyOwner(user);
         model.addAttribute("parties", parties);
-        model.addAttribute("user", user);
-        return "party_list";
+        return "redirect:party_list";
     }
 
     @GetMapping("/createparty")
@@ -70,16 +71,16 @@ public class PartyController {
         return "party_list";
     }
 
-    @GetMapping("/party_list/${groupId}")
+    @GetMapping("/party_list/{groupId}")
     public String showSpecificPartyWithMembersAndAllWishlists(Model model, @PathVariable String groupId, HttpSession session){
         Party party = partyRepository.findById(Integer.parseInt(groupId)).get();
         model.addAttribute("party", party);
         List<User> members = party.getMembers();
         model.addAttribute("members", members);
-        return "party_list/${groupId}";
+        return "party_details";
     }
 
-    @GetMapping("/party_list/${groupId}/add_member")
+    @GetMapping("/party_list/{groupId}/add_member")
     public String renderAddToGroupForm(Model model, HttpSession session, @PathVariable String groupId, String username){
         Integer currentUserId = (Integer) session.getAttribute("user");
         User partyOwner = userRepository.findById(currentUserId).get();
@@ -88,8 +89,8 @@ public class PartyController {
         Party party = partyRepository.findById(Integer.parseInt(groupId)).get();
         model.addAttribute("party", party);
         model.addAttribute("username", username);
-
-
+        User userToAdd = userRepository.findByUsername(username);
+        model.addAttribute("user", userToAdd);
 
         /*Integer currentUserId = (Integer) session.getAttribute("user");
         userRepository.findById(currentUserId);
@@ -102,7 +103,7 @@ public class PartyController {
         return "add_member";
     }
 
-    @PostMapping("/party_list/${groupId}/add_member")
+    @PostMapping("/party_list/{groupId}/add_member")
     public String processAddToGroupForm(Model model, @ModelAttribute @Valid User user, HttpSession session, @PathVariable String groupId, Errors errors, String username){
         if (errors.hasErrors()) {
             Party party = partyRepository.findById(Integer.parseInt(groupId)).get();

@@ -2,30 +2,30 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org/">
 <head th:replace="fragments :: head"></head>
 <body>
-
+<nav th:replace="fragments :: nav-header"></nav>
 <div>
-    <table th:each="party: ${parties}"> Groups
-        <tr th:text="${party.name}">
-            <td th:text="${party.description}"/>
-        </tr>
-    </table>
-
-</div>
-
-
-
-<div class="text-center">
-    <form action="/createparty", method="get">
-    <input
-            type="submit"
-            class="btn btn-warning btn-lg"
-            value="Create a Group"
-    />
+    <form class="mb-3" method="post">
+        <table class="table">
+            <tr>
+                <th>Select</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th colspan="3" style="text-align: center">Operation</th>
+            </tr>
+            <tr th:each="party : ${parties}">
+                <td><input type="checkbox" th:name="groupId" th:value="${party.getId()}"></td>
+                <td th:text="${party.getName()}"></td>
+                <td th:text="${party.getDescription()}"></td>
+                <td><a th:href="@{/party_list/{groupId}(groupId=${party.getId()})}">Edit</a></td>
+                <td><a th:href="@{/party_list/{groupId}/party(groupId=${party.getId()})}">View Members</a></td>
+                <td><a th:href="@{/party_list/{groupId}/add_member(groupId=${party.getId()})}">Add Member</a></td>
+            </tr>
+        </table>
+        <input type="submit"
+               class="btn btn-danger"
+               value="Delete Selected Group" />
     </form>
 </div>
-
-<script th:replace="fragments :: js"></script>
-
-
+<a th:href="@{/createparty}">Create New Group</a>
 </body>
 </html>

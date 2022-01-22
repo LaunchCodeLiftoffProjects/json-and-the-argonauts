@@ -28,18 +28,23 @@ public class UserController {
   @Autowired
   WishListRepository wishListRepository;
 
-  @GetMapping("wishlists")
-  public String displayWishLists(Model model) {
-
+  @GetMapping("/wishlists1")
+  public String displayWishLists(Model model, HttpSession session) {
+    Integer currentUserId = (Integer) session.getAttribute("user");
+    User user = userRepository.findById(currentUserId).get();
+    model.addAttribute("wishlists", wishListRepository.findAllBylistOwner(user));
     return "wishlists";
   }
-  @GetMapping("party_list")
-  public String displayGroupList(Model model){
 
+  @GetMapping("/party_list1")
+  public String displayGroupList(Model model, HttpSession session){
+    Integer currentUserId = (Integer) session.getAttribute("user");
+    User user = userRepository.findById(currentUserId).get();
+    model.addAttribute("party", partyRepository.findAllByPartyOwner(user));
    return "party_list";
   }
 
-  @GetMapping("user_details")
+  @GetMapping("user_details1")
   public String displayUpdateUserDetailsForm (Model model, HttpSession session) {
     Integer currentUserId = (Integer) session.getAttribute("user");
     User user = userRepository.findById(currentUserId).get();
@@ -47,7 +52,7 @@ public class UserController {
     return "user_details";
   }
 
-  @PostMapping("user_details")
+  @PostMapping("user_details1")
   public String processUpdateUserDetailsForm (@ModelAttribute @Valid UpdateUserDetailsDTO updateUserDetailsDTO,
                                            HttpSession session) {
     Integer currentUserId = (Integer) session.getAttribute("user");
