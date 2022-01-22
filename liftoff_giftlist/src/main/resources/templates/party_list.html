@@ -17,13 +17,13 @@
                 <td th:text="${party.getName()}"></td>
                 <td th:text="${party.getDescription()}"></td>
                 <td><a th:href="@{/party_list/{groupId}(groupId=${party.getId()})}">Edit</a></td>
-                <td><a th:href="@{/party_list/{groupId}/party(groupId=${party.getId()})}">View Members</a></td>
+                <td><a th:href="@{/party_list/{groupId}/members(groupId=${party.getId()})}">View Members</a></td>
                 <td><a th:href="@{/party_list/{groupId}/add_member(groupId=${party.getId()})}">Add Member</a></td>
             </tr>
         </table>
         <input type="submit"
                class="btn btn-danger"
-               value="Delete Selected Group" />
+               value="Remove Selected Member from the group" />
     </form>
 </div>
 <a th:href="@{/createparty}">Create New Group</a>

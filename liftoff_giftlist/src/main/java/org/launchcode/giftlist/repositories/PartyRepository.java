@@ -11,4 +11,5 @@ import java.util.List;
 @Repository
 public interface PartyRepository extends CrudRepository<Party, Integer> {
     List<Party> findAllByPartyOwner(User user);
+    List<User> findAllByMembers(User user);
 }

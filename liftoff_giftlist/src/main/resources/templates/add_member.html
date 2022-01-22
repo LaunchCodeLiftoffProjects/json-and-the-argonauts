@@ -6,8 +6,8 @@
 
 <div>
     <p th:text="${'Add member to group: ' + party.getName()}"></p>
-    <form class="mb-3" method="post">
-        <label th:for="username" class="form-label">Please enter the username of the user you would like to add.</label>
+    <!--<form class="mb-3" method="post">
+        <label th:for="userName" class="form-label">Please enter the username of the user you would like to add.</label>
         <input type="text"
                id="username"
                class="form-control"
@@ -17,7 +17,7 @@
                class="btn btn-warning btn-lg"
                value="Add User"
         />
-    </form>
+    </form>-->
 </div>
 
 <script th:replace="fragments :: js"></script>

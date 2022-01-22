@@ -1,5 +1,6 @@
 package org.launchcode.giftlist.controllers;
 
+import org.launchcode.giftlist.models.Item;
 import org.launchcode.giftlist.models.Party;
 import org.launchcode.giftlist.models.User;
 import org.launchcode.giftlist.models.WishList;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -91,9 +93,16 @@ public class PartyController {
         return "redirect:";
     }
 
-    @GetMapping("/party_list/{groupId}/add_member")
-    public String renderAddToGroupForm(Model model, HttpSession session, @PathVariable String groupId, String username){
-        Integer currentUserId = (Integer) session.getAttribute("user");
+    @GetMapping("/party_list/{groupId}/members")
+    public String showMembers(Model model, HttpSession session, @PathVariable String groupId, String username){
+        Party party = partyRepository.findById(Integer.parseInt(groupId)).get();
+        List<User> members = party.getMembers();
+        model.addAttribute("members", members);
+        model.addAttribute("party", party);
+        return "party_list";
+
+
+        /*Integer currentUserId = (Integer) session.getAttribute("user");
         User partyOwner = userRepository.findById(currentUserId).get();
         List<Party> parties = partyRepository.findAllByPartyOwner(partyOwner);
         model.addAttribute("parties", parties);
@@ -101,7 +110,7 @@ public class PartyController {
         model.addAttribute("party", party);
         model.addAttribute("username", username);
         User userToAdd = userRepository.findByUsername(username);
-        model.addAttribute("user", userToAdd);
+        model.addAttribute("user", userToAdd);*/
 
         /*Integer currentUserId = (Integer) session.getAttribute("user");
         userRepository.findById(currentUserId);
@@ -111,25 +120,27 @@ public class PartyController {
         List<Party> parties =  partyRepository.findAllByPartyOwner(user);
         model.addAttribute("members", members);
         model.addAttribute("party", partyRepository.findById(currentUserId));*/
-        return "add_member";
     }
 
-    @PostMapping("/party_list/{groupId}/add_member")
-    public String processAddToGroupForm(Model model, @ModelAttribute @Valid User user, HttpSession session, @PathVariable String groupId, Errors errors, String username){
-        if (errors.hasErrors()) {
-            Party party = partyRepository.findById(Integer.parseInt(groupId)).get();
-            model.addAttribute("party", party);
-            model.addAttribute("user", user);
-            model.addAttribute("members", party.getMembers());
-            return "add_member";
+    @PostMapping("/party_list/{groupId}/members")
+    public RedirectView deleteMembers(@RequestParam(value = "memberId", required = false) List<String> memberIds, @PathVariable String memberId, @PathVariable String groupId, Model model) {
+        if (memberIds != null) {
+            for (String memberid : memberIds) {
+                partyRepository.deleteById(Integer.parseInt(memberid));
+            }
         }
         Party party = partyRepository.findById(Integer.parseInt(groupId)).get();
-        User userToAdd = userRepository.findByUsername(username);
-        party.addMember(userToAdd);
-        partyRepository.save(party);
-        model.addAttribute("members", party.getMembers());
+        List<User> members = party.getMembers();
         model.addAttribute("party", party);
-        return "add_member";
+        model.addAttribute("members", members);
+        return new RedirectView("/party_list/" + memberId + "/members");
     }
+
+    /*@GetMapping("/party_list/{groupId}/members/add_member")
+    public RedirectView renderAddMemberForm(@RequestParam(value = "memberId")){
+        return new RedirectView("/party_list/")
+    }*/
+
+
 
 }
