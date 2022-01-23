@@ -103,7 +103,7 @@ public class WishListController {
     }
 
     @PostMapping("wishlists/{id}/items")
-    public RedirectView deleteListItems(@RequestParam(value = "itemid", required = false) List<String> itemIds, @PathVariable String id, Model model) {
+    public String deleteListItems(@RequestParam(value = "itemid", required = false) List<String> itemIds, @PathVariable String id, Model model) {
         if (itemIds != null) {
             for (String itemId : itemIds) {
                 itemRepository.deleteById(Integer.parseInt(itemId));
@@ -113,7 +113,7 @@ public class WishListController {
         List<Item> items = itemRepository.findAllBywishList(wishList);
         model.addAttribute("wishList", wishList);
         model.addAttribute("items", items);
-        return new RedirectView("/wishlists/" + id + "/items");
+        return "redirect:/wishlists/" + id + "/items";
     }
 
 
