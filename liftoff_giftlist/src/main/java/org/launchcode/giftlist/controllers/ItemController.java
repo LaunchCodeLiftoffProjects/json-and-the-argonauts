@@ -32,9 +32,7 @@ public class ItemController {
 
     @GetMapping("/wishlists/{id}/additem")
     public String displayAddItemForm(Model model, HttpSession session, @PathVariable String id) {
-        if (!model.containsAttribute("item")) {
-            model.addAttribute(new Item());
-        }
+        model.addAttribute(new Item());
         WishList wishList = wishListRepository.findById(Integer.parseInt(id)).get();
         model.addAttribute("wishList", wishList);
         return "additem";
@@ -59,10 +57,8 @@ public class ItemController {
 
     @GetMapping("wishlists/{listid}/items/edit/{itemid}")
     public String displayEditItemForm(Model model, @PathVariable String listid, @PathVariable String itemid) {
-        if (!model.containsAttribute("item")) {
-            Item item = itemRepository.findById(Integer.parseInt(itemid)).get();
-            model.addAttribute("item", item);
-        }
+        Item item = itemRepository.findById(Integer.parseInt(itemid)).get();
+        model.addAttribute("item", item);
         WishList wishList = wishListRepository.findById(Integer.parseInt(listid)).get();
         model.addAttribute("wishList", wishList);
         return "item_details";
@@ -78,7 +74,6 @@ public class ItemController {
         item.setName(editItem.getName());
         item.setDescription(editItem.getDescription());
         itemRepository.save(item);
-
         return "redirect:/wishlists/" + listid + "/items";
     }
 
