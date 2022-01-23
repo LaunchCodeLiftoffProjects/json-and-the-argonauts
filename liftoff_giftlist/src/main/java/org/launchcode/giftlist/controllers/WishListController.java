@@ -3,7 +3,6 @@ package org.launchcode.giftlist.controllers;
 import org.launchcode.giftlist.models.Item;
 import org.launchcode.giftlist.models.User;
 import org.launchcode.giftlist.models.WishList;
-import org.launchcode.giftlist.models.dto.UpdateWishListDetailsDTO;
 import org.launchcode.giftlist.repositories.ItemRepository;
 import org.launchcode.giftlist.repositories.UserRepository;
 import org.launchcode.giftlist.repositories.WishListRepository;
@@ -14,11 +13,9 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Optional;
 
 @Controller
 public class WishListController {
@@ -84,10 +81,14 @@ public class WishListController {
     }
 
     @PostMapping("wishlists/{id}")
-    public String processEditWishListForm(@PathVariable String id, @Valid @ModelAttribute UpdateWishListDetailsDTO updateWishListDetailsDTO) {
+    public String processEditWishListForm(@PathVariable String id, @Valid @ModelAttribute WishList editWishList,
+                                          Errors errors) {
+        if (errors.hasErrors()) {
+            return "list_details";
+        }
         WishList wishList = wishListRepository.findById(Integer.parseInt(id)).get();
-        wishList.setName(updateWishListDetailsDTO.getName());
-        wishList.setDescription(updateWishListDetailsDTO.getDescription());
+        wishList.setName(editWishList.getName());
+        wishList.setDescription(editWishList.getDescription());
         wishListRepository.save(wishList);
         return "redirect:";
     }

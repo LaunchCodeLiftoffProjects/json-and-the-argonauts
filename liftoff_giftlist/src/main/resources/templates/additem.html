@@ -13,6 +13,7 @@
                class="form-control"
                th:field="${item.name}"
         />
+        <p class="error" th:errors="${item.name}"></p>
         <label th:for="itemDescription" class="form-label">Description</label>
         <input type="text"
                id="itemDescription"
