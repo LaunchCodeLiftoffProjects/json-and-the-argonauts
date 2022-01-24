@@ -15,7 +15,7 @@
             </tr>
             <tr th:each="member : ${members}">
                 <td><input type="checkbox" th:name="memberId" th:value="${member.getId()}"></td>
-                <td th:text="${member.getName()}"></td>
+                <td th:text="${member.getFirstName()}"></td>
             </tr>
         </table>
         <input type="submit"

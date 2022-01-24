@@ -139,6 +139,13 @@ public class User extends AbstractSuper {
         //find a list by the WishList ID
     }
 
+    public void addToGroupCreatedByAnotherUser(Party party){
+        joinedParties.add(party);
+    }
+
+    public void removeFromGroupCreatedByAnotherUser(Party party){
+        joinedParties.remove(party);
+    }
 
     public Integer getUserID() {
         return getId();

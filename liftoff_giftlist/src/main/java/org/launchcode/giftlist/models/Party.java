@@ -69,5 +69,7 @@ public class Party extends AbstractSuper{
         this.members.add(user);
     }
 
+    public void removeMember(User user) {this.members.remove(user);}
+
 
 }

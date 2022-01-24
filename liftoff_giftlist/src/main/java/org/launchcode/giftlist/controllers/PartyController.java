@@ -4,6 +4,8 @@ import org.launchcode.giftlist.models.Item;
 import org.launchcode.giftlist.models.Party;
 import org.launchcode.giftlist.models.User;
 import org.launchcode.giftlist.models.WishList;
+import org.launchcode.giftlist.models.dto.AddMemberToGroupDTO;
+import org.launchcode.giftlist.models.dto.LoginFormDTO;
 import org.launchcode.giftlist.models.dto.UpdatePartyDetailsDTO;
 import org.launchcode.giftlist.models.dto.UpdateWishListDetailsDTO;
 import org.launchcode.giftlist.repositories.PartyRepository;
@@ -36,8 +38,10 @@ public class PartyController {
     public String showAllGroups(Model model, HttpSession session){
         Integer currentUserId = (Integer) session.getAttribute("user");
         User user = userRepository.findById(currentUserId).get();
-        List<Party> parties = partyRepository.findAllByPartyOwner(user);
-        model.addAttribute("parties", parties);
+        List<Party> ownedParties = partyRepository.findAllByPartyOwner(user);
+        List<Party> allParties = partyRepository.findAllByMembers(user);
+        model.addAttribute("ownedParties", ownedParties);
+        model.addAttribute("allParties", allParties);
         model.addAttribute("user", user);
         return "party_list";
     }
@@ -76,7 +80,8 @@ public class PartyController {
     }
 
     @GetMapping("/party_list/{groupId}")
-    public String showSpecificPartyWithMembersAndAllWishlists(Model model, @PathVariable String groupId, HttpSession session){
+    public String showSpecificParty(Model model, @PathVariable String groupId, HttpSession session){
+
         Party party = partyRepository.findById(Integer.parseInt(groupId)).get();
         model.addAttribute("party", party);
         List<User> members = party.getMembers();
@@ -99,7 +104,7 @@ public class PartyController {
         List<User> members = party.getMembers();
         model.addAttribute("members", members);
         model.addAttribute("party", party);
-        return "party_list";
+        return "members";
 
 
         /*Integer currentUserId = (Integer) session.getAttribute("user");
@@ -123,24 +128,52 @@ public class PartyController {
     }
 
     @PostMapping("/party_list/{groupId}/members")
-    public RedirectView deleteMembers(@RequestParam(value = "memberId", required = false) List<String> memberIds, @PathVariable String memberId, @PathVariable String groupId, Model model) {
+    public String deleteMembers(@RequestParam(value = "memberId", required = false) List<String> memberIds, @PathVariable String groupId, String username, Model model) {
+
+        Party party = partyRepository.findById(Integer.parseInt(groupId)).get();
         if (memberIds != null) {
             for (String memberid : memberIds) {
-                partyRepository.deleteById(Integer.parseInt(memberid));
+                User userToRemove = userRepository.findById(Integer.parseInt(memberid)).get();
+                party.removeMember(userToRemove);
+                userToRemove.removeFromGroupCreatedByAnotherUser(party);
             }
+            partyRepository.save(party);
         }
-        Party party = partyRepository.findById(Integer.parseInt(groupId)).get();
         List<User> members = party.getMembers();
         model.addAttribute("party", party);
         model.addAttribute("members", members);
-        return new RedirectView("/party_list/" + memberId + "/members");
+
+        return "redirect:";
     }
 
-    /*@GetMapping("/party_list/{groupId}/members/add_member")
-    public RedirectView renderAddMemberForm(@RequestParam(value = "memberId")){
-        return new RedirectView("/party_list/")
-    }*/
+    @GetMapping("/party_list/{groupId}/add_member")
+    public String renderAddMemberForm(@PathVariable String groupId, Model model){
+        Party party = partyRepository.findById(Integer.parseInt(groupId)).get();
+        model.addAttribute("party", party);
+        return("add_member");
+    }
 
+    @PostMapping("/party_list/{groupId}/add_member")
+    public String processAddMemberForm(@PathVariable String groupId, Model model, @RequestParam(value="username") String username){
 
+        User userToAdd = userRepository.findByUsername(username);
+        /*if (errors.hasErrors()) {
+            return "redirect:";
+        }
+        if (userToAdd == null) {
+            errors.rejectValue("username", "user.invalid", "The given username does not exist");
+            return "redirect:";
+        }*/
+        model.addAttribute("username", userToAdd.getUsername());
+        Party party = partyRepository.findById(Integer.parseInt(groupId)).get();
+        party.addMember(userToAdd);
+        userToAdd.addToGroupCreatedByAnotherUser(party);
+        userRepository.save(userToAdd);
+        partyRepository.save(party);
+        List<User> members = party.getMembers();
+        model.addAttribute("members", members);
+        model.addAttribute("party", party);
+        return "redirect:/party_list/" + groupId + "/members";
+    }
 
 }
