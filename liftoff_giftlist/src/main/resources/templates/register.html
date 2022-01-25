@@ -3,79 +3,140 @@
 <head th:replace="fragments :: head"></head>
 
 <body>
-<nav th:replace="fragments :: nav-header"></nav>
+<nav class="navbar navbar-expand-md navbar-light">
+  <div class="container-xxl">
+    <a href="/index" class="navbar-brand">
+          <span
+              class="fw-bold fst-italic"
+              style="font-size: 1.7em; color: rgb(204, 41, 41)"
+          >Gift</span
+          ><span
+        class="fw-bold fst-italic"
+        style="font-size: 1.7em; color: rgb(48, 168, 48)"
+    >opedia</span
+    >
+    </a>
+    <!-- Toggle button for mobile-friendly nav drop-down -->
+    <button
+        class="navbar-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#main-nav"
+        aria-controls="main-nav"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div
+        class="collapse navbar-collapse justify-content-end align-center"
+        id="main-nav"
+    >
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a
+              href="https://github.com/LaunchCodeLiftoffProjects/json-and-the-argonauts"
+              target="_blank"
+              class="nav-link fw-bold"
+          >About</a
+          >
+        </li>
+        <li class="nav-item">
+          <a href="/login" class="nav-link fw-bold">Login</a>
+        </li>
+        <li class="nav-item d-md-none">
+          <a href="/index" class="nav-link fw-bold">Back</a>
+        </li>
+        <li class="nav-item ms-2 d-none d-md-inline">
+          <a href="/index" class="btn btn-secondary">Back</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
 
-<div class="container p-3 my-3">
+<div class="container-sm p-3 my-3">
   <div class="row justify-content-around align-items-center">
-    <div class="col-8 col-lg-4 my-2 rounded shadow border">
-      <h2 class="py-3 text-center">Create New Account</h2>
-
+    <h2 class="py-3 my-2 text-center">Create New Account</h2>
+    <div class="col col-md-9 col-lg-6 my-2 pt-3 rounded shadow border">
       <form class="mb-3" method="post">
-        <div>
-          <label th:for="firstName" class="form-label">First Name</label>
-          <input
-              type="text"
-              class="form-control"
-              id="firstName"
-              th:field="${registerFormDTO.firstName}"
-          />
-          <p></p>
-        </div>
-        <div>
-          <label th:for="lastName" class="form-label">Last Name</label>
-          <input
-              type="text"
-              class="form-control"
-              id="lastName"
-              th:field="${registerFormDTO.lastName}"
-          />
-          <p></p>
-        </div>
-        <div>
-          <label th:for="username" class="form-label">Username</label>
-          <input
-              type="text"
-              class="form-control"
-              id="username"
-              th:field="${registerFormDTO.username}"
-          />
-          <p class="error" th:errors="${registerFormDTO.username}"></p>
-        </div>
-        <div>
-          <label th:for="email" class="form-label">Email</label>
-          <input
-              type="email"
-              class="form-control"
-              id="email"
-              th:field="${registerFormDTO.email}"
-          />
-          <p></p>
-        </div>
-        <div>
-          <label th:for="password" class="form-label">Password</label>
-          <input
-              type="password"
-              class="form-control"
-              id="password"
-              th:field="${registerFormDTO.password}"
-          />
-          <p class="error" th:errors="${registerFormDTO.password}"></p>
-        </div>
-        <div class="mb-3">
-          <label th:for="verify" class="form-label">Verify Password</label>
-          <input
-              type="password"
-              class="form-control"
-              id="verify"
-              th:field="${registerFormDTO.verifyPassword}"
-          />
-          <p></p>
-        </div>
+        <div class="row justify-content-around">
+          <!-- Column 1 -->
+          <div class="col">
+            <div>
+              <label th:for="firstName" class="form-label"
+              >First Name</label
+              >
+              <input
+                  type="text"
+                  class="form-control"
+                  id="firstName"
+                  th:field="${registerFormDTO.firstName}"
+              />
+              <div class="error form-text" th:errors="${registerFormDTO.firstName}"></div>
+            </div>
+            <div>
+              <label th:for="lastName" class="form-label">Last Name</label>
+              <input
+                  type="text"
+                  class="form-control"
+                  id="lastName"
+                  th:field="${registerFormDTO.lastName}"
+              />
+              <div class="error form-text" th:errors="${registerFormDTO.lastName}"></div>
+            </div>
+            <div>
+              <label th:for="email" class="form-label">Email</label>
+              <input
+                  type="email"
+                  class="form-control"
+                  id="email"
+                  th:field="${registerFormDTO.email}"
+              />
+              <div class="error form-text" th:errors="${registerFormDTO.email}"></div>
+            </div>
+          </div>
 
+          <!-- Column 2 -->
+          <div class="col">
+            <div>
+              <label th:for="username" class="form-label">Username</label>
+              <input
+                  type="text"
+                  class="form-control"
+                  id="username"
+                  th:field="${registerFormDTO.username}"
+              />
+              <div class="error form-text" th:errors="${registerFormDTO.username}"></div>
+            </div>
+            <div>
+              <label th:for="password" class="form-label">Password</label>
+              <input
+                  type="password"
+                  class="form-control"
+                  id="password"
+                  th:field="${registerFormDTO.password}"
+              />
+              <div class="error form-text" th:errors="${registerFormDTO.password}"></div>
+            </div>
+            <div>
+              <label th:for="verify" class="form-label"
+              >Verify Password</label
+              >
+              <input
+                  type="password"
+                  class="form-control"
+                  id="verify"
+                  th:field="${registerFormDTO.verifyPassword}"
+              />
+              <div class="error form-text" th:errors="${registerFormDTO.verifyPassword}"></div>
+            </div>
+          </div>
+        </div>
         <div class="text-center">
           <input
               type="submit"
-              class="btn btn-warning btn-lg"
+              class="btn btn-warning btn-lg mt-3 mb-2"
               value="Register"
           />
         </div>
