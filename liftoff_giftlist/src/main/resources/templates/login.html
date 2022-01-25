@@ -68,7 +68,7 @@
                         id="username"
                         th:field="${loginFormDTO.username}"
                     />
-                    <p class="error" th:errors="${loginFormDTO.username}"></p>
+                    <p class="error form-text" th:errors="${loginFormDTO.username}"></p>
                 </div>
                 <div>
                     <label th:for="password" class="form-label">Password</label>
@@ -78,7 +78,7 @@
                         th:field="${loginFormDTO.password}"
                         type="password"
                     />
-                    <p class="error" th:errors="${loginFormDTO.password}"></p>
+                    <p class="error form-text" th:errors="${loginFormDTO.password}"></p>
                 </div>
 
                 <div class="text-center pt-3">
