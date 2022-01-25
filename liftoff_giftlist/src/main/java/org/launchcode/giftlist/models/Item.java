@@ -55,10 +55,7 @@ public class Item extends AbstractSuper {
 
     @Override
     public String toString() {
-        return "Item{" +
-                "name='" + name + '\'' +
-                ", wishLists=" + wishList +
-                '}';
+        return name + ":  " + description + "\r\n";
     }
 
 

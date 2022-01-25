@@ -59,7 +59,7 @@ public class WishList extends AbstractSuper{
         this.listOwner = listOwner;
     }
 
-    public List getItems() {
+    public List<Item> getItems() {
         return items;
     }
 
@@ -95,6 +95,9 @@ public class WishList extends AbstractSuper{
         return (Item) items.get(foundItem);
     }
 
+    /*@Override
+    public String toString(){
 
 
+    }*/
 }

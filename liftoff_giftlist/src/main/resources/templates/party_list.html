@@ -20,14 +20,6 @@
                 <td><a th:href="@{/party_list/{groupId}/members(groupId=${party.getId()})}">View Members</a></td>
                 <td><a th:href="@{/party_list/{groupId}/add_member(groupId=${party.getId()})}">Add Member</a></td>
             </tr>
-            <!--<tr th:each="party : ${allParties}">
-                <td><input type="checkbox" th:name="groupId" th:value="${party.getId()}"></td>
-                <td th:text="${party.getName()}"></td>
-                <td th:text="${party.getDescription()}"></td>
-                <td><a th:if="${isOwner}" th:href="@{/party_list/{groupId}(groupId=${party.getId()})}">Edit</a></td>
-                <td><a th:href="@{/party_list/{groupId}/members(groupId=${party.getId()})}">View Members</a></td>
-                <td><a th:if="${isOwner}" th:href="@{/party_list/{groupId}/add_member(groupId=${party.getId()})}">Add Member</a></td>
-            </tr>-->
         </table>
         <table class="table">All groups!
             <tr>

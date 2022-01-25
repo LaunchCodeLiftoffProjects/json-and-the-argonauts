@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head th:replace="fragments :: head"></head>
+<body>
+<nav th:replace="fragments :: nav-header"></nav>
+
+<div>
+    <form method="post">
+        <table class="table">
+            <tr>
+                <th>Name of Wishlist</th>
+                <th>Items</th>
+            </tr>
+            <tr th:each="wishList : ${wishLists}">
+                <td th:text="${wishList.getName()}"></td>
+                <td th:text="${wishList.getItems()}"></td>
+                <!--<tr><input type="checkbox" th:name="itemId" th:value="${.getId()}"></tr>-->
+
+            </tr>
+        </table>
+        <input type="submit"
+               class="btn btn-danger"
+               value="Delete Selected Members" />
+    </form>
+</div>
+
+
+<script th:replace="fragments :: js"></script>
+</body>
+</html>
