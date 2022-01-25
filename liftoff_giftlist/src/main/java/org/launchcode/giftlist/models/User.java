@@ -139,6 +139,12 @@ public class User extends AbstractSuper {
         //find a list by the WishList ID
     }
 
+    public Boolean isPartyOwner(User user1, User user2){
+        if (user1.equals(user2)){
+            return true;
+        } else return false;
+    }
+
     public void addToGroupCreatedByAnotherUser(Party party){
         joinedParties.add(party);
     }

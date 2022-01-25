@@ -54,7 +54,7 @@ public class UserController {
 
   @PostMapping("user_details1")
   public String processUpdateUserDetailsForm (@ModelAttribute @Valid UpdateUserDetailsDTO updateUserDetailsDTO,
-                                           HttpSession session) {
+                                           HttpSession session, Model model) {
     Integer currentUserId = (Integer) session.getAttribute("user");
     User user = userRepository.findById(currentUserId).get();
     user.setFirstName(updateUserDetailsDTO.getFirstName());
@@ -62,6 +62,10 @@ public class UserController {
     user.setUsername(updateUserDetailsDTO.getUsername());
     user.setEmail(updateUserDetailsDTO.getEmail());
     userRepository.save(user);
+    model.addAttribute("firstName", user.getFirstName());
+    model.addAttribute("lastName", user.getLastName());
+    model.addAttribute("username", user.getUsername());
+    model.addAttribute("email", user.getEmail());
     return "user";
 
   }

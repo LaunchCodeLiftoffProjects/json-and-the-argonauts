@@ -1,5 +1,6 @@
 package org.launchcode.giftlist.controllers;
 
+import jdk.jfr.Frequency;
 import org.launchcode.giftlist.models.Item;
 import org.launchcode.giftlist.models.Party;
 import org.launchcode.giftlist.models.User;
@@ -37,12 +38,12 @@ public class PartyController {
     @GetMapping("/party_list")
     public String showAllGroups(Model model, HttpSession session){
         Integer currentUserId = (Integer) session.getAttribute("user");
-        User user = userRepository.findById(currentUserId).get();
-        List<Party> ownedParties = partyRepository.findAllByPartyOwner(user);
-        List<Party> allParties = partyRepository.findAllByMembers(user);
+        User currentUser = userRepository.findById(currentUserId).get();
+        List<Party> ownedParties = partyRepository.findAllByPartyOwner(currentUser);
+        List<Party> allParties = partyRepository.findAllByMembers(currentUser);
         model.addAttribute("ownedParties", ownedParties);
         model.addAttribute("allParties", allParties);
-        model.addAttribute("user", user);
+        model.addAttribute("user", currentUser);
         return "party_list";
     }
 
@@ -76,13 +77,17 @@ public class PartyController {
         party.setPartyOwner(userRepository.findById(currentUserId).get());
         party.addMember(userRepository.findById(currentUserId).get());
         partyRepository.save(party);
-        return "party_list";
+        return "redirect:party_list";
     }
 
     @GetMapping("/party_list/{groupId}")
     public String showSpecificParty(Model model, @PathVariable String groupId, HttpSession session){
-
         Party party = partyRepository.findById(Integer.parseInt(groupId)).get();
+        Integer currentUserObj = (Integer) session.getAttribute("user");
+        User currentUser = userRepository.findById(currentUserObj).get();
+        User partyOwner = party.getOwner();
+        Boolean isOwner = currentUser.isPartyOwner(currentUser, partyOwner);
+        model.addAttribute("isOwner", isOwner);
         model.addAttribute("party", party);
         List<User> members = party.getMembers();
         model.addAttribute("members", members);
@@ -99,7 +104,7 @@ public class PartyController {
     }
 
     @GetMapping("/party_list/{groupId}/members")
-    public String showMembers(Model model, HttpSession session, @PathVariable String groupId, String username){
+    public String showMembersAndLinksToWishlists(Model model, HttpSession session, @PathVariable String groupId, String username){
         Party party = partyRepository.findById(Integer.parseInt(groupId)).get();
         List<User> members = party.getMembers();
         model.addAttribute("members", members);
@@ -175,5 +180,12 @@ public class PartyController {
         model.addAttribute("party", party);
         return "redirect:/party_list/" + groupId + "/members";
     }
+
+    /*@GetMapping("/party_list/{groupId}/{memberId}/list_items"){
+        public String viewMemberWishList(@PathVariable String groupId, ){
+
+        }
+
+    }*/
 
 }
