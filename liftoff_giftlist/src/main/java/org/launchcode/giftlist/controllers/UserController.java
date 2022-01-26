@@ -1,6 +1,8 @@
 package org.launchcode.giftlist.controllers;
 
+import org.launchcode.giftlist.models.Party;
 import org.launchcode.giftlist.models.User;
+import org.launchcode.giftlist.models.WishList;
 import org.launchcode.giftlist.models.dto.UpdateUserDetailsDTO;
 import org.launchcode.giftlist.repositories.ItemRepository;
 import org.launchcode.giftlist.repositories.PartyRepository;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.util.List;
 
 @Controller
 public class UserController {
@@ -31,12 +34,29 @@ public class UserController {
 
   @GetMapping("/{username}")
   public String displayUserPage(Model model, @PathVariable String username, HttpSession session) {
+
+//    Find current user information
     Integer currentUserId = (Integer) session.getAttribute("user");
     User user = userRepository.findById(currentUserId).get();
-    model.addAttribute("username", user.getUsername());
+    String currentUsername = user.getUsername();
+
+//    If path variable doesn't match user's username, redirect the path
+    if (!username.equals(currentUsername)) {
+      return "redirect:/" + currentUsername;
+    }
+
+    model.addAttribute("username", currentUsername);
     model.addAttribute("firstName", user.getFirstName());
     model.addAttribute("lastName", user.getLastName());
     model.addAttribute("email", user.getEmail());
+
+//    Find all wishlists owned by this user
+    List<WishList> wishLists = user.getWishLists();
+    model.addAttribute("wishlists", wishLists);
+
+//    Find all groups this user belongs to
+    List<Party> groups = user.getJoinedParties();
+    model.addAttribute("groups", groups);
     return "user";
   }
 

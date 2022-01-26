@@ -16,7 +16,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 @Controller
 public class PartyController {
@@ -27,6 +29,7 @@ public class PartyController {
     WishListRepository wishListRepository;
     @Autowired
     UserRepository userRepository;
+
 
     @GetMapping("/createparty")
     public String displayCreatePartyForm(Model model){
@@ -41,10 +44,16 @@ public class PartyController {
             return "createparty";
         }
         Integer currentUserId = (Integer) session.getAttribute("user");
-        party.setPartyOwner(userRepository.findById(currentUserId).get());
-        party.addMember(userRepository.findById(currentUserId).get());
+        User partyCreator = userRepository.findById(currentUserId).get();
+        party.setPartyOwner(partyCreator);
+        party.addMember(partyCreator);
         partyRepository.save(party);
-        return "party_list";
+
+    //  Add group info to appropriate User instance
+        partyCreator.addOwnedParty(party);
+        partyCreator.addJoinedParty(party);
+
+        return "redirect:/party_list";
     }
 
     /*@GetMapping("/party_list")
