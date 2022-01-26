@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head th:replace="fragments :: head"></head>
+<body>
+<nav th:replace="fragments :: nav-header"></nav>
+
+<div>
+    <form method="post">
+        <table class="table">
+            <tr>
+                <th>Select</th>
+                <th>Name</th>
+                <th>Description</th>
+            </tr>
+            <tr th:each="item : ${items}">
+                <td><input type="checkbox" th:name="itemid" th:value="${item.getId()}"></td>
+                <td th:text="${item.getName()}"></td>
+                <td th:text="${item.getDescription()}"></td>
+            </tr>
+        </table>
+        <input type="submit"
+               class="btn btn-danger"
+               value="Toggle purchase status" />
+    </form>
+</div>
+
+
+<script th:replace="fragments :: js"></script>
+</body>
+</html>

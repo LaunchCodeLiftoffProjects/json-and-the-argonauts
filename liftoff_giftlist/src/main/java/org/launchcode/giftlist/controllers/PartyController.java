@@ -6,6 +6,7 @@ import org.launchcode.giftlist.models.Party;
 import org.launchcode.giftlist.models.User;
 import org.launchcode.giftlist.models.WishList;
 import org.launchcode.giftlist.models.dto.*;
+import org.launchcode.giftlist.repositories.ItemRepository;
 import org.launchcode.giftlist.repositories.PartyRepository;
 import org.launchcode.giftlist.repositories.UserRepository;
 import org.launchcode.giftlist.repositories.WishListRepository;
@@ -32,6 +33,8 @@ public class PartyController {
     WishListRepository wishListRepository;
     @Autowired
     UserRepository userRepository;
+    @Autowired
+    ItemRepository itemRepository;
 
     @GetMapping("/party_list")
     public String showAllGroups(Model model, HttpSession session) {
@@ -185,13 +188,13 @@ public class PartyController {
         Party party = partyRepository.findById(Integer.parseInt(groupId)).get();
         User user = userRepository.findById(Integer.parseInt(memberId)).get();
         List<WishList> wishLists = user.getWishLists();
-        model.addAttribute("user", user);
+        model.addAttribute("member", user);
         model.addAttribute("party", party);
         model.addAttribute("wishLists", wishLists);
         return "view_userwishlist";
     }
 
-    @PostMapping("/party_list/{groupId}/members/{memberId}")
+    /*@PostMapping("/party_list/{groupId}/members/{memberId}")
     public String showUserItems(Model model, @PathVariable String groupId, @PathVariable String memberId, @ModelAttribute ViewUserWishListDTO viewUserWishListDTO) {
 
         Party party = partyRepository.findById(Integer.parseInt(groupId)).get();
@@ -201,11 +204,47 @@ public class PartyController {
         model.addAttribute("party", party);
         model.addAttribute("wishLists", wishLists);
         return "view_userwishlist";
+    }*/
+
+
+
+    @GetMapping("/party_list/{groupId}/members/{memberId}/{wishListId}")
+    public String showItemsInUserlist(@PathVariable String groupId, @PathVariable String memberId,
+                                      @PathVariable String wishListId, Model model){
+        Party party = partyRepository.findById(Integer.parseInt(groupId)).get();
+        User user = userRepository.findById(Integer.parseInt(memberId)).get();
+        WishList wishList = wishListRepository.findById(Integer.parseInt(wishListId)).get();
+        List<Item> items = itemRepository.findAllBywishList(wishList);
+        model.addAttribute("party", party);
+        model.addAttribute("user", user);
+        model.addAttribute("wishList", wishList);
+        model.addAttribute("items", items);
+        return "view_userwishlist_items";
     }
 
 
 
 
-
+    @PostMapping("/party_list/{groupId}/members/{memberId}/{wishListId}")
+    public String processItemsInUserList(@PathVariable String groupId, @PathVariable String memberId,
+                                        @PathVariable String wishListId, Model model,
+                                        @RequestParam(value="itemId", required = false) List<String> itemIds){
+        if (itemIds != null){
+            for (String itemid: itemIds){
+                Item item = itemRepository.findById(Integer.parseInt(itemid)).get();
+                item.setPurchased(!item.getPurchased());
+                itemRepository.save(item);
+            }
+        }
+        Party party = partyRepository.findById(Integer.parseInt(groupId)).get();
+        User user = userRepository.findById(Integer.parseInt(memberId)).get();
+        WishList wishList = wishListRepository.findById(Integer.parseInt(wishListId)).get();
+        List<Item> items = itemRepository.findAllBywishList(wishList);
+        model.addAttribute("party", party);
+        model.addAttribute("user", user);
+        model.addAttribute("wishList", wishList);
+        model.addAttribute("items", items);
+        return "redirect:";
+    }
 
 }

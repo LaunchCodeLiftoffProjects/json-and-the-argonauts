@@ -13,14 +13,11 @@
             </tr>
             <tr th:each="wishList : ${wishLists}">
                 <td th:text="${wishList.getName()}"></td>
-                <td th:text="${wishList.getItems()}"></td>
-                <!--<tr><input type="checkbox" th:name="itemId" th:value="${.getId()}"></tr>-->
+                <td> <a th:href="@{/party_list/{groupId}/members/{memberId}/{wishListId}(groupId=${party.getId()}, memberId=${member.getId()}, wishListId=${wishList.getId()})}">View Items</a></td>
+
 
             </tr>
         </table>
-        <input type="submit"
-               class="btn btn-danger"
-               value="Delete Selected Members" />
     </form>
 </div>
 
