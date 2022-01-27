@@ -14,9 +14,7 @@
       <a href="/party_list">Full list of groups</a>
       <hr />
       <ol>
-        <!--<a href="/register" class="btn btn-warning btn-lg">Groups</a>-->
-        <li>Texas Homecoming</li>
-        <li>Cousins' Christmas</li>
+        <li th:each="group : ${groups}" th:text="${group.name}">Default group item</li>
       </ol>
     </div>
     <div class="col-md-5 m-2 border rounded bg-white">
@@ -24,9 +22,7 @@
       <a href="/wishlists">See all your wishlists!</a>
       <hr />
       <ol>
-        <li>Family</li>
-        <li>Work</li>
-        <li>Car Accessories</li>
+        <li th:each="list : ${wishlists}" th:text="${list.name}">Default list item</li>
       </ol>
     </div>
     <div class="col-md-3 m-2 border rounded bg-white">
@@ -34,8 +30,8 @@
       <a href="/user_details">Need to update your info?</a>
       <hr />
       <ul>
+        <li>Username: <span th:text="${username}" class="fw-bold"></span></li>
         <li>Name: <span th:text="${firstName}"></span> <span th:text="${lastName}"></span> </li>
-        <li>Username: <span th:text="${username}"></span></li>
         <li>Email: <span th:text="${email}"></span></li>
       </ul>
     </div>

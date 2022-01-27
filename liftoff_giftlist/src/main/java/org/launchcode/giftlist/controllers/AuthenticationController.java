@@ -80,15 +80,11 @@ public class AuthenticationController {
         userRepository.save(newUser);
         setUserInSession(request.getSession(), newUser);
 
-        String firstName = newUser.getFirstName();
-        String lastName = newUser.getLastName();
-        String email = newUser.getEmail();
-        model.addAttribute("username", registerFormDTO.getUsername());
-        model.addAttribute("firstName", firstName);
-        model.addAttribute("lastName", lastName);
-        model.addAttribute("email", email);
-        return "user";
+        String username = newUser.getUsername();
+
+        return "redirect:/" + username;
     }
+//
 
 
     @GetMapping("/login")
@@ -122,14 +118,8 @@ public class AuthenticationController {
         }
 
         setUserInSession(request.getSession(), theUser);
-        String firstName = theUser.getFirstName();
-        String lastName = theUser.getLastName();
-        String email = theUser.getEmail();
-        model.addAttribute("username", loginFormDTO.getUsername());
-        model.addAttribute("firstName", firstName);
-        model.addAttribute("lastName", lastName);
-        model.addAttribute("email", email);
-        return "user";
+        String username = theUser.getUsername();
+        return "redirect:/" + username;
     }
 
     @GetMapping("/logout")
