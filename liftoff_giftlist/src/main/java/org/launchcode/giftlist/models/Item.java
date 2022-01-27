@@ -15,6 +15,8 @@ public class Item extends AbstractSuper {
 
     private String description;
 
+    private Boolean isPurchased = false;
+
     @ManyToOne
     @JoinColumn(name = "list_id")
     private WishList wishList;
@@ -56,10 +58,17 @@ public class Item extends AbstractSuper {
 
     @Override
     public String toString() {
-        return "Item{" +
-                "name='" + name + '\'' +
-                ", wishLists=" + wishList +
-                '}';
+        return name + ":  " + description + "\n";
     }
+
+    public Boolean getPurchased() {
+        return isPurchased;
+    }
+
+    public void setPurchased(Boolean purchased) {
+        isPurchased = purchased;
+    }
+
+    //waiting to add additional methods
 
 }

@@ -103,6 +103,7 @@ public class WishListController {
     }
 
     @PostMapping("wishlists/{id}/items")
+
     public String deleteListItems(@RequestParam(value = "itemid", required = false) List<String> itemIds, @PathVariable String id, Model model) {
         if (itemIds != null) {
             for (String itemId : itemIds) {

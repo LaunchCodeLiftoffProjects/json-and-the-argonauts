@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head th:replace="fragments :: head"></head>
+<body>
+<nav th:replace="fragments :: nav-header"></nav>
+
+<div>
+    <form method="post">
+        <table class="table">
+            <tr>
+                <th>Select</th>
+                <th>Name</th>
+                <th>Description</th>
+            </tr>
+            <tr th:each="item : ${items}">
+                <td><input type="checkbox" th:name="itemid" th:value="${item.getId()}"></td>
+                <td th:text="${item.getName()}"></td>
+                <td th:text="${item.getDescription()}"></td>
+            </tr>
+        </table>
+        <input type="submit"
+               class="btn btn-danger"
+               value="Toggle purchase status" />
+
+        <button type="submit" formaction="/party_list">Back to my groups</button>
+        <form>
+            <input type="button" value="View other Members of this group" onclick="history.go(-2)">
+        </form>
+        <form>
+            <input type="button" value="View additional wishlists of this Member" onclick="history.go(-1)">
+        </form>
+
+    </form>
+</div>
+
+
+<script th:replace="fragments :: js"></script>
+</body>
+</html>

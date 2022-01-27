@@ -1,26 +1,57 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org/">
-<head>
-    <meta charset="UTF-8"/>
-    <title></title>
-</head>
+<head th:replace="fragments :: head"></head>
 <body>
-
-
-<p>Feast your eyes on all these groups you're in</p>
-
-<div class="text-center">
-    <form action="/createparty", method="get">
-    <input
-            type="submit"
-            class="btn btn-warning btn-lg"
-            value="Create a Group"
-    />
+<nav th:replace="fragments :: nav-header"></nav>
+<div>
+    <form class="mb-3" method="post">
+        <table class="table">Groups you manage!
+            <tr>
+                <th>Select</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th colspan="3" style="text-align: center">Operation</th>
+            </tr>
+            <tr th:each="party : ${ownedParties}">
+                <td><input type="checkbox" th:name="groupId" th:value="${party.getId()}"></td>
+                <td th:text="${party.getName()}"></td>
+                <td th:text="${party.getDescription()}"></td>
+                <td><a th:href="@{/party_list/{groupId}(groupId=${party.getId()})}">Edit</a></td>
+                <td><a th:href="@{/party_list/{groupId}/members(groupId=${party.getId()})}">View Members</a></td>
+                <td><a th:href="@{/party_list/{groupId}/add_member(groupId=${party.getId()})}">Add Member</a></td>
+            </tr>
+        </table>
+        <table class="table">All groups!
+            <tr>
+                <th>Select</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th th:if="${isOwner}" colspan="3" style="text-align: center">Operation</th>
+            </tr>
+            <tr th:each="party : ${allParties}">
+                <div th:if="${isOwner}">
+                <td ><input type="checkbox" th:name="groupId" th:value="${party.getId()}"></td>
+                </div>
+                <div th:if="${!isOwner}">
+                <td th:text="${party.getName()}"></td>
+                </div>
+                <div th:if="${!isOwner}">
+                    <td th:text="${party.getDescription()}"></td>
+                </div>
+                <div th:if="${isOwner}">
+                <td ><a th:href="@{/party_list/{groupId}(groupId=${party.getId()})}">Edit</a></td>
+                </div>
+                <td ><a th:href="@{/party_list/{groupId}/members(groupId=${party.getId()})}">View Members</a></td>
+                <div th:if="${isOwner}">
+                <td ><a th:href="@{/party_list/{groupId}/add_member(groupId=${party.getId()})}">Add Member</a></td>
+                </div>
+            </tr>
+        </table>
+        <input type="submit"
+               class="btn btn-danger"
+               value="Delete selected Group" />
     </form>
 </div>
-
-<script th:replace="fragments :: js"></script>
-
-
+<a th:href="@{/createparty}">Create New Group</a>
 </body>
 </html>

@@ -32,6 +32,7 @@ public class UserController {
   @Autowired
   WishListRepository wishListRepository;
 
+
   @GetMapping("/{username}")
   public String displayUserPage(Model model, @PathVariable String username, HttpSession session) {
 
@@ -62,13 +63,13 @@ public class UserController {
 
 
 
-  @GetMapping("party_list")
+  @GetMapping("party_list1")
   public String displayGroupList(Model model){
 
    return "party_list";
   }
 
-  @GetMapping("user_details")
+  @GetMapping("user_details1")
   public String displayUpdateUserDetailsForm (Model model, HttpSession session) {
     Integer currentUserId = (Integer) session.getAttribute("user");
     User user = userRepository.findById(currentUserId).get();
@@ -76,9 +77,9 @@ public class UserController {
     return "user_details";
   }
 
-  @PostMapping("user_details")
+  @PostMapping("user_details1")
   public String processUpdateUserDetailsForm (@ModelAttribute @Valid UpdateUserDetailsDTO updateUserDetailsDTO,
-                                           HttpSession session) {
+                                           HttpSession session, Model model) {
     Integer currentUserId = (Integer) session.getAttribute("user");
     User user = userRepository.findById(currentUserId).get();
     user.setFirstName(updateUserDetailsDTO.getFirstName());
@@ -86,6 +87,10 @@ public class UserController {
     user.setUsername(updateUserDetailsDTO.getUsername());
     user.setEmail(updateUserDetailsDTO.getEmail());
     userRepository.save(user);
+    model.addAttribute("firstName", user.getFirstName());
+    model.addAttribute("lastName", user.getLastName());
+    model.addAttribute("username", user.getUsername());
+    model.addAttribute("email", user.getEmail());
     return "user";
 
   }

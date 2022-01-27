@@ -1,8 +1,12 @@
 package org.launchcode.giftlist.controllers;
 
+import jdk.jfr.Frequency;
+import org.launchcode.giftlist.models.Item;
 import org.launchcode.giftlist.models.Party;
 import org.launchcode.giftlist.models.User;
 import org.launchcode.giftlist.models.WishList;
+import org.launchcode.giftlist.models.dto.*;
+import org.launchcode.giftlist.repositories.ItemRepository;
 import org.launchcode.giftlist.repositories.PartyRepository;
 import org.launchcode.giftlist.repositories.UserRepository;
 import org.launchcode.giftlist.repositories.WishListRepository;
@@ -10,15 +14,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 @Controller
 public class PartyController {
@@ -29,17 +34,56 @@ public class PartyController {
     WishListRepository wishListRepository;
     @Autowired
     UserRepository userRepository;
+    @Autowired
+    ItemRepository itemRepository;
+
+    @GetMapping("/party_list")
+    public String showAllGroups(Model model, HttpSession session, @RequestParam(value = "memberId", required = false) List<String> memberIds) {
+
+
+        Integer currentUserId = (Integer) session.getAttribute("user");
+        User currentUser = userRepository.findById(currentUserId).get();
+        List<Party> ownedParties = partyRepository.findAllByPartyOwner(currentUser);
+        List<Party> allParties = partyRepository.findAllByMembers(currentUser);
+        for (Party parti: allParties){
+            if (parti.getPartyOwner().getUserID() == currentUserId){
+                Party party = partyRepository.findById(parti.getId()).get();
+                model.addAttribute("party", party);
+                Boolean isOwner = true;
+                model.addAttribute("isOwner", isOwner);
+            }
+            model.addAttribute("isOwner", false);
+        }
+        model.addAttribute("ownedParties", ownedParties);
+        model.addAttribute("allParties", allParties);
+        model.addAttribute("user", currentUser);
+        return "party_list";
+    }
+
+    @PostMapping("/party_list")
+    public String deleteGroup(@RequestParam(value = "groupId", required = false) List<String> groupIds, Model model, HttpSession session) {
+        if (groupIds != null) {
+            for (String groupId : groupIds) {
+                partyRepository.deleteById(Integer.parseInt(groupId));
+            }
+        }
+        Integer currentUserId = (Integer) session.getAttribute("user");
+        User user = userRepository.findById(currentUserId).get();
+        List<Party> parties = partyRepository.findAllByPartyOwner(user);
+        model.addAttribute("parties", parties);
+        return "redirect:party_list";
+    }
 
 
     @GetMapping("/createparty")
-    public String displayCreatePartyForm(Model model){
+    public String displayCreateGroupForm(Model model) {
         model.addAttribute(new Party());
         return "createparty";
     }
 
     @PostMapping("/createparty")
     public String processCreatePartyForm(@ModelAttribute @Valid Party party, Errors errors,
-                                        Model model, HttpSession session){
+                                         Model model, HttpSession session) {
         if (errors.hasErrors()) {
             return "createparty";
         }
@@ -48,25 +92,157 @@ public class PartyController {
         party.setPartyOwner(partyCreator);
         party.addMember(partyCreator);
         partyRepository.save(party);
-
-    //  Add group info to appropriate User instance
         partyCreator.addOwnedParty(party);
         partyCreator.addJoinedParty(party);
-
         return "redirect:/party_list";
     }
 
-    /*@GetMapping("/party_list")
-    public String showGroups(Model model, HttpSession session){
-        Integer currentUserId = (Integer) session.getAttribute("user");
-        User user = userRepository.findById(currentUserId).get();
-        Party party = (Party) partyRepository.findAllById(Collections.singleton(currentUserId));
+    @GetMapping("/party_list/{groupId}")
+    public String showSpecificParty(Model model, @PathVariable String groupId, HttpSession session) {
+        Party party = partyRepository.findById(Integer.parseInt(groupId)).get();
+        Integer currentUserObj = (Integer) session.getAttribute("user");
+        User currentUser = userRepository.findById(currentUserObj).get();
+        User partyOwner = party.getPartyOwner();
+        Boolean isOwner = currentUser.isPartyOwner(currentUser, partyOwner);
+        model.addAttribute("isOwner", isOwner);
+        model.addAttribute("party", party);
+        List<User> members = party.getMembers();
+        model.addAttribute("members", members);
+        return "party_details";
+    }
+
+    @PostMapping("/party_list/{groupId}")
+    public String processEditPartyForm(@PathVariable String groupId, @Valid @ModelAttribute UpdatePartyDetailsDTO updatePartyDetailsDTO) {
+        Party party = partyRepository.findById(Integer.parseInt(groupId)).get();
+        party.setName(updatePartyDetailsDTO.getName());
+        party.setDescription(updatePartyDetailsDTO.getDescription());
+        partyRepository.save(party);
+        return "redirect:";
+    }
+
+    @GetMapping("/party_list/{groupId}/members")
+    public String showMembers(Model model, HttpSession session, @PathVariable String groupId, String username, @ModelAttribute ViewUserWishListDTO viewUserWishListDTO) {
+        Party party = partyRepository.findById(Integer.parseInt(groupId)).get();
+        List<User> members = party.getMembers();
+        Integer currentUserObj = (Integer) session.getAttribute("user");
+        User currentUser = userRepository.findById(currentUserObj).get();
+        User partyOwner = party.getPartyOwner();
+        Boolean isOwner = currentUser.isPartyOwner(currentUser, partyOwner);
+        model.addAttribute("isOwner", isOwner);
+        model.addAttribute("members", members);
+        model.addAttribute("party", party);
+        return "members";
+    }
+
+    @PostMapping("/party_list/{groupId}/members")
+    public String deleteMembers(@RequestParam(value = "memberId", required = false) List<String> memberIds, @PathVariable String groupId, Model model) {
+
+        Party party = partyRepository.findById(Integer.parseInt(groupId)).get();
+        if (memberIds != null) {
+            for (String memberid : memberIds) {
+                User userToRemove = userRepository.findById(Integer.parseInt(memberid)).get();
+                party.removeMember(userToRemove);
+                userToRemove.removeFromGroupCreatedByAnotherUser(party);
+            }
+            partyRepository.save(party);
+        }
+        List<User> members = party.getMembers();
+        model.addAttribute("party", party);
+        model.addAttribute("members", members);
+
+        return "redirect:members";
+    }
+
+    @GetMapping("/party_list/{groupId}/add_member")
+    public String renderAddMemberForm(@PathVariable String groupId, Model model) {
+            boolean userNameNotFound = true;
+            boolean isPartOfGroup = true;
+            model.addAttribute("usernameNotFound", userNameNotFound);
+            model.addAttribute("isPartOfGroup", isPartOfGroup);
+            Party party = partyRepository.findById(Integer.parseInt(groupId)).get();
+            model.addAttribute("party", party);
+            return ("add_member");
+    }
+
+    @PostMapping("/party_list/{groupId}/add_member")
+    public String processAddMemberForm(@PathVariable String groupId, Model model, @RequestParam(value = "username", required = false) String username){
+        User userToAdd = userRepository.findByUsername(username);
+        Party party = partyRepository.findById(Integer.parseInt(groupId)).get();
+        if (userToAdd == null){
+            boolean userNameNotFound = false;
+            model.addAttribute("usernameNotFound", userNameNotFound);
+            boolean isPartOfGroup = true;
+            model.addAttribute("isPartOfGroup", isPartOfGroup);
+            model.addAttribute("party", party);
+            return "add_member";
+        }
+        if (party.getMembers().contains(userToAdd)){
+            boolean isPartOfGroup = false;
+            boolean userNameNotFound = true;
+            model.addAttribute("usernameNotFound", userNameNotFound);
+            model.addAttribute("isPartOfGroup", isPartOfGroup);
+            model.addAttribute("party", party);
+            return "add_member";
+        }
+        model.addAttribute("username", userToAdd.getUsername());
+        party.addMember(userToAdd);
+        userToAdd.addToGroupCreatedByAnotherUser(party);
+        userRepository.save(userToAdd);
+        partyRepository.save(party);
+        List<User> members = party.getMembers();
+        model.addAttribute("members", members);
+        model.addAttribute("party", party);
+        return "redirect:/party_list/" + groupId + "/members";
+    }
+
+    @GetMapping("/party_list/{groupId}/members/{memberId}")
+    public String showUserWishlist(Model model, @PathVariable String groupId, @PathVariable String memberId, @ModelAttribute ViewUserWishListDTO viewUserWishListDTO) {
+
+        Party party = partyRepository.findById(Integer.parseInt(groupId)).get();
+        User user = userRepository.findById(Integer.parseInt(memberId)).get();
+        List<WishList> wishLists = user.getWishLists();
+        model.addAttribute("member", user);
+        model.addAttribute("party", party);
+        model.addAttribute("wishLists", wishLists);
+        return "view_userwishlist";
+    }
+
+
+    @GetMapping("/party_list/{groupId}/members/{memberId}/{wishListId}")
+    public String showItemsInUserlist(@PathVariable String groupId, @PathVariable String memberId,
+                                      @PathVariable String wishListId, Model model){
+        Party party = partyRepository.findById(Integer.parseInt(groupId)).get();
+        User user = userRepository.findById(Integer.parseInt(memberId)).get();
+        WishList wishList = wishListRepository.findById(Integer.parseInt(wishListId)).get();
+        List<Item> items = itemRepository.findAllBywishList(wishList);
         model.addAttribute("party", party);
         model.addAttribute("user", user);
-        return "party_list";
-    }*/
+        model.addAttribute("wishList", wishList);
+        model.addAttribute("items", items);
+        return "view_userwishlist_items";
+    }
 
 
-
+    @PostMapping("/party_list/{groupId}/members/{memberId}/{wishListId}")
+    public String processItemsInUserList(@PathVariable String groupId, @PathVariable String memberId,
+                                        @PathVariable String wishListId, Model model,
+                                        @RequestParam(value="itemId", required = false) List<String> itemIds){
+        if (itemIds != null){
+            for (String itemid: itemIds){
+                Item item = itemRepository.findById(Integer.parseInt(itemid)).get();
+                item.setPurchased(!item.getPurchased());
+                itemRepository.save(item);
+            }
+        }
+        Party party = partyRepository.findById(Integer.parseInt(groupId)).get();
+        User user = userRepository.findById(Integer.parseInt(memberId)).get();
+        WishList wishList = wishListRepository.findById(Integer.parseInt(wishListId)).get();
+        List<Item> items = itemRepository.findAllBywishList(wishList);
+        model.addAttribute("party", party);
+        model.addAttribute("user", user);
+        model.addAttribute("wishList", wishList);
+        model.addAttribute("items", items);
+        return "redirect:/party_list/" + groupId + "/members/" + memberId + "/" + wishListId;
+    }
 
 }
