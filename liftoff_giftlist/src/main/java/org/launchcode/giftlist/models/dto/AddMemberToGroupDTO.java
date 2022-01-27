@@ -1,10 +1,17 @@
 package org.launchcode.giftlist.models.dto;
 
+import org.launchcode.giftlist.models.User;
+import org.launchcode.giftlist.repositories.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 public class AddMemberToGroupDTO {
+
+    @Autowired
+    UserRepository userRepository;
 
     @NotNull
     @NotBlank
@@ -13,8 +20,9 @@ public class AddMemberToGroupDTO {
 
 
     public String getUsername(){
-        return username;
+        return this.username;
     }
+
 
 
 }

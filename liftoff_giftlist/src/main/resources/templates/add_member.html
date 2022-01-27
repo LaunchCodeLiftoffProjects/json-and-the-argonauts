@@ -11,7 +11,8 @@
             <label th:for="username">Username
                 <input class="form-control" th:name="username">
             </label>
-            <p class="error"></p>
+            <p th:if="${!usernameNotFound}" class="error">username not found</p>
+            <p th:if="${!isPartOfGroup}" class="error">User is already a member of this group</p>
         </div>
         <input type="submit"
                class="btn btn-warning btn-lg"
