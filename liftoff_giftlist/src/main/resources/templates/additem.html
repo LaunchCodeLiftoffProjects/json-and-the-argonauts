@@ -4,27 +4,33 @@
 <body>
 <nav th:replace="fragments :: nav-header"></nav>
 
-<div>
-    <p th:text="${'Add item to list: ' + wishList.getName()}"></p>
-    <form class="mb-3" method="post">
+<div class="container p-3 my-3">
+        <div class="row justify-content-center align-items-center">
+    <h2 class="py-3 my-2 text-center" th:text="${'Add item to list: ' + wishList.getName()}"></h2>
+            <div class="col-9 col-md-6 col-lg-4 my-2 pt-3 rounded shadow border">
+    <form method="post">
     <label th:for="itemName" class="form-label">Item Name</label>
         <input type="text"
                id="itemName"
                class="form-control"
                th:field="${item.name}"
         />
-        <p class="error" th:errors="${item.name}"></p>
+        <p class="error form-text" th:errors="${item.name}"></p>
         <label th:for="itemDescription" class="form-label">Description</label>
         <input type="text"
                id="itemDescription"
                class="form-control"
                th:field="${item.description}"
         />
+        <div class="text-center py-3">
         <input type="submit"
                class="btn btn-warning btn-lg"
                value="Add Item"
         />
+        </div>
     </form>
+                </div>
+        </div>
 </div>
 
 <script th:replace="fragments :: js"></script>

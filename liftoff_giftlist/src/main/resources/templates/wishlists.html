@@ -20,7 +20,7 @@
         </thead>
         <tbody>
         <tr th:each="wishlist : ${wishlists}">
-            <td style="text-align: center; vertical-align: middle;"><input type="checkbox" th:name="wishlistid" th:value="${wishlist.getId()}"></td>
+            <td style="text-align: center; vertical-align: middle; width: 1% !important;"><input type="checkbox" th:name="wishlistid" th:value="${wishlist.getId()}"></td>
             <td th:text="${wishlist.getName()}"></td>
             <td th:text="${wishlist.getDescription()}"></td>
             <td align="center"><a class="link-secondary px-4" th:href="@{/wishlists/{id}(id=${wishlist.getId()})}">Edit</a></td>
