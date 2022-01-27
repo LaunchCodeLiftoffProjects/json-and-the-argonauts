@@ -38,6 +38,7 @@ public class User extends AbstractSuper {
     private static final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
 
+//  Constructors
     public User(String firstName, String lastName, String username, String email, String password){
         super();
         this.firstName = firstName;
@@ -54,6 +55,7 @@ public class User extends AbstractSuper {
     }
 
 
+//  Getters & Setters
     public String getEmail() {
         return email;
     }
@@ -110,6 +112,21 @@ public class User extends AbstractSuper {
         this.joinedParties = joinedParties;
     }
 
+//  Utility methods
+    public boolean isMatchingPassword(String password) {
+    return encoder.matches(password, pwHash);
+}
+
+    public void addOwnedParty(Party party) { this.ownedParties.add(party); }
+    public void removeOwnedParty(Party party) { this.ownedParties.remove(party); }
+
+    public void addJoinedParty(Party party) { this.joinedParties.add(party); }
+    public void removeJoinedParty(Party party) { this.joinedParties.remove(party); }
+
+    public Integer getUserID() {
+        return getId();
+    }
+
 
     @Override
     public String toString() {
@@ -124,20 +141,13 @@ public class User extends AbstractSuper {
                 '}';
     }
 
-
-    public boolean isMatchingPassword(String password) {
-        return encoder.matches(password, pwHash);
-    }
-
-    //Waiting to add all additional features for the password once we have the correct Hashing in place
-
-    public void findWishLists(){
-        //find all wishlists created by THIS USER
-    }
-
-    public void findSupaSpecificWishList(){
-        //find a list by the WishList ID
-    }
+//    public void findWishLists(){
+//        //find all wishlists created by THIS USER
+//    }
+//
+//    public void findSupaSpecificWishList(){
+//        //find a list by the WishList ID
+//    }
 
     public Boolean isPartyOwner(User user1, User user2){
         if (user1.equals(user2)){
@@ -153,7 +163,4 @@ public class User extends AbstractSuper {
         joinedParties.remove(party);
     }
 
-    public Integer getUserID() {
-        return getId();
-    }
 }

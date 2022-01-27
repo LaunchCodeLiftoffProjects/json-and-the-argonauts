@@ -25,79 +25,73 @@ public class WishList extends AbstractSuper{
     private User listOwner;
 
 
-
+//  Constructors
     public WishList(String name, String description, User listOwner){
-
         this.name = name;
         this.description = description;
         this.listOwner = listOwner;
     }
 
-    public WishList(){}
+    public WishList(){ }
 
-    public User getListOwner() {
-        return listOwner;
-    }
 
+//  Getters & Setters
     public String getName() {
         return name;
     }
-
     public void setName(String name) {
         this.name = name;
     }
-
     public String getDescription() {
         return description;
     }
-
     public void setDescription(String description) {
         this.description = description;
     }
-
+    public User getListOwner() {
+        return listOwner;
+    }
     public void setListOwner(User listOwner) {
         this.listOwner = listOwner;
     }
 
     public List<Item> getItems() {
+
         return items;
     }
-
     public void setItems(List items) {
         this.items = items;
     }
-
     public List<Party> getParties() {
         return parties;
     }
-
     public void setParties(List<Party> parties) {
         this.parties = parties;
     }
 
-    /*public void connectWishList(){
-
-    }*/
+//  Utility methods
     public void addNewItem(Item item){
         items.add(item);
     }
-
     public void removeItem(Item item){
         items.remove(item);
     }
-
     public int locateIndexOfItem(Item item){
         return items.indexOf(item);
     }
-
     public Item findItem(Item item){
         int foundItem = locateIndexOfItem(item);
         return (Item) items.get(foundItem);
     }
 
-    /*@Override
-    public String toString(){
-
-
-    }*/
+    @Override
+    public String toString() {
+        return "WishList{" +
+            "name='" + name + '\'' +
+            ", description='" + description + '\'' +
+            ", items=" + items +
+            ", parties=" + parties +
+            ", listOwner=" + listOwner +
+            '}';
+    }
 }

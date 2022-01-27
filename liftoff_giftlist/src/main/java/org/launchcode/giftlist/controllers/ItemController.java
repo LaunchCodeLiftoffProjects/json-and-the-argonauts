@@ -43,9 +43,8 @@ public class ItemController {
 
     @PostMapping("/wishlists/{id}/additem")
     public String processAddItemForm(@ModelAttribute @Valid Item item, Errors errors,
-                                        Model model, HttpSession session, @PathVariable String id) {
+                                           Model model, HttpSession session, @PathVariable String id) {
         if (errors.hasErrors()) {
-            model.addAttribute(new Item());
             WishList wishList = wishListRepository.findById(Integer.parseInt(id)).get();
             model.addAttribute("wishList", wishList);
             return "additem";
@@ -56,7 +55,7 @@ public class ItemController {
         User user = userRepository.findById(currentUserId).get();
         List<WishList> wishlists =  wishListRepository.findAllBylistOwner(user);
         model.addAttribute("wishlists", wishlists);
-        return "wishlists";
+        return "redirect:/wishlists/" + id + "/items";
     }
 
     @GetMapping("wishlists/{listid}/items/edit/{itemid}")
@@ -69,13 +68,16 @@ public class ItemController {
     }
 
     @PostMapping("wishlists/{listid}/items/edit/{itemid}")
-    public RedirectView processEditItemForm(@PathVariable String listid, @PathVariable String itemid,
-                                            @Valid @ModelAttribute UpdateItemDetailsDTO updateItemDetailsDTO) {
+    public String processEditItemForm(@PathVariable String listid, @PathVariable String itemid,
+                                            @Valid @ModelAttribute Item editItem, Errors errors) {
+        if (errors.hasErrors()) {
+            return "item_details";
+        }
         Item item = itemRepository.findById(Integer.parseInt(itemid)).get();
-        item.setName(updateItemDetailsDTO.getName());
-        item.setDescription(updateItemDetailsDTO.getDescription());
+        item.setName(editItem.getName());
+        item.setDescription(editItem.getDescription());
         itemRepository.save(item);
-        return new RedirectView("/wishlists/" + listid + "/items");
+        return "redirect:/wishlists/" + listid + "/items";
     }
 
 }

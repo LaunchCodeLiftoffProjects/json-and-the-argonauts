@@ -1,43 +1,98 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org/">
 <head th:replace="fragments :: head"></head>
-<body class="container">
+<body>
 
-<header th:replace="fragments :: nav-header"></header>
+<!-- Navbar content -->
+<nav class="navbar navbar-expand-md navbar-light">
+    <div class="container-xxl">
+        <a href="/index" class="navbar-brand">
+          <span
+              class="fw-bold fst-italic"
+              style="font-size: 1.7em; color: rgb(204, 41, 41)"
+          >Gift</span
+          ><span
+            class="fw-bold fst-italic"
+            style="font-size: 1.7em; color: rgb(48, 168, 48)"
+        >opedia</span
+        >
+        </a>
+        <!-- Toggle button for mobile-friendly nav drop-down -->
+        <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#main-nav"
+            aria-controls="main-nav"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+        >
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div
+            class="collapse navbar-collapse justify-content-end align-center"
+            id="main-nav"
+        >
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a
+                        href="https://github.com/LaunchCodeLiftoffProjects/json-and-the-argonauts"
+                        target="_blank"
+                        class="nav-link fw-bold"
+                    >About</a
+                    >
+                </li>
+                <li class="nav-item">
+                    <a href="/register" class="nav-link fw-bold">Register</a>
+                </li>
+                <li class="nav-item d-md-none">
+                    <a href="/index" class="nav-link fw-bold">Back</a>
+                </li>
+                <li class="nav-item ms-2 d-none d-md-inline">
+                    <a href="/index" class="btn btn-secondary">Back</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
 
 <div class="container p-3 my-3">
-    <div class="row justify-content-around align-items-center">
-        <div class="col-8 col-lg-4 my-2 rounded shadow border">
-            <h2 class="py-3 text-center">Log in</h2>
-                <form method="post">
-                    <div class="form-group">
-                        <label th:for="username">Username
-                            <input class="form-control" th:field="${loginFormDTO.username}">
-                        </label>
-                        <p class="error" th:errors="${loginFormDTO.username}"></p>
-                    </div>
-                    <div class="form-group">
-                        <label>Password
-                            <input class="form-control" th:field="${loginFormDTO.password}" type="password">
-                        </label>
-                            <p class="error" th:errors="${loginFormDTO.password}"></p>
-                    </div>
+    <div class="row justify-content-center align-items-center">
+        <h2 class="py-3 my-2 text-center">Log Into Your Account</h2>
+        <div class="col-9 col-md-6 col-lg-4 my-2 pt-3 rounded shadow border">
+            <form method="post">
+                <div>
+                    <label th:for="username" class="form-label">Username</label>
+                    <input
+                        class="form-control"
+                        id="username"
+                        th:field="${loginFormDTO.username}"
+                    />
+                    <p class="error form-text" th:errors="${loginFormDTO.username}"></p>
+                </div>
+                <div>
+                    <label th:for="password" class="form-label">Password</label>
+                    <input
+                        class="form-control"
+                        id="password"
+                        th:field="${loginFormDTO.password}"
+                        type="password"
+                    />
+                    <p class="error form-text" th:errors="${loginFormDTO.password}"></p>
+                </div>
 
-                    <div class="text-center">
-                        <p>
-
-
-                        </p>
-                    <input type="submit" class="btn btn-primary" value="Log in"/>
-                    </div>
-                </form>
-            <p>
-
-
-
-
+                <div class="text-center pt-3">
+                    <input
+                        type="submit"
+                        class="btn btn-warning btn-lg"
+                        value="Log In"
+                    />
+                </div>
+            </form>
+            <p></p>
+            <p class="text-center">
+                Don't have an account? <a href="/register">Register for one!</a>
             </p>
-<p class="text-center">Don't have an account? <a href="/register">Register for one!</a></p>
         </div>
     </div>
 </div>

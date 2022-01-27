@@ -23,17 +23,33 @@ public class Party extends AbstractSuper{
     private List<WishList> memberWishLists = new ArrayList<>();
 
 
-    public Party(String name, String description, User partyOwner){
+//  Constructors
+    public Party(String name, String description){
         this.name = name;
         this.description = description;
-        this.partyOwner = partyOwner;
     }
 
-    public Party(){
+    public Party(){}
+
+
+//  Getters & Setters
+    public String getName() {
+    return name;
+}
+
+    public void setName(String name) {
+        this.name = name;
     }
 
+    public String getDescription() {
+        return description;
+    }
 
-    public User getOwner() {
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public User getPartyOwner() {
         return partyOwner;
     }
 
@@ -49,27 +65,33 @@ public class Party extends AbstractSuper{
         this.members = members;
     }
 
-    public String getName() {
-        return name;
-    }
+    public List<WishList> getMemberWishLists() { return memberWishLists; }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+    public void setMemberWishLists(List<WishList> memberWishLists) { this.memberWishLists = memberWishLists; }
 
-    public String getDescription() {
-        return description;
-    }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
+//  Utility methods
     public void addMember(User user){
         this.members.add(user);
     }
 
-    public void removeMember(User user) {this.members.remove(user);}
+    public void removeMember(User user) { this.members.remove(user);}
+
+    public void addWishList(WishList wishList) { this.memberWishLists.add(wishList);}
+
+    public void removeWishList(WishList wishList) { this.memberWishLists.remove(wishList);}
+
+
+    @Override
+    public String toString() {
+        return "Party{" +
+            "name='" + name + '\'' +
+            ", description='" + description + '\'' +
+            ", partyOwner=" + partyOwner +
+            ", members=" + members +
+            ", memberWishLists=" + memberWishLists +
+            '}';
+    }
 
 
 }
