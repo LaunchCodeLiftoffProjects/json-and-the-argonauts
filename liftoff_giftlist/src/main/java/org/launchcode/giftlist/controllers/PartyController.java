@@ -177,7 +177,7 @@ public class PartyController {
     }
 
     @PostMapping("/party_list/{groupId}/add_member")
-    public String processAddMemberForm(@PathVariable String groupId, Model model, @RequestParam(value = "username") String username) {
+    public String processAddMemberForm(@PathVariable String groupId, Model model, @RequestParam(value = "username", required = false) String username) {
 
         User userToAdd = userRepository.findByUsername(username);
         /*if (errors.hasErrors()) {
@@ -261,7 +261,7 @@ public class PartyController {
         model.addAttribute("user", user);
         model.addAttribute("wishList", wishList);
         model.addAttribute("items", items);
-        return "redirect:";
+        return "redirect:/party_list/" + groupId + "/members/" + memberId + "/" + wishListId;
     }
 
 }
