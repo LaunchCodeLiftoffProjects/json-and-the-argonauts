@@ -1,3 +1,16 @@
 .error {
   color: red;
 }
+
+th {
+    text-align: center;
+}
+
+tfoot td, tfoot tr, .spacer td {
+    border: none;
+}
+
+table {
+    border-bottom: hidden!important;
+}
+
