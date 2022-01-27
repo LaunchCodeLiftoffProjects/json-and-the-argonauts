@@ -46,7 +46,7 @@ public class PartyController {
         List<Party> ownedParties = partyRepository.findAllByPartyOwner(currentUser);
         List<Party> allParties = partyRepository.findAllByMembers(currentUser);
         for (Party parti: allParties){
-            if (parti.getOwner().getUserID() == currentUserId){
+            if (parti.getPartyOwner().getUserID() == currentUserId){
                 Party party = partyRepository.findById(parti.getId()).get();
                 model.addAttribute("party", party);
                 Boolean isOwner = true;
@@ -102,7 +102,7 @@ public class PartyController {
         Party party = partyRepository.findById(Integer.parseInt(groupId)).get();
         Integer currentUserObj = (Integer) session.getAttribute("user");
         User currentUser = userRepository.findById(currentUserObj).get();
-        User partyOwner = party.getOwner();
+        User partyOwner = party.getPartyOwner();
         Boolean isOwner = currentUser.isPartyOwner(currentUser, partyOwner);
         model.addAttribute("isOwner", isOwner);
         model.addAttribute("party", party);
@@ -126,7 +126,7 @@ public class PartyController {
         List<User> members = party.getMembers();
         Integer currentUserObj = (Integer) session.getAttribute("user");
         User currentUser = userRepository.findById(currentUserObj).get();
-        User partyOwner = party.getOwner();
+        User partyOwner = party.getPartyOwner();
         Boolean isOwner = currentUser.isPartyOwner(currentUser, partyOwner);
         model.addAttribute("isOwner", isOwner);
         model.addAttribute("members", members);

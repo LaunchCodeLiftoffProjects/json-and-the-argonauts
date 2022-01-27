@@ -63,7 +63,7 @@ public class UserController {
 
 
 
-  @GetMapping("party_list")
+  @GetMapping("party_list1")
   public String displayGroupList(Model model){
 
    return "party_list";
