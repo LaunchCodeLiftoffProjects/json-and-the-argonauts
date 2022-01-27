@@ -26,15 +26,25 @@
                 <th>Select</th>
                 <th>Name</th>
                 <th>Description</th>
-                <th colspan="3" style="text-align: center">Operation</th>
+                <th th:if="${isOwner}" colspan="3" style="text-align: center">Operation</th>
             </tr>
             <tr th:each="party : ${allParties}">
-                <td><input type="checkbox" th:name="groupId" th:value="${party.getId()}"></td>
+                <div th:if="${isOwner}">
+                <td ><input type="checkbox" th:name="groupId" th:value="${party.getId()}"></td>
+                </div>
+                <div th:if="${!isOwner}">
                 <td th:text="${party.getName()}"></td>
-                <td th:text="${party.getDescription()}"></td>
-                <td><a th:if="${isOwner}" th:href="@{/party_list/{groupId}(groupId=${party.getId()})}">Edit</a></td>
-                <td><a th:href="@{/party_list/{groupId}/members(groupId=${party.getId()})}">View Members</a></td>
-                <td><a th:if="${isOwner}" th:href="@{/party_list/{groupId}/add_member(groupId=${party.getId()})}">Add Member</a></td>
+                </div>
+                <div th:if="${!isOwner}">
+                    <td th:text="${party.getDescription()}"></td>
+                </div>
+                <div th:if="${isOwner}">
+                <td ><a th:href="@{/party_list/{groupId}(groupId=${party.getId()})}">Edit</a></td>
+                </div>
+                <td ><a th:href="@{/party_list/{groupId}/members(groupId=${party.getId()})}">View Members</a></td>
+                <div th:if="${isOwner}">
+                <td ><a th:href="@{/party_list/{groupId}/add_member(groupId=${party.getId()})}">Add Member</a></td>
+                </div>
             </tr>
         </table>
         <input type="submit"

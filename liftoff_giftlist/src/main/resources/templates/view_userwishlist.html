@@ -18,9 +18,12 @@
 
             </tr>
         </table>
+        <button type="submit" formaction="/party_list">Back to my groups</button>
+        <form>
+            <input type="button" value="View other Members of this group" onclick="history.go(-1)">
+        </form>
     </form>
 </div>
-
 
 <script th:replace="fragments :: js"></script>
 </body>

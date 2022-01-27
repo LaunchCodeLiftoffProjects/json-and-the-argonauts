@@ -37,11 +37,22 @@ public class PartyController {
     ItemRepository itemRepository;
 
     @GetMapping("/party_list")
-    public String showAllGroups(Model model, HttpSession session) {
+    public String showAllGroups(Model model, HttpSession session, @RequestParam(value = "memberId", required = false) List<String> memberIds) {
+
+
         Integer currentUserId = (Integer) session.getAttribute("user");
         User currentUser = userRepository.findById(currentUserId).get();
         List<Party> ownedParties = partyRepository.findAllByPartyOwner(currentUser);
         List<Party> allParties = partyRepository.findAllByMembers(currentUser);
+        for (Party parti: allParties){
+            if (parti.getOwner().getUserID() == currentUserId){
+                Party party = partyRepository.findById(parti.getId()).get();
+                model.addAttribute("party", party);
+                Boolean isOwner = true;
+                model.addAttribute("isOwner", isOwner);
+            }
+            model.addAttribute("isOwner", false);
+        }
         model.addAttribute("ownedParties", ownedParties);
         model.addAttribute("allParties", allParties);
         model.addAttribute("user", currentUser);
@@ -108,8 +119,14 @@ public class PartyController {
     public String showMembers(Model model, HttpSession session, @PathVariable String groupId, String username, @ModelAttribute ViewUserWishListDTO viewUserWishListDTO) {
         Party party = partyRepository.findById(Integer.parseInt(groupId)).get();
         List<User> members = party.getMembers();
+        Integer currentUserObj = (Integer) session.getAttribute("user");
+        User currentUser = userRepository.findById(currentUserObj).get();
+        User partyOwner = party.getOwner();
+        Boolean isOwner = currentUser.isPartyOwner(currentUser, partyOwner);
+        model.addAttribute("isOwner", isOwner);
         model.addAttribute("members", members);
         model.addAttribute("party", party);
+
         return "members";
 
 
@@ -149,7 +166,7 @@ public class PartyController {
         model.addAttribute("party", party);
         model.addAttribute("members", members);
 
-        return "redirect:";
+        return "redirect:members";
     }
 
     @GetMapping("/party_list/{groupId}/add_member")
