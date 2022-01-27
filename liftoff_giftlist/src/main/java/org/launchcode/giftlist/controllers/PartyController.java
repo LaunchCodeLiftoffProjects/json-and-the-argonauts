@@ -155,24 +155,36 @@ public class PartyController {
 
     @GetMapping("/party_list/{groupId}/add_member")
     public String renderAddMemberForm(@PathVariable String groupId, Model model) {
-        Party party = partyRepository.findById(Integer.parseInt(groupId)).get();
-        model.addAttribute("party", party);
-        return ("add_member");
+            boolean userNameNotFound = true;
+            boolean isPartOfGroup = true;
+            model.addAttribute("usernameNotFound", userNameNotFound);
+            model.addAttribute("isPartOfGroup", isPartOfGroup);
+            Party party = partyRepository.findById(Integer.parseInt(groupId)).get();
+            model.addAttribute("party", party);
+            return ("add_member");
     }
 
     @PostMapping("/party_list/{groupId}/add_member")
-    public String processAddMemberForm(@PathVariable String groupId, Model model, @RequestParam(value = "username", required = false) String username) {
-
+    public String processAddMemberForm(@PathVariable String groupId, Model model, @RequestParam(value = "username", required = false) String username){
         User userToAdd = userRepository.findByUsername(username);
-        /*if (errors.hasErrors()) {
-            return "redirect:";
-        }
-        if (userToAdd == null) {
-            errors.rejectValue("username", "user.invalid", "The given username does not exist");
-            return "redirect:";
-        }*/
-        model.addAttribute("username", userToAdd.getUsername());
         Party party = partyRepository.findById(Integer.parseInt(groupId)).get();
+        if (userToAdd == null){
+            boolean userNameNotFound = false;
+            model.addAttribute("usernameNotFound", userNameNotFound);
+            boolean isPartOfGroup = true;
+            model.addAttribute("isPartOfGroup", isPartOfGroup);
+            model.addAttribute("party", party);
+            return "add_member";
+        }
+        if (party.getMembers().contains(userToAdd)){
+            boolean isPartOfGroup = false;
+            boolean userNameNotFound = true;
+            model.addAttribute("usernameNotFound", userNameNotFound);
+            model.addAttribute("isPartOfGroup", isPartOfGroup);
+            model.addAttribute("party", party);
+            return "add_member";
+        }
+        model.addAttribute("username", userToAdd.getUsername());
         party.addMember(userToAdd);
         userToAdd.addToGroupCreatedByAnotherUser(party);
         userRepository.save(userToAdd);
