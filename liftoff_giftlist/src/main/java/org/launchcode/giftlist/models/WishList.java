@@ -54,7 +54,9 @@ public class WishList extends AbstractSuper{
     public void setListOwner(User listOwner) {
         this.listOwner = listOwner;
     }
-    public List getItems() {
+
+    public List<Item> getItems() {
+
         return items;
     }
     public void setItems(List items) {

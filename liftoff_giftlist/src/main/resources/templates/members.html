@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head th:replace="fragments :: head"></head>
+<body>
+<nav th:replace="fragments :: nav-header"></nav>
+
+<div>
+    <form method="post">
+        <table class="table">
+            <tr>
+                <th th:if="${isOwner}">Select</th>
+                <th>Name</th>
+                <th>Wishlist</th>
+            </tr>
+            <tr th:each="member : ${members}">
+                <td th:if="${isOwner}"><input type="checkbox" th:name="memberId" th:value="${member.getId()}"></td>
+                <td th:text="${member.getFirstName()}"></td>
+                <td> <a th:href="@{/party_list/{groupId}/members/{memberId}(groupId=${party.getId()}, memberId=${member.getId()})}">Wishlist</a></td>
+            </tr>
+        </table>
+        <input th:if="${isOwner}" type="submit"
+               class="btn btn-danger"
+               value="Delete Selected Members"/>
+
+        <button type="submit" formaction="/party_list">Back to my groups</button>
+        <div th:if="${isOwner}">
+            <a th:href="@{/party_list/{groupId}/add_member(groupId=${party.getId()})}">Need another friend? Add one!</a>
+        </div>
+    </form>
+</div>
+
+
+<script th:replace="fragments :: js"></script>
+</body>
+</html>

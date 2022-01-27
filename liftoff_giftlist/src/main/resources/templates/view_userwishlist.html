@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head th:replace="fragments :: head"></head>
+<body>
+<nav th:replace="fragments :: nav-header"></nav>
+
+<div>
+    <form method="post">
+        <table class="table">
+            <tr>
+                <th>Name of Wishlist</th>
+                <th>Items</th>
+            </tr>
+            <tr th:each="wishList : ${wishLists}">
+                <td th:text="${wishList.getName()}"></td>
+                <td> <a th:href="@{/party_list/{groupId}/members/{memberId}/{wishListId}(groupId=${party.getId()}, memberId=${member.getId()}, wishListId=${wishList.getId()})}">View Items</a></td>
+
+
+            </tr>
+        </table>
+        <button type="submit" formaction="/party_list">Back to my groups</button>
+        <form>
+            <input type="button" value="View other Members of this group" onclick="history.go(-1)">
+        </form>
+    </form>
+</div>
+
+<script th:replace="fragments :: js"></script>
+</body>
+</html>

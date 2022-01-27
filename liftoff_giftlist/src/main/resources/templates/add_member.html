@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head th:replace="fragments :: head"></head>
+<body>
+<nav th:replace="fragments :: nav-header"></nav>
+
+<div>
+    <p th:text="${'Add member to group: ' + party.getName()}"></p>
+    <form class="mb-3" method="post">
+        <div class="form-group">
+            <label th:for="username">Username
+                <input class="form-control" th:name="username">
+            </label>
+            <p class="error"></p>
+        </div>
+        <input type="submit"
+               class="btn btn-warning btn-lg"
+               value="Add User to group"
+        />
+    </form>
+</div>
+
+<script th:replace="fragments :: js"></script>
+</body>
+</html>

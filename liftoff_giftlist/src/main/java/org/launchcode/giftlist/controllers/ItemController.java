@@ -3,6 +3,7 @@ package org.launchcode.giftlist.controllers;
 import org.launchcode.giftlist.models.Item;
 import org.launchcode.giftlist.models.User;
 import org.launchcode.giftlist.models.WishList;
+import org.launchcode.giftlist.models.dto.UpdateItemDetailsDTO;
 import org.launchcode.giftlist.repositories.ItemRepository;
 import org.launchcode.giftlist.repositories.UserRepository;
 import org.launchcode.giftlist.repositories.WishListRepository;
@@ -14,7 +15,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.view.RedirectView;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.List;
