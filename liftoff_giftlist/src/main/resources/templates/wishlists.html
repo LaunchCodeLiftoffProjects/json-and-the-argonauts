@@ -20,7 +20,8 @@
         </thead>
         <tbody>
         <tr th:each="wishlist : ${wishlists}">
-            <td style="text-align: center; vertical-align: middle; width: 1% !important;"><input type="checkbox" th:name="wishlistid" th:value="${wishlist.getId()}"></td>
+            <td style="text-align: center; vertical-align: middle; width: 1% !important;">
+                <input type="checkbox" th:name="wishlistid" th:value="${wishlist.getId()}"></td>
             <td th:text="${wishlist.getName()}"></td>
             <td th:text="${wishlist.getDescription()}"></td>
             <td align="center"><a class="link-secondary px-4" th:href="@{/wishlists/{id}(id=${wishlist.getId()})}">Edit</a></td>
@@ -34,10 +35,10 @@
             </tr>
             <tr>
                 <td colspan="2" align="left"><input type="submit"
-                           class="btn btn-danger span2 px-3"
+                           class="btn btn-danger px-3"
                            value="Delete Selected Wish Lists" /></td>
                 <td colspan="2"></td>
-                <td colspan="2" align="right"><a class="btn btn-warning span2 px-3" th:href="@{/createlist}">Create New Wish List</a></td>
+                <td colspan="2" align="right"><a class="btn btn-warning px-3" th:href="@{/createlist}">Create New Wish List</a></td>
             </tr>
         </tfoot>
     </table>

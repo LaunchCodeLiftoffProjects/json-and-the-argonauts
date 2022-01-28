@@ -4,7 +4,10 @@
 <body>
 <nav th:replace="fragments :: nav-header"></nav>
 
-<div>
+<div class="container p-3 my-3">
+    <div class="row justify-content-center align-items-center">
+        <h2 class="py-3 my-2 text-center">Edit Group Details</h2>
+        <div class="col-9 col-md-6 col-lg-4 my-2 pt-3 rounded shadow border">
     <form class="mb-3" method="post">
         <label for="name">Name: </label>
         <input type="text"
@@ -21,13 +24,16 @@
                class="form-control"
                th:value="${party.getDescription()}"
         />
-
+        <div class="text-center py-3">
         <input
                 type="submit"
                 class="btn btn-warning btn-lg"
                 value="Update Group Details"
         />
+        </div>
     </form>
+            </div>
+        </div>
 </div>
 
 <script th:replace="fragments :: js"></script>

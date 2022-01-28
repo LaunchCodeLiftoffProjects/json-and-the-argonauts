@@ -3,26 +3,34 @@
 <head th:replace="fragments :: head"></head>
 <body>
 <nav th:replace="fragments :: nav-header"></nav>
-
-<div>
-    <form method="post">
-        <table class="table">
-            <tr>
-                <th>Name of Wishlist</th>
-                <th>Items</th>
+<div class="row justify-content-center my-4">
+    <h2 class="text-center" th:text="${'Wishlists for ' + member.getFirstName()}"></h2>
+</div>
+<div class="container">
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover">
+                <thead>
+            <tr class="bg-info">
+                <th scope="col">Name of Wishlist</th>
+                <th scope="col">Items</th>
             </tr>
+                </thead>
+                <tbody>
             <tr th:each="wishList : ${wishLists}">
                 <td th:text="${wishList.getName()}"></td>
-                <td> <a th:href="@{/party_list/{groupId}/members/{memberId}/{wishListId}(groupId=${party.getId()}, memberId=${member.getId()}, wishListId=${wishList.getId()})}">View Items</a></td>
-
-
+                <td align="center"> <a class="link-secondary" th:href="@{/party_list/{groupId}/members/{memberId}/{wishListId}(groupId=${party.getId()}, memberId=${member.getId()}, wishListId=${wishList.getId()})}">View Items</a></td>
             </tr>
+                </tbody>
+                <tfoot>
+                <tr class="spacer">
+                    <td colspan="2"></td>
+                </tr>
+                <tr>
+                    <td align="left"><a class="btn btn-secondary" th:href="@{/party_list}">Back to My Groups</a></td>
+                    <td align="right"><button class="btn btn-secondary" onclick="history.go(-1)">Back to Group Members</button></td>
+                </tr>
+                </tfoot>
         </table>
-        <button type="submit" formaction="/party_list">Back to my groups</button>
-        <form>
-            <input type="button" value="View other Members of this group" onclick="history.go(-1)">
-        </form>
-    </form>
 </div>
 
 <script th:replace="fragments :: js"></script>

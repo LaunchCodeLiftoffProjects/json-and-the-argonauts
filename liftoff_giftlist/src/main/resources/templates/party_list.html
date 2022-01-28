@@ -3,55 +3,74 @@
 <head th:replace="fragments :: head"></head>
 <body>
 <nav th:replace="fragments :: nav-header"></nav>
-<div>
-    <form class="mb-3" method="post">
-        <table class="table">Groups you manage!
-            <tr>
-                <th>Select</th>
-                <th>Name</th>
-                <th>Description</th>
-                <th colspan="3" style="text-align: center">Operation</th>
+<div class="row justify-content-center my-4">
+    <h2 class="text-center">Owned Groups</h2>
+</div>
+<div class="container">
+    <form method="post">
+        <div class="table-responsive">
+        <table class="table table-bordered table-hover">
+        <thead>
+            <tr class="bg-info">
+                <th scope="col">Select</th>
+                <th scope="col">Name</th>
+                <th scope="col">Description</th>
+                <th scope="colgroup" colspan="3">Action</th>
             </tr>
+        </thead>
+            <tbody>
             <tr th:each="party : ${ownedParties}">
-                <td><input type="checkbox" th:name="groupId" th:value="${party.getId()}"></td>
+                <td style="text-align: center; vertical-align: middle; width: 1% !important;"><input type="checkbox" th:name="groupId" th:value="${party.getId()}"></td>
                 <td th:text="${party.getName()}"></td>
                 <td th:text="${party.getDescription()}"></td>
-                <td><a th:href="@{/party_list/{groupId}(groupId=${party.getId()})}">Edit</a></td>
-                <td><a th:href="@{/party_list/{groupId}/members(groupId=${party.getId()})}">View Members</a></td>
-                <td><a th:href="@{/party_list/{groupId}/add_member(groupId=${party.getId()})}">Add Member</a></td>
+                <td align="center"><a class="link-secondary" th:href="@{/party_list/{groupId}(groupId=${party.getId()})}">Edit</a></td>
+                <td align="center"><a class="link-secondary" th:href="@{/party_list/{groupId}/members(groupId=${party.getId()})}">View Members</a></td>
+                <td align="center"><a class="link-secondary" th:href="@{/party_list/{groupId}/add_member(groupId=${party.getId()})}">Add Member</a></td>
             </tr>
+            </tbody>
+            <tfoot>
+            <tr class="spacer">
+                <td colspan="6"></td>
+            </tr>
+                <tr>
+                    <td colspan="2" align="left"><input type="submit"
+                               class="btn btn-danger"
+                               value="Delete selected Group" /></td>
+                    <td colspan="2"></td>
+                    <td colspan="2" align="right"><a class="btn btn-warning span2 px-3" th:href="@{/createparty}">Create New Group</a></td>
+                </tr>
+            </tfoot>
         </table>
-        <table class="table">All groups!
-            <tr>
-                <th>Select</th>
-                <th>Name</th>
-                <th>Description</th>
-                <th th:if="${isOwner}" colspan="3" style="text-align: center">Operation</th>
-            </tr>
-            <tr th:each="party : ${allParties}">
-                <div th:if="${isOwner}">
-                <td ><input type="checkbox" th:name="groupId" th:value="${party.getId()}"></td>
-                </div>
-                <div th:if="${!isOwner}">
-                <td th:text="${party.getName()}"></td>
-                </div>
-                <div th:if="${!isOwner}">
-                    <td th:text="${party.getDescription()}"></td>
-                </div>
-                <div th:if="${isOwner}">
-                <td ><a th:href="@{/party_list/{groupId}(groupId=${party.getId()})}">Edit</a></td>
-                </div>
-                <td ><a th:href="@{/party_list/{groupId}/members(groupId=${party.getId()})}">View Members</a></td>
-                <div th:if="${isOwner}">
-                <td ><a th:href="@{/party_list/{groupId}/add_member(groupId=${party.getId()})}">Add Member</a></td>
-                </div>
-            </tr>
-        </table>
-        <input type="submit"
-               class="btn btn-danger"
-               value="Delete selected Group" />
+        </div>
     </form>
+    </div>
+<div class="row justify-content-center my-4">
+    <h2 class="text-center">All Groups</h2>
 </div>
-<a th:href="@{/createparty}">Create New Group</a>
+<div class="container">
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover">
+                <thead>
+                <tr class="bg-info">
+                    <th scope="col">Name</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="party : ${allParties}">
+                    <td th:text="${party.getName()}"></td>
+                    <td th:text="${party.getDescription()}"></td>
+                    <td align="center"><a class="link-secondary" th:href="@{/party_list/{groupId}/members(groupId=${party.getId()})}">View Members</a></td>
+                </tr>
+                </tbody>
+                <tfoot>
+                <tr class="spacer">
+                    <td colspan="3"></td>
+                </tr>
+                </tfoot>
+            </table>
+        </div>
+</div>
 </body>
 </html>

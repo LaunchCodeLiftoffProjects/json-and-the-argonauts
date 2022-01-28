@@ -3,35 +3,47 @@
 <head th:replace="fragments :: head"></head>
 <body>
 <nav th:replace="fragments :: nav-header"></nav>
-
-<div>
+<div class="row justify-content-center my-4">
+    <h1 class="text-center">My Wish Lists</h1>
+</div>
+<div class="container">
     <form method="post">
-        <table class="table">
-            <tr>
-                <th>Select</th>
-                <th>Name</th>
-                <th>Description</th>
+        <div class="table-responsive">
+        <table class="table table-bordered table-hover">
+            <thead>
+            <tr class="bg-info">
+                <th scope="col">Select</th>
+                <th scope="col">Name</th>
+                <th scope="col">Description</th>
+                <th scope="col">Purchased?</th>
             </tr>
+            </thead>
+            <tbody>
             <tr th:each="item : ${items}">
-                <td><input type="checkbox" th:name="itemid" th:value="${item.getId()}"></td>
+                <td style="text-align: center; vertical-align: middle; width: 1% !important;">
+                    <input type="checkbox" th:name="itemId" th:value="${item.getId()}"></td>
                 <td th:text="${item.getName()}"></td>
                 <td th:text="${item.getDescription()}"></td>
+                <td th:if="${item.getPurchased()}">Yes</td>
+                <td th:if="${!item.getPurchased()}">No</td>
             </tr>
+            </tbody>
+            <tfoot>
+            <tr class="spacer">
+                <td colspan="3"></td>
+            </tr>
+            <tr>
+                <td><input type="submit"
+                           class="btn btn-warning"
+                           value="Toggle Purchase Status" /></td>
+            </tr>
+            </tfoot>
         </table>
-        <input type="submit"
-               class="btn btn-danger"
-               value="Toggle purchase status" />
-
-        <button type="submit" formaction="/party_list">Back to my groups</button>
-        <form>
-            <input type="button" value="View other Members of this group" onclick="history.go(-2)">
-        </form>
-        <form>
-            <input type="button" value="View additional wishlists of this Member" onclick="history.go(-1)">
-        </form>
+        </div>
 
     </form>
-</div>
+    </div>
+
 
 
 <script th:replace="fragments :: js"></script>

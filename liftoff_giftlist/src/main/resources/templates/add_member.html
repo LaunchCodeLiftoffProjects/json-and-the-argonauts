@@ -4,21 +4,25 @@
 <body>
 <nav th:replace="fragments :: nav-header"></nav>
 
-<div>
-    <p th:text="${'Add member to group: ' + party.getName()}"></p>
-    <form class="mb-3" method="post">
-        <div class="form-group">
-            <label th:for="username">Username
+<div class="container p-3 my-3">
+    <div class="row justify-content-center align-items-center">
+        <h3 class="py-3 my-2 text-center" th:text="${'Add member to group: ' + party.getName()}"></h3>
+        <div class="col-9 col-md-6 col-lg-4 my-2 pt-3 rounded shadow border">
+    <form method="post">
+            <label th:for="username">Username </label>
                 <input class="form-control" th:name="username">
-            </label>
-            <p th:if="${!usernameNotFound}" class="error">username not found</p>
-            <p th:if="${!isPartOfGroup}" class="error">User is already a member of this group</p>
-        </div>
+            <p th:if="${!usernameNotFound}" class="error form-text">username not found</p>
+            <p th:if="${!isPartOfGroup}" class="error form-text">user is already a member of this group</p>
+
+        <div class="text-center py-3">
         <input type="submit"
                class="btn btn-warning btn-lg"
-               value="Add User to group"
+               value="Add User"
         />
+        </div>
     </form>
+            </div>
+        </div>
 </div>
 
 <script th:replace="fragments :: js"></script>

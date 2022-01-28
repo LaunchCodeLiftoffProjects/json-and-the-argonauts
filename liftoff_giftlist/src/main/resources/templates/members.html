@@ -4,30 +4,68 @@
 <body>
 <nav th:replace="fragments :: nav-header"></nav>
 
-<div>
+<div class="row justify-content-center my-4">
+    <h1 class="text-center" th:text="${'Members of ' + party.getName()}"></h1>
+</div>
+<!-- group owner view of members -->
+<div class="container" th:if="${isOwner}">
     <form method="post">
-        <table class="table">
-            <tr>
-                <th th:if="${isOwner}">Select</th>
-                <th>Name</th>
-                <th>Wishlist</th>
+        <div class="table-responsive">
+        <table class="table table-bordered table-hover">
+            <thead>
+            <tr class="bg-info">
+                <th scope="col">Select</th>
+                <th scope="col">Name</th>
+                <th scope="col">Wishlists</th>
             </tr>
+            </thead>
+            <tbody>
             <tr th:each="member : ${members}">
-                <td th:if="${isOwner}"><input type="checkbox" th:name="memberId" th:value="${member.getId()}"></td>
-                <td th:text="${member.getFirstName()}"></td>
-                <td> <a th:href="@{/party_list/{groupId}/members/{memberId}(groupId=${party.getId()}, memberId=${member.getId()})}">Wishlist</a></td>
+                <td style="text-align: center; vertical-align: middle; width: 1% !important;"><input type="checkbox" th:name="memberId" th:value="${member.getId()}"></td>
+                <td th:text="${member.getFirstName() + ' ' + member.getLastName()}"></td>
+                <td align="center"> <a class="link-secondary" th:href="@{/party_list/{groupId}/members/{memberId}(groupId=${party.getId()}, memberId=${member.getId()})}">View Wishlists</a></td>
             </tr>
-        </table>
-        <input th:if="${isOwner}" type="submit"
-               class="btn btn-danger"
-               value="Delete Selected Members"/>
+            </tbody>
+            <tfoot>
+                <tr class="spacer">
+                    <td colspan="3"></td>
+                </tr>
+            <tr>
+                <td align="left"><input type="submit"
+                           class="btn btn-danger"
+                           value="Remove Selected Members"/>
 
-        <button type="submit" formaction="/party_list">Back to my groups</button>
-        <div th:if="${isOwner}">
-            <a th:href="@{/party_list/{groupId}/add_member(groupId=${party.getId()})}">Need another friend? Add one!</a>
+                </td>
+                <td colspan="1"></td>
+                <td align="right"><a class="btn btn-warning px-3" th:href="@{/party_list/{groupId}/add_member(groupId=${party.getId()})}">Add Member</a></td>
+            </tr>
+            </tfoot>
+        </table>
         </div>
     </form>
 </div>
+<!-- non-owner view of members -->
+<div class="container" th:if="${!isOwner}">
+    <form method="post">
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover">
+                <thead>
+                <tr class="bg-info">
+                    <th scope="col">Name</th>
+                    <th scope="col">Wishlist</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="member : ${members}">
+                    <td th:text="${member.getFirstName() + ' ' + member.getLastName()}"></td>
+                    <td align="center"> <a class="link-secondary" th:href="@{/party_list/{groupId}/members/{memberId}(groupId=${party.getId()}, memberId=${member.getId()})}">View Wishlists</a></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </form>
+</div>
+
 
 
 <script th:replace="fragments :: js"></script>
