@@ -3,30 +3,44 @@
 <head th:replace="fragments :: head"></head>
 <body>
 <nav th:replace="fragments :: nav-header"></nav>
-
-<div>
+<div class="row justify-content-center my-4">
+    <h2 class="text-center" th:text="${wishList.getName()}">Items</h2>
+</div>
+<div class="container">
     <form method="post">
-    <table class="table">
-        <tr>
-            <th>Select</th>
-            <th>Name</th>
-            <th>Description</th>
-            <th colspan="3" style="text-align: center">Operation</th>
+        <div class="table-responsive">
+    <table class="table table-bordered table-hover">
+        <thead>
+        <tr class="bg-info">
+            <th scope="col">Select</th>
+            <th scope="col">Name</th>
+            <th scope="col">Description</th>
+            <th scope="col">Action</th>
         </tr>
+        </thead>
+        <tbody>
         <tr th:each="item : ${items}">
-            <td><input type="checkbox" th:name="itemid" th:value="${item.getId()}"</td>
+            <td style="text-align: center; vertical-align: middle; width: 1% !important;"><input type="checkbox" th:name="itemid" th:value="${item.getId()}"</td>
             <td th:text="${item.getName()}"></td>
             <td th:text="${item.getDescription()}"></td>
-            <td><a th:href="@{/wishlists/{listid}/items/edit/{itemid}(listid=${wishList.getId()},itemid=${item.getId()})}">Edit</a></td>
+            <td align="center"><a class="link-secondary" th:href="@{/wishlists/{listid}/items/edit/{itemid}(listid=${wishList.getId()},itemid=${item.getId()})}">Edit</a></td>
         </tr>
+        </tbody>
+        <tfoot>
+            <tr class="spacer">
+                <td colspan="4"></td>
+            </tr>
+        <tr>
+            <td align="left"><input type="submit"
+                       class="btn btn-danger"
+                       value="Delete Selected Items" /></td>
+            <td colspan="2"></td>
+            <td align="right"><a class="btn btn-warning span2 px-3" th:href="@{/wishlists/{id}/additem(id=${wishList.getId()})}">Add Item</a></td>
+        </tr>
+        </tfoot>
     </table>
-    <input type="submit"
-           class="btn btn-danger"
-           value="Delete Selected Items" />
+        </div>
     </form>
 </div>
-
-
-<script th:replace="fragments :: js"></script>
 </body>
 </html>

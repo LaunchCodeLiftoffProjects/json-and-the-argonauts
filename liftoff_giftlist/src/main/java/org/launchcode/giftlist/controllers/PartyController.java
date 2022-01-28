@@ -230,7 +230,12 @@ public class PartyController {
         if (itemIds != null){
             for (String itemid: itemIds){
                 Item item = itemRepository.findById(Integer.parseInt(itemid)).get();
-                item.setPurchased(!item.getPurchased());
+                if (item.getPurchased() == true) {
+                    item.setPurchased(false);
+                }
+                else {
+                    item.setPurchased(true);
+                }
                 itemRepository.save(item);
             }
         }

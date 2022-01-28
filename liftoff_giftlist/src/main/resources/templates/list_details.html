@@ -4,8 +4,11 @@
 <body>
 <nav th:replace="fragments :: nav-header"></nav>
 
-<div>
-    <form class="mb-3" method="post">
+<div class="container p-3 my-3">
+    <div class="row justify-content-center align-items-center">
+        <h2 class="py-3 my-2 text-center">Edit Wish List Details</h2>
+        <div class="col-9 col-md-6 col-lg-4 my-2 pt-3 rounded shadow border">
+    <form method="post">
         <label for="name">Name: </label>
         <input type="text"
                id="name"
@@ -13,7 +16,7 @@
                class="form-control"
                th:value="${wishList.getName()}"
         />
-        <p class="error" th:errors="${wishList.name}"></p>
+        <p class="error form-text" th:errors="${wishList.name}"></p>
         <label for="description">Description: </label>
         <input type="text"
                id="description"
@@ -21,13 +24,16 @@
                class="form-control"
                th:value="${wishList.getDescription()}"
         />
-
+        <div class="text-center py-3">
         <input
                 type="submit"
                 class="btn btn-warning btn-lg"
                 value="Update List Details"
         />
+        </div>
     </form>
+            </div>
+        </div>
 </div>
 
 <script th:replace="fragments :: js"></script>
