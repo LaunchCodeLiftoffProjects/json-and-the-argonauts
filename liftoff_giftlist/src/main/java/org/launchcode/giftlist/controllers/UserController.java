@@ -61,14 +61,6 @@ public class UserController {
     return "user";
   }
 
-
-
-  @GetMapping("party_list1")
-  public String displayGroupList(Model model){
-
-   return "party_list";
-  }
-
   @GetMapping("user_details1")
   public String displayUpdateUserDetailsForm (Model model, HttpSession session) {
     Integer currentUserId = (Integer) session.getAttribute("user");
