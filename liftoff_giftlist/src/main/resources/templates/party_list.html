@@ -22,7 +22,7 @@
                     <td th:text="${party.getName()}"></td>
                     <td th:text="${party.getDescription()}"></td>
                     <td align="center"><a class="link-secondary" th:href="@{/party_list/{groupId}/members(groupId=${party.getId()})}">View Members</a></td>
-                    <td align="center" id="leaveGroup"><a class="link-secondary" th:href="@{/party_list/{groupId}/leave(groupId=${party.getId()})}">Leave Group</a></td>
+                    <td align="center" id="leaveGroup"><a th:unless="${ownedParties.contains(party)}" class="link-secondary" th:href="@{/party_list/{groupId}/leave(groupId=${party.getId()})}">Leave Group</a></td>
                 </tr>
                 </tbody>
                 <tfoot>

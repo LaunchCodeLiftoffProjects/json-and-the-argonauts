@@ -26,9 +26,11 @@ public class Item extends AbstractSuper {
     public Item(String name, String description){
         this.name = name;
         this.description = description;
+        this.isPurchased = false;
     }
 
     public Item(){
+        this.isPurchased = false;
     }
 
 //  Getters & Setters
@@ -56,11 +58,6 @@ public class Item extends AbstractSuper {
 
 //  Utility methods
 
-    @Override
-    public String toString() {
-        return name + ":  " + description + "\n";
-    }
-
     public Boolean getPurchased() {
         return isPurchased;
     }
@@ -69,7 +66,9 @@ public class Item extends AbstractSuper {
         isPurchased = purchased;
     }
 
-
-    //waiting to add additional methods
+    @Override
+    public String toString() {
+        return name + ":  " + description + "\n";
+    }
 
 }

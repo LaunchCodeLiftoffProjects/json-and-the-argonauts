@@ -12,20 +12,21 @@
         <table class="table table-bordered table-hover">
             <thead>
             <tr class="bg-info">
-                <th scope="col">Select</th>
                 <th scope="col">Name</th>
                 <th scope="col">Description</th>
-                <th scope="col">Purchased?</th>
+                <th scope="col">Select</th>
+                <th scope="col">Already Purchased?</th>
             </tr>
             </thead>
             <tbody>
-            <tr th:each="item : ${items}">
-                <td style="text-align: center; vertical-align: middle; width: 1% !important;">
-                    <input type="checkbox" th:name="itemId" th:value="${item.getId()}"></td>
+            <tr th:each="item : ${items}" class="text-center">
                 <td th:text="${item.getName()}"></td>
                 <td th:text="${item.getDescription()}"></td>
-                <td th:if="${item.getPurchased()}">Yes</td>
-                <td th:if="${!item.getPurchased()}">No</td>
+                <td style="text-align: center; vertical-align: middle; width: 1% !important;">
+                    <input type="checkbox" th:name="itemId" th:value="${item.getId()}"></td>
+                <td th:if="${item.getPurchased() == true}">Yes</td>
+                <td th:if="${item.getPurchased() == false}">No</td>
+                <td th:if="${item.getPurchased() == null}">[null]</td>
             </tr>
             </tbody>
             <tfoot>

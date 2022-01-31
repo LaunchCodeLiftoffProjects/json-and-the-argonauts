@@ -130,6 +130,9 @@ public class PartyController {
         User currentUser = userRepository.findById(currentUserId).get();
         Party partyToLeave = partyRepository.findById(Integer.parseInt(groupId)).get();
         partyToLeave.removeMember(currentUser);
+        currentUser.removeJoinedParty(partyToLeave);
+        System.out.println("Leaving party: " + groupId + " " + partyToLeave.getName());
+        System.out.println(currentUser.getJoinedParties());
         return "redirect:/party_list";
     }
 
