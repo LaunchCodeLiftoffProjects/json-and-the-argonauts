@@ -12,7 +12,11 @@
       crossorigin="anonymous"
     />
     <link rel="stylesheet"  th:href="@{/css/styles.css}" />
+    <link rel="stylesheet" th:href="@{/css/transitions.css}" />
   </head>
+
+  <div th:fragment="transition" class="transition transition-1 is-active"></div>
+
 
   <body>
     <header th:fragment="nav-header">
@@ -48,7 +52,7 @@
                 <a href="/party_list" class="nav-link fw-bold">My Groups</a>
               </li>
               <li class="nav-item">
-                <a href="/user_details1" class="nav-link fw-bold">Account</a>
+                <a href="/user_details" class="nav-link fw-bold">Account</a>
               </li>
               <li class="nav-item">
                 <a href="/logout" class="ms-2 btn btn-secondary">Logout</a>
@@ -59,6 +63,7 @@
       </nav>
     </header>
 
+    <script th:fragment="transitions" src="transition.js"></script>
     <script
       th:fragment="js"
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
