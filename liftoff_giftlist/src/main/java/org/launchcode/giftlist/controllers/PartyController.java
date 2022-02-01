@@ -230,6 +230,7 @@ public class PartyController {
         model.addAttribute("user", currentUser);
         model.addAttribute("wishList", wishList);
         model.addAttribute("items", items);
+        model.addAttribute("listId", wishListId);
         return "view_userwishlist_items";
     }
 
@@ -259,6 +260,7 @@ public class PartyController {
         model.addAttribute("user", currentUser);
         model.addAttribute("wishList", wishList);
         model.addAttribute("items", items);
+        model.addAttribute("wishListId", wishListId);
         return "redirect:/party_list/" + groupId + "/members/" + memberId + "/" + wishListId;
     }
 

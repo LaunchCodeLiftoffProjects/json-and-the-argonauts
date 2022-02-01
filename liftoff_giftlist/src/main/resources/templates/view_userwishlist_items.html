@@ -4,7 +4,8 @@
 <body>
 <nav th:replace="fragments :: nav-header"></nav>
 <div class="row justify-content-center my-4">
-    <h1 class="text-center h2"><span th:text="${wishList.getListOwner()}"></span>'s Wish List</h1>
+    <h1 class="text-center h2">This is <span th:text="${wishList.getListOwner().getFirstName()}">default</span>'s Wish List: <span th:text="${wishList.getName()}">default</span></h1>
+    <h2 class="text-center h5 text-end" th:if="${wishList.getListOwner().equals(user)}"><a th:href="@{/wishlists/{id}/items(id=${wishList.getId()})}">View Your List Details</a></h2>
 </div>
 <div class="container">
     <form method="post">
