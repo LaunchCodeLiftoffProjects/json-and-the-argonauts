@@ -45,17 +45,8 @@ public class PartyController {
         User currentUser = userRepository.findById(currentUserId).get();
         List<Party> ownedParties = partyRepository.findAllByPartyOwner(currentUser);
         List<Party> allParties = partyRepository.findAllByMembers(currentUser);
+        System.out.println("Main: " + currentUser.getUsername() + " has " + currentUser.getJoinedParties().size());
 
-//        ** Not sure what this code is doing. **
-//        for (Party group: allParties){
-//            if (group.getPartyOwner().getUserID() == currentUserId){
-//                Party party = partyRepository.findById(group.getId()).get();
-//                model.addAttribute("party", party);
-//                Boolean isOwner = true;
-//                model.addAttribute("isOwner", isOwner);
-//            }
-//            model.addAttribute("isOwner", false);
-//        }
         model.addAttribute("ownedParties", ownedParties);
         model.addAttribute("allParties", allParties);
         model.addAttribute("user", currentUser);
@@ -130,9 +121,11 @@ public class PartyController {
         User currentUser = userRepository.findById(currentUserId).get();
         Party partyToLeave = partyRepository.findById(Integer.parseInt(groupId)).get();
         partyToLeave.removeMember(currentUser);
+        partyRepository.save(partyToLeave);
         currentUser.removeJoinedParty(partyToLeave);
+        userRepository.save(currentUser);
         System.out.println("Leaving party: " + groupId + " " + partyToLeave.getName());
-        System.out.println(currentUser.getJoinedParties());
+        System.out.println("Leave: " + currentUser.getUsername() + " has " + currentUser.getJoinedParties().size());
         return "redirect:/party_list";
     }
 
