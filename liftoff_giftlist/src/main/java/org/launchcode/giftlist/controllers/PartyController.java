@@ -251,11 +251,12 @@ public class PartyController {
             }
         }
         Party party = partyRepository.findById(Integer.parseInt(groupId)).get();
-        User user = userRepository.findById(Integer.parseInt(memberId)).get();
+        Integer currentUserId = (Integer) session.getAttribute("user");
+        User currentUser = userRepository.findById(currentUserId).get();
         WishList wishList = wishListRepository.findById(Integer.parseInt(wishListId)).get();
         List<Item> items = itemRepository.findAllBywishList(wishList);
         model.addAttribute("party", party);
-        model.addAttribute("user", user);
+        model.addAttribute("user", currentUser);
         model.addAttribute("wishList", wishList);
         model.addAttribute("items", items);
         return "redirect:/party_list/" + groupId + "/members/" + memberId + "/" + wishListId;

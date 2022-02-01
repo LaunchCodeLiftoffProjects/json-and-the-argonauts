@@ -4,7 +4,7 @@
 <body>
 <nav th:replace="fragments :: nav-header"></nav>
 <div class="row justify-content-center my-4">
-    <h1 class="text-center">Wishlist Items</h1>
+    <h1 class="text-center h2"><span th:text="${wishList.getListOwner()}"></span>'s Wish List</h1>
 </div>
 <div class="container">
     <form method="post">
@@ -35,14 +35,18 @@
             <tr class="spacer">
                 <td colspan="3"></td>
             </tr>
-            <tr th:unless="${wishList.getListOwner().equals(user)}">
-                <td><input type="submit"
-                           class="btn btn-warning text-end"
-                           value="Toggle Purchase Status" /></td>
-            </tr>
             </tfoot>
         </table>
         </div>
+        <div class="row justify-content-between mb-2">
+            <div class="col"><a th:href="@{/party_list/{groupId}/members(groupId=${party.getId()})}" class="btn btn-secondary">Back to Group Members</a></div>
+            <div class="col text-end" th:unless="${wishList.getListOwner().equals(user)}"><input type="submit"
+                                                                            class="btn btn-warning"
+                                                                            value="Toggle Purchase Status" /></div>
+        </div>
+        <div><a class="btn btn-secondary" th:href="@{/party_list}">Back to My Groups</a></div>
+
+
 
     </form>
     </div>
