@@ -61,7 +61,7 @@ public class UserController {
     return "user";
   }
 
-  @GetMapping("user_details1")
+  @GetMapping("user_details")
   public String displayUpdateUserDetailsForm (Model model, HttpSession session) {
     Integer currentUserId = (Integer) session.getAttribute("user");
     User user = userRepository.findById(currentUserId).get();
@@ -69,7 +69,7 @@ public class UserController {
     return "user_details";
   }
 
-  @PostMapping("user_details1")
+  @PostMapping("user_details")
   public String processUpdateUserDetailsForm (@ModelAttribute @Valid UpdateUserDetailsDTO updateUserDetailsDTO,
                                            HttpSession session, Model model) {
     Integer currentUserId = (Integer) session.getAttribute("user");
@@ -83,7 +83,7 @@ public class UserController {
     model.addAttribute("lastName", user.getLastName());
     model.addAttribute("username", user.getUsername());
     model.addAttribute("email", user.getEmail());
-    return "user";
+    return "redirect:/" + user.getUsername();
 
   }
 

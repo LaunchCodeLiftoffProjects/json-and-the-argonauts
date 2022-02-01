@@ -45,15 +45,8 @@ public class PartyController {
         User currentUser = userRepository.findById(currentUserId).get();
         List<Party> ownedParties = partyRepository.findAllByPartyOwner(currentUser);
         List<Party> allParties = partyRepository.findAllByMembers(currentUser);
-        for (Party parti: allParties){
-            if (parti.getPartyOwner().getUserID() == currentUserId){
-                Party party = partyRepository.findById(parti.getId()).get();
-                model.addAttribute("party", party);
-                Boolean isOwner = true;
-                model.addAttribute("isOwner", isOwner);
-            }
-            model.addAttribute("isOwner", false);
-        }
+        System.out.println("Main: " + currentUser.getUsername() + " has " + currentUser.getJoinedParties().size());
+
         model.addAttribute("ownedParties", ownedParties);
         model.addAttribute("allParties", allParties);
         model.addAttribute("user", currentUser);
@@ -68,10 +61,12 @@ public class PartyController {
             }
         }
         Integer currentUserId = (Integer) session.getAttribute("user");
-        User user = userRepository.findById(currentUserId).get();
-        List<Party> parties = partyRepository.findAllByPartyOwner(user);
-        model.addAttribute("parties", parties);
-        return "redirect:party_list";
+        User currentUser = userRepository.findById(currentUserId).get();
+        List<Party> ownedParties = partyRepository.findAllByPartyOwner(currentUser);
+        List<Party> allParties = partyRepository.findAllByMembers(currentUser);
+        model.addAttribute("ownedParties", ownedParties);
+        model.addAttribute("allParties", allParties);
+        return "redirect:/party_list";
     }
 
 
@@ -117,7 +112,21 @@ public class PartyController {
         party.setName(updatePartyDetailsDTO.getName());
         party.setDescription(updatePartyDetailsDTO.getDescription());
         partyRepository.save(party);
-        return "redirect:";
+        return "redirect:/party_list";
+    }
+
+    @GetMapping("/party_list/{groupId}/leave")
+    public String leaveParty(@PathVariable String groupId, HttpSession session, Model model) {
+        Integer currentUserId = (Integer) session.getAttribute("user");
+        User currentUser = userRepository.findById(currentUserId).get();
+        Party partyToLeave = partyRepository.findById(Integer.parseInt(groupId)).get();
+        partyToLeave.removeMember(currentUser);
+        partyRepository.save(partyToLeave);
+        currentUser.removeJoinedParty(partyToLeave);
+        userRepository.save(currentUser);
+        System.out.println("Leaving party: " + groupId + " " + partyToLeave.getName());
+        System.out.println("Leave: " + currentUser.getUsername() + " has " + currentUser.getJoinedParties().size());
+        return "redirect:/party_list";
     }
 
     @GetMapping("/party_list/{groupId}/members")
@@ -187,7 +196,7 @@ public class PartyController {
         model.addAttribute("username", userToAdd.getUsername());
         party.addMember(userToAdd);
         userToAdd.addToGroupCreatedByAnotherUser(party);
-        userRepository.save(userToAdd);
+        userRepository.save(userToAdd);  // IS THIS RIGHT?
         partyRepository.save(party);
         List<User> members = party.getMembers();
         model.addAttribute("members", members);

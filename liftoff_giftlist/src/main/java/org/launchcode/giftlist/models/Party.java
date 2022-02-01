@@ -81,6 +81,15 @@ public class Party extends AbstractSuper{
 
     public void removeWishList(WishList wishList) { this.memberWishLists.remove(wishList);}
 
+    public boolean isOwnedBy(User user) {
+        if (this.getPartyOwner().equals(user)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+//    if
 
     @Override
     public String toString() {

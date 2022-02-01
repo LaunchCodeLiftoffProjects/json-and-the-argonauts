@@ -112,6 +112,7 @@ public class User extends AbstractSuper {
         this.joinedParties = joinedParties;
     }
 
+
 //  Utility methods
     public boolean isMatchingPassword(String password) {
     return encoder.matches(password, pwHash);
@@ -127,6 +128,19 @@ public class User extends AbstractSuper {
         return getId();
     }
 
+    public Boolean isPartyOwner(User user1, User user2){
+        if (user1.equals(user2)){
+            return true;
+        } else return false;
+    }
+
+    public void addToGroupCreatedByAnotherUser(Party party){
+        joinedParties.add(party);
+    }
+
+    public void removeFromGroupCreatedByAnotherUser(Party party){
+        joinedParties.remove(party);
+    }
 
     @Override
     public String toString() {
@@ -141,26 +155,6 @@ public class User extends AbstractSuper {
                 '}';
     }
 
-//    public void findWishLists(){
-//        //find all wishlists created by THIS USER
-//    }
-//
-//    public void findSupaSpecificWishList(){
-//        //find a list by the WishList ID
-//    }
 
-    public Boolean isPartyOwner(User user1, User user2){
-        if (user1.equals(user2)){
-            return true;
-        } else return false;
-    }
-
-    public void addToGroupCreatedByAnotherUser(Party party){
-        joinedParties.add(party);
-    }
-
-    public void removeFromGroupCreatedByAnotherUser(Party party){
-        joinedParties.remove(party);
-    }
 
 }
