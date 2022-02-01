@@ -14,28 +14,30 @@
             <tr class="bg-info">
                 <th scope="col">Name</th>
                 <th scope="col">Description</th>
-                <th scope="col">Select</th>
-                <th scope="col">Already Purchased?</th>
+                <th scope="col" th:unless="${wishList.getListOwner().equals(user)}">Select</th>
+                <th scope="col" th:unless="${wishList.getListOwner().equals(user)}">Already Purchased?</th>
             </tr>
             </thead>
             <tbody>
             <tr th:each="item : ${items}" class="text-center">
                 <td th:text="${item.getName()}"></td>
                 <td th:text="${item.getDescription()}"></td>
-                <td style="text-align: center; vertical-align: middle; width: 1% !important;">
+                <td th:unless="${wishList.getListOwner().equals(user)}" style="text-align: center; vertical-align: middle; width: 1% !important;">
                     <input type="checkbox" th:name="itemId" th:value="${item.getId()}"></td>
-                <td th:if="${item.getPurchased() == true}">Yes</td>
-                <td th:if="${item.getPurchased() == false}">No</td>
-                <td th:if="${item.getPurchased() == null}">[null]</td>
+                <td th:unless="${wishList.getListOwner().equals(user)}">
+                    <span th:text="${item.getPurchased()} ? 'Yes' : 'No'">default boolean</span>
+                    <!-- The above is known as the Elvis operator (can't make this stuff up) -->
+                </td>
+
             </tr>
             </tbody>
             <tfoot>
             <tr class="spacer">
                 <td colspan="3"></td>
             </tr>
-            <tr>
+            <tr th:unless="${wishList.getListOwner().equals(user)}">
                 <td><input type="submit"
-                           class="btn btn-warning"
+                           class="btn btn-warning text-end"
                            value="Toggle Purchase Status" /></td>
             </tr>
             </tfoot>
