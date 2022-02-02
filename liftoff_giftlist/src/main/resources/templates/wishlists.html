@@ -7,6 +7,7 @@
     <h1 class="text-center">My Wish Lists</h1>
 </div>
 <div class="container">
+    <input type="text" id="filter" class="my-2" onkeyup="filterSelectTable()" placeholder="Filter by name">
     <form method="post">
     <div class="table-responsive">
     <table class="table table-bordered table-hover">
@@ -18,7 +19,7 @@
             <th colspan="3" scope="colgroup">Action</th>
         </tr>
         </thead>
-        <tbody>
+        <tbody id="tbody">
         <tr th:each="wishlist : ${wishlists}">
             <td style="text-align: center; vertical-align: middle; width: 1% !important;">
                 <input type="checkbox" th:name="wishlistid" th:value="${wishlist.getId()}"></td>
@@ -46,5 +47,6 @@
 
     </form>
 </div>
+<script th:src="@{/js/script.js}"></script>
 </body>
 </html>

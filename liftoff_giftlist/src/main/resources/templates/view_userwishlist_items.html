@@ -7,6 +7,7 @@
     <h1 class="text-center">Wishlist Items</h1>
 </div>
 <div class="container">
+    <input type="text" id="filter-no-select" class="my-2" onkeyup="filterNoSelectTable()" placeholder="Filter by name">
     <form method="post">
         <div class="table-responsive">
         <table class="table table-bordered table-hover">
@@ -18,7 +19,7 @@
                 <th scope="col">Already Purchased?</th>
             </tr>
             </thead>
-            <tbody>
+            <tbody id="tbody-no-select">
             <tr th:each="item : ${items}" class="text-center">
                 <td th:text="${item.getName()}"></td>
                 <td th:text="${item.getDescription()}"></td>
@@ -46,7 +47,7 @@
     </div>
 
 
-
+<script th:src="@{/js/script.js}"></script>
 <script th:replace="fragments :: js"></script>
 </body>
 </html>

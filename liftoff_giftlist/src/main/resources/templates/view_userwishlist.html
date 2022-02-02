@@ -7,6 +7,7 @@
     <h2 class="text-center" th:text="${'Wishlists for ' + member.getFirstName()}"></h2>
 </div>
 <div class="container">
+    <input type="text" id="filter-no-select" class="my-2" onkeyup="filterNoSelectTable()" placeholder="Filter by name">
         <div class="table-responsive">
             <table class="table table-bordered table-hover">
                 <thead>
@@ -15,7 +16,7 @@
                 <th scope="col">Items</th>
             </tr>
                 </thead>
-                <tbody>
+                <tbody id="tbody-no-select">
             <tr th:each="wishList : ${wishLists}">
                 <td th:text="${wishList.getName()}"></td>
                 <td align="center"> <a class="link-secondary" th:href="@{/party_list/{groupId}/members/{memberId}/{wishListId}(groupId=${party.getId()}, memberId=${member.getId()}, wishListId=${wishList.getId()})}">View Items</a></td>
@@ -32,7 +33,9 @@
                 </tfoot>
         </table>
 </div>
+</div>
 
 <script th:replace="fragments :: js"></script>
+    <script th:src="@{/js/script.js}"></script>
 </body>
 </html>
