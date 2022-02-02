@@ -7,6 +7,7 @@
 <div class="row justify-content-center my-4">
     <h1 class="text-center" th:text="${'Members of ' + party.getName()}"></h1>
 </div>
+
 <!-- group owner view of members -->
 <div class="container" th:if="${isOwner}">
     <input type="text" id="filter" class="my-2" onkeyup="filterSelectTable()" placeholder="Filter by name">
@@ -23,7 +24,7 @@
             <tbody id="tbody">
             <tr th:each="member : ${members}">
                 <td style="text-align: center; vertical-align: middle; width: 1% !important;"><input type="checkbox" th:name="memberId" th:value="${member.getId()}"></td>
-                <td th:text="${member.getFirstName() + ' ' + member.getLastName()}"></td>
+                <td align="center" th:text="${member.getFirstName() + ' ' + member.getLastName()}"></td>
                 <td align="center"> <a class="link-secondary" th:href="@{/party_list/{groupId}/members/{memberId}(groupId=${party.getId()}, memberId=${member.getId()})}">View Wishlists</a></td>
             </tr>
             </tbody>
@@ -40,11 +41,17 @@
                 <td colspan="1"></td>
                 <td align="right"><a class="btn btn-warning px-3" th:href="@{/party_list/{groupId}/add_member(groupId=${party.getId()})}">Add Member</a></td>
             </tr>
+            <tr>
+                <td><a class="btn btn-secondary" th:href="@{/party_list}">Back to My Groups</a></td>
+            </tr>
+
             </tfoot>
+
         </table>
         </div>
     </form>
 </div>
+
 <!-- non-owner view of members -->
 <div class="container" th:if="${!isOwner}">
     <input type="text" id="filter-no-select" class="my-2" onkeyup="filterNoSelectTable()" placeholder="Filter by name">
@@ -59,13 +66,16 @@
                 </thead>
                 <tbody id="tbody-no-select">
                 <tr th:each="member : ${members}">
-                    <td th:text="${member.getFirstName() + ' ' + member.getLastName()}"></td>
+                    <td align="center" th:text="${member.getFirstName() + ' ' + member.getLastName()}"></td>
                     <td align="center"> <a class="link-secondary" th:href="@{/party_list/{groupId}/members/{memberId}(groupId=${party.getId()}, memberId=${member.getId()})}">View Wishlists</a></td>
                 </tr>
                 </tbody>
                 <tfoot>
                 <tr class="spacer">
                     <td colspan="2"></td>
+                </tr>
+                <tr>
+                    <td><a class="btn btn-secondary" th:href="@{/party_list}">Back to My Groups</a></td>
                 </tr>
                 </tfoot>
             </table>
