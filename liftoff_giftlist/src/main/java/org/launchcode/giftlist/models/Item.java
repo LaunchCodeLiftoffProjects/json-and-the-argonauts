@@ -26,18 +26,15 @@ public class Item extends AbstractSuper {
     public Item(String name, String description){
         this.name = name;
         this.description = description;
-        this.isPurchased = false;
     }
 
     public Item(){
-        this.isPurchased = false;
     }
 
 //  Getters & Setters
     public String getName() {
         return name;
     }
-
     public void setName(String name) {
         this.name = name;
     }
@@ -45,26 +42,24 @@ public class Item extends AbstractSuper {
     public String getDescription() {
         return description;
     }
-
     public void setDescription(String description) { this.description = description; }
 
     public WishList getWishlist() {
         return wishList;
     }
-
     public void setWishList(WishList wishList) {
         this.wishList = wishList;
     }
 
-//  Utility methods
-
     public Boolean getPurchased() {
         return isPurchased;
     }
-
     public void setPurchased(Boolean purchased) {
         isPurchased = purchased;
     }
+//  Utility methods
+
+
 
     @Override
     public String toString() {

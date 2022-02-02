@@ -45,7 +45,7 @@ public class PartyController {
         User currentUser = userRepository.findById(currentUserId).get();
         List<Party> ownedParties = partyRepository.findAllByPartyOwner(currentUser);
         List<Party> allParties = partyRepository.findAllByMembers(currentUser);
-        System.out.println("Main: " + currentUser.getUsername() + " has " + currentUser.getJoinedParties().size());
+//        System.out.println("Main: " + currentUser.getUsername() + " has " + currentUser.getJoinedParties().size());
 
         model.addAttribute("ownedParties", ownedParties);
         model.addAttribute("allParties", allParties);
@@ -124,8 +124,8 @@ public class PartyController {
         partyRepository.save(partyToLeave);
         currentUser.removeJoinedParty(partyToLeave);
         userRepository.save(currentUser);
-        System.out.println("Leaving party: " + groupId + " " + partyToLeave.getName());
-        System.out.println("Leave: " + currentUser.getUsername() + " has " + currentUser.getJoinedParties().size());
+//        System.out.println("Leaving party: " + groupId + " " + partyToLeave.getName());
+//        System.out.println("Leave: " + currentUser.getUsername() + " has " + currentUser.getJoinedParties().size());
         return "redirect:/party_list";
     }
 
@@ -219,22 +219,25 @@ public class PartyController {
 
     @GetMapping("/party_list/{groupId}/members/{memberId}/{wishListId}")
     public String showItemsInUserlist(@PathVariable String groupId, @PathVariable String memberId,
-                                      @PathVariable String wishListId, Model model){
+                                      @PathVariable String wishListId, Model model, HttpSession session){
         Party party = partyRepository.findById(Integer.parseInt(groupId)).get();
-        User user = userRepository.findById(Integer.parseInt(memberId)).get();
+//        User user = userRepository.findById(Integer.parseInt(memberId)).get();
+        Integer currentUserId = (Integer) session.getAttribute("user");
+        User currentUser = userRepository.findById(currentUserId).get();
         WishList wishList = wishListRepository.findById(Integer.parseInt(wishListId)).get();
         List<Item> items = itemRepository.findAllBywishList(wishList);
         model.addAttribute("party", party);
-        model.addAttribute("user", user);
+        model.addAttribute("user", currentUser);
         model.addAttribute("wishList", wishList);
         model.addAttribute("items", items);
+        model.addAttribute("listId", wishListId);
         return "view_userwishlist_items";
     }
 
 
     @PostMapping("/party_list/{groupId}/members/{memberId}/{wishListId}")
     public String processItemsInUserList(@PathVariable String groupId, @PathVariable String memberId,
-                                        @PathVariable String wishListId, Model model,
+                                        @PathVariable String wishListId, Model model, HttpSession session,
                                         @RequestParam(value="itemId", required = false) List<String> itemIds){
         if (itemIds != null){
             for (String itemid: itemIds){
@@ -249,13 +252,15 @@ public class PartyController {
             }
         }
         Party party = partyRepository.findById(Integer.parseInt(groupId)).get();
-        User user = userRepository.findById(Integer.parseInt(memberId)).get();
+        Integer currentUserId = (Integer) session.getAttribute("user");
+        User currentUser = userRepository.findById(currentUserId).get();
         WishList wishList = wishListRepository.findById(Integer.parseInt(wishListId)).get();
         List<Item> items = itemRepository.findAllBywishList(wishList);
         model.addAttribute("party", party);
-        model.addAttribute("user", user);
+        model.addAttribute("user", currentUser);
         model.addAttribute("wishList", wishList);
         model.addAttribute("items", items);
+        model.addAttribute("wishListId", wishListId);
         return "redirect:/party_list/" + groupId + "/members/" + memberId + "/" + wishListId;
     }
 
