@@ -7,27 +7,96 @@
 <h2 class="text-center mt-5 mb-5">
   Welcome, <span th:text="${username}">dear user!</span>.
 </h2>
-<div class="container p-3 my-3 bg-info rounded" style="background-color: violet">
+<div class="container p-4 my-3 rounded" style="background-color: rgb(179, 98, 179)">
+
+  <!-- Main Groups / Wish Lists / User Info content -->
   <div class="row justify-content-around">
+
+    <!-- Groups Column -->
     <div class="col-md-3 m-2 border rounded bg-white">
       <h4 class="py-3 text-center">My Groups</h4>
-      <a href="/party_list">Full list of groups</a>
+      <a href="/party_list" class="text-center">Full list of groups</a>
       <hr />
       <ol>
         <li th:each="group : ${groups}" th:text="${group.name}">Default group item</li>
       </ol>
     </div>
+
+    <!-- Wish Lists Column -->
     <div class="col-md-5 m-2 border rounded bg-white">
       <h4 class="py-3 text-center">My Lists</h4>
-      <a href="/wishlists">See all your wishlists!</a>
+      <a href="/wishlists" class="text-center">See all your wishlists!</a>
       <hr />
-      <ol>
-        <li th:each="list : ${wishlists}" th:text="${list.name}">Default list item</li>
-      </ol>
+      <!-- Start of Accordion -->
+      <div class="accordion mb-3" id="wishLists">
+        <!-- List #1 -->
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="wishList-header-1">
+            <button
+                class="accordion-button collapsed"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#wishList-1"
+                aria-controls="wishList-1"
+                aria-expanded="true"
+            >
+              Fun Wish List #1
+            </button>
+          </h2>
+          <div
+              class="accordion-collapse collapse"
+              id="wishList-1"
+              aria-labelledby="wishList-header-1"
+              data-bs-parent="#wishLists"
+          >
+            <div class="accordion-body">
+              <p>Item 1</p>
+              <p>Item 2</p>
+              <p>Item 3</p>
+              <p>Item 4</p>
+              <p>Item 5</p>
+            </div>
+          </div>
+        </div>
+        <!-- List #2 -->
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="wishList-header-2">
+            <button
+                class="accordion-button collapsed"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#wishList-2"
+                aria-controls="wishList-2"
+                aria-expanded="true"
+            >
+              Super Fun Wish List #2
+            </button>
+          </h2>
+          <div
+              class="accordion-collapse collapse"
+              id="wishList-2"
+              aria-labelledby="wishList-header-2"
+              data-bs-parent="#wishLists"
+          >
+            <div class="accordion-body">
+              <p>Item 1</p>
+              <p>Item 2</p>
+              <p>Item 3</p>
+              <p>Item 4</p>
+              <p>Item 5</p>
+            </div>
+          </div>
+        </div>
+      </div>
+<!--      <ol>-->
+<!--        <li th:each="list : ${wishlists}" th:text="${list.name}">Default list item</li>-->
+<!--      </ol>-->
     </div>
+
+    <!-- User Details Column -->
     <div class="col-md-3 m-2 border rounded bg-white">
       <h4 class="py-3 text-center">User Details</h4>
-      <a href="/user_details">Need to update your info?</a>
+      <a href="/user_details" class="text-center">Need to update your info?</a>
       <hr />
       <ul>
         <li>Username: <span th:text="${username}" class="fw-bold"></span></li>
