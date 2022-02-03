@@ -4,7 +4,7 @@
 <body>
 <nav th:replace="fragments :: nav-header"></nav>
 
-<h2 class="text-center mt-5 mb-3">
+<h2 class="text-center mt-4 mb-3">
   Welcome, <span th:text="${username}">dear user!</span>.
 </h2>
 <h4 class="text-center mx-5 mb-5 lead">View and update all your wish lists and groups you've joined in one convenient place.</h4>
@@ -16,17 +16,44 @@
     <!-- Groups Column -->
     <div class="col-md-3 m-2 border rounded bg-white">
       <h4 class="py-3 text-center">My Groups</h4>
-      <div class="text-center"><a href="/party_list">See all your groups</a></div>
+      <div class="text-center"><a href="/party_list">See all joined groups</a></div>
       <hr />
-      <ol>
-        <li th:each="group : ${groups}" th:text="${group.name}">Default group item</li>
-      </ol>
+      <!-- Start of Accordion -->
+      <div class="accordion mb-3" id="groupList">
+
+        <!-- List Accordion blueprint -->
+        <th:block th:each="group : ${groups}">
+          <div class="accordion-item">
+            <h2 class="accordion-header" th:id="${'group-header-' + groups.indexOf(group)}">
+              <button class="accordion-button collapsed"
+                      type="button" th:text="${group.name}"
+                      data-bs-toggle="collapse"
+                      th:data-bs-target="${'#groupList-' + groups.indexOf(group)}"
+                      th:aria-controls="${'groupList-' + groups.indexOf(group)}"
+                      aria-expanded="false"
+              >
+                Default Wish List Name
+              </button>
+            </h2>
+            <div class="accordion-collapse collapse"
+                 th:id="${'groupList-' + groups.indexOf(group)}"
+                 aria-labelledby="${'group-header-' + groups.indexOf(group)}"
+                 data-bs-parent="#groupList"
+            >
+              <div class="accordion-body">
+                <p th:each="member : ${group.members}" th:text="${member.firstName}">Default Item</p>
+              </div>
+            </div>
+          </div>
+        </th:block>
+
+      </div>
     </div>
 
     <!-- Wish Lists Column -->
     <div class="col-md-5 m-2 border rounded bg-white">
-      <h4 class="py-3 text-center">My Lists</h4>
-      <div class="text-center"><a href="/wishlists" class="text-center">See all your wishlists</a></div>
+      <h4 class="py-3 text-center">My Wish Lists</h4>
+      <div class="text-center"><a href="/wishlists" class="text-center">See all wish lists</a></div>
       <hr />
       <!-- Start of Accordion -->
       <div class="accordion mb-3" id="wishLists">
@@ -58,9 +85,6 @@
         </th:block>
 
       </div>
-<!--      <ol>-->
-<!--        <li th:each="list : ${wishlists}" th:text="${list.name}">Default list item</li>-->
-<!--      </ol>-->
     </div>
 
     <!-- User Details Column -->
