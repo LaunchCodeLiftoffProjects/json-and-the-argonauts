@@ -4,9 +4,10 @@
 <body>
 <nav th:replace="fragments :: nav-header"></nav>
 
-<h2 class="text-center mt-5 mb-5">
+<h2 class="text-center mt-5 mb-3">
   Welcome, <span th:text="${username}">dear user!</span>.
 </h2>
+<h4 class="text-center mx-5 mb-5 lead">View and update all your wish lists and groups you've joined in one convenient place.</h4>
 <div class="container p-4 my-3 rounded" style="background-color: rgb(158, 161, 204)">
 
   <!-- Main Groups / Wish Lists / User Info content -->
@@ -34,7 +35,7 @@
         <th:block th:each="list : ${wishlists}">
         <div class="accordion-item">
           <h2 class="accordion-header" th:id="${'wishList-header-' + wishlists.indexOf(list)}">
-            <button class="accordion-button collapsed" style="background-color: rgb(255, 245, 192)"
+            <button class="accordion-button collapsed"
                 type="button" th:text="${list.name}"
                 data-bs-toggle="collapse"
                 th:data-bs-target="${'#wishList-' + wishlists.indexOf(list)}"
@@ -50,11 +51,7 @@
               data-bs-parent="#wishLists"
           >
             <div class="accordion-body">
-              <p>Item 1</p>
-              <p>Item 2</p>
-              <p>Item 3</p>
-              <p>Item 4</p>
-              <p>Item 5</p>
+              <p th:each="item : ${list.items}" th:text="${item.name}">Default Item</p>
             </div>
           </div>
         </div>
