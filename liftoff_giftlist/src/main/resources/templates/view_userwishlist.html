@@ -7,31 +7,36 @@
     <h2 class="text-center" th:text="${'Wishlists for ' + member.getFirstName()}"></h2>
 </div>
 <div class="container">
-    <div class="table-responsive">
-        <table class="table table-bordered table-hover">
-            <thead>
-                <tr class="bg-info">
-                    <th scope="col">Name of Wishlist</th>
-                    <th scope="col">Items</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr th:each="wishList : ${wishLists}">
-                    <td th:text="${wishList.getName()}"></td>
-                    <td align="center"> <a class="link-secondary" th:href="@{/party_list/{groupId}/members/{memberId}/{wishListId}(groupId=${party.getId()}, memberId=${member.getId()}, wishListId=${wishList.getId()})}">View Items</a></td>
-                </tr>
-            </tbody>
-            <tfoot>
+    <input type="text" id="filter-no-select" class="my-2" onkeyup="filterNoSelectTable()" placeholder="Filter by name">
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover">
+                <thead>
+            <tr class="bg-info">
+                <th scope="col">Name of Wishlist</th>
+                <th scope="col">Items</th>
+            </tr>
+                </thead>
+                <tbody>
+            <tr th:each="wishList : ${wishLists}">
+                <td th:text="${wishList.getName()}"></td>
+                <td align="center"> <a class="link-secondary" th:href="@{/party_list/{groupId}/members/{memberId}/{wishListId}(groupId=${party.getId()}, memberId=${member.getId()}, wishListId=${wishList.getId()})}">View Items</a></td>
+            </tr>
+                </tbody>
+                <tfoot>
                 <tr class="spacer">
                     <td colspan="2"></td>
                 </tr>
-            </tfoot>
+                <tr>
+                    <td align="left"><a class="btn btn-secondary" th:href="@{/party_list}">Back to My Groups</a></td>
+                    <td align="right"><button class="btn btn-secondary" onclick="history.go(-1)">Back to Group Members</button></td>
+                </tr>
+                </tfoot>
         </table>
-    </div>
-    <div><button class="btn btn-secondary mb-2" onclick="history.go(-1)">Back to Group Members</button></div>
-    <div><a class="btn btn-secondary" th:href="@{/party_list}">Back to My Groups</a></div>
+</div>
+
 </div>
 
 <script th:replace="fragments :: js"></script>
+    <script th:src="@{/js/script.js}"></script>
 </body>
 </html>

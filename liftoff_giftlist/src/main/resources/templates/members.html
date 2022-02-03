@@ -10,6 +10,7 @@
 
 <!-- group owner view of members -->
 <div class="container" th:if="${isOwner}">
+    <input type="text" id="filter" class="my-2" onkeyup="filterSelectTable()" placeholder="Filter by name">
     <form method="post">
         <div class="table-responsive">
         <table class="table table-bordered table-hover">
@@ -20,7 +21,7 @@
                 <th scope="col">Wishlists</th>
             </tr>
             </thead>
-            <tbody>
+            <tbody id="tbody">
             <tr th:each="member : ${members}">
                 <td style="text-align: center; vertical-align: middle; width: 1% !important;"><input type="checkbox" th:name="memberId" th:value="${member.getId()}"></td>
                 <td align="center" th:text="${member.getFirstName() + ' ' + member.getLastName()}"></td>
@@ -53,6 +54,7 @@
 
 <!-- non-owner view of members -->
 <div class="container" th:if="${!isOwner}">
+    <input type="text" id="filter-no-select" class="my-2" onkeyup="filterNoSelectTable()" placeholder="Filter by name">
     <form method="post">
         <div class="table-responsive">
             <table class="table table-bordered table-hover">
@@ -62,7 +64,7 @@
                     <th scope="col">Wishlist</th>
                 </tr>
                 </thead>
-                <tbody>
+                <tbody id="tbody-no-select">
                 <tr th:each="member : ${members}">
                     <td align="center" th:text="${member.getFirstName() + ' ' + member.getLastName()}"></td>
                     <td align="center"> <a class="link-secondary" th:href="@{/party_list/{groupId}/members/{memberId}(groupId=${party.getId()}, memberId=${member.getId()})}">View Wishlists</a></td>
@@ -84,5 +86,6 @@
 
 
 <script th:replace="fragments :: js"></script>
+<script th:src="@{/js/script.js}"></script>
 </body>
 </html>
