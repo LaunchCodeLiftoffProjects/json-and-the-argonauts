@@ -4,30 +4,93 @@
 <body>
 <nav th:replace="fragments :: nav-header"></nav>
 
-<h2 class="text-center mt-5 mb-5">
+<h2 class="text-center mt-4 mb-3">
   Welcome, <span th:text="${username}">dear user!</span>.
 </h2>
-<div class="container p-3 my-3 bg-info rounded" style="background-color: violet">
+<h4 class="text-center mx-5 mb-5 lead">View and update all your wish lists and groups you've joined in one convenient place.</h4>
+<div class="container p-4 my-3 rounded" style="background-color: rgb(158, 161, 204)">
+
+  <!-- Main Groups / Wish Lists / User Info content -->
   <div class="row justify-content-around">
+
+    <!-- Groups Column -->
     <div class="col-md-3 m-2 border rounded bg-white">
       <h4 class="py-3 text-center">My Groups</h4>
-      <a href="/party_list">Full list of groups</a>
+      <div class="text-center"><a href="/party_list">See all joined groups</a></div>
       <hr />
-      <ol>
-        <li th:each="group : ${groups}" th:text="${group.name}">Default group item</li>
-      </ol>
+      <!-- Start of Accordion -->
+      <div class="accordion mb-3" id="groupList">
+
+        <!-- List Accordion blueprint -->
+        <th:block th:each="group : ${groups}">
+          <div class="accordion-item">
+            <h2 class="accordion-header" th:id="${'group-header-' + groups.indexOf(group)}">
+              <button class="accordion-button collapsed"
+                      type="button" th:text="${group.name}"
+                      data-bs-toggle="collapse"
+                      th:data-bs-target="${'#groupList-' + groups.indexOf(group)}"
+                      th:aria-controls="${'groupList-' + groups.indexOf(group)}"
+                      aria-expanded="false"
+              >
+                Default Wish List Name
+              </button>
+            </h2>
+            <div class="accordion-collapse collapse"
+                 th:id="${'groupList-' + groups.indexOf(group)}"
+                 aria-labelledby="${'group-header-' + groups.indexOf(group)}"
+                 data-bs-parent="#groupList"
+            >
+              <div class="accordion-body">
+                <p th:each="member : ${group.members}" th:text="${member.firstName}">Default Item</p>
+              </div>
+            </div>
+          </div>
+        </th:block>
+
+      </div>
     </div>
+
+    <!-- Wish Lists Column -->
     <div class="col-md-5 m-2 border rounded bg-white">
-      <h4 class="py-3 text-center">My Lists</h4>
-      <a href="/wishlists">See all your wishlists!</a>
+      <h4 class="py-3 text-center">My Wish Lists</h4>
+      <div class="text-center"><a href="/wishlists" class="text-center">See all wish lists</a></div>
       <hr />
-      <ol>
-        <li th:each="list : ${wishlists}" th:text="${list.name}">Default list item</li>
-      </ol>
+      <!-- Start of Accordion -->
+      <div class="accordion mb-3" id="wishLists">
+
+        <!-- List Accordion blueprint -->
+        <th:block th:each="list : ${wishlists}">
+        <div class="accordion-item">
+          <h2 class="accordion-header" th:id="${'wishList-header-' + wishlists.indexOf(list)}">
+            <button class="accordion-button collapsed"
+                type="button" th:text="${list.name}"
+                data-bs-toggle="collapse"
+                th:data-bs-target="${'#wishList-' + wishlists.indexOf(list)}"
+                th:aria-controls="${'wishList-' + wishlists.indexOf(list)}"
+                aria-expanded="false"
+            >
+              Default Wish List Name
+            </button>
+          </h2>
+          <div class="accordion-collapse collapse"
+              th:id="${'wishList-' + wishlists.indexOf(list)}"
+              aria-labelledby="${'wishList-header-' + wishlists.indexOf(list)}"
+              data-bs-parent="#wishLists"
+          >
+            <div class="accordion-body">
+              <p th:each="item : ${list.items}" th:text="${item.name}">Default Item</p>
+            </div>
+          </div>
+        </div>
+        </th:block>
+
+      </div>
     </div>
+
+    <!-- User Details Column -->
     <div class="col-md-3 m-2 border rounded bg-white">
       <h4 class="py-3 text-center">User Details</h4>
-      <a href="/user_details">Need to update your info?</a>
+      <div class="text-center"><a href="/user_details" class="text-center">Need to update your info?</a></div>
       <hr />
       <ul>
         <li>Username: <span th:text="${username}" class="fw-bold"></span></li>
